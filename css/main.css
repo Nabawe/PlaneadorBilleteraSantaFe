@@ -1,0 +1,290 @@
+@charset "UTF-8";
+/*
+  font-family: 'Open Sans', sans-serif; Main Font
+  font-family: 'Noto Sans', sans-serif; The "Almost All" Languages Font
+  font-family: 'Hina Mincho', serif; Styled Font
+*/
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Noto+Sans&family=Hina+Mincho&display=swap");
+/* +Vars */
+/* +Vars */
+/* +f */
+/* +Mixins */
+/* +Mixins */
+/* +Init */
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+/* +Init */
+/* +Defaults */
+:root {
+  font-family: "Open Sans" , Arial , Helvetica , sans-serif;
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  height: 100%;
+}
+main {
+  width: 50%;
+  min-width: fit-content;
+  padding: 0px 3.3ch;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  background-color: #96beff;
+}
+/* +Defaults */
+/* +v-planer */
+#v-planer {
+  width: 90%;
+  min-width: fit-content;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+#v-planer form {
+  width: 90%;
+  min-width: fit-content;
+  margin-top: 5rem;
+  padding: 0px 2px;
+  background-color: #277abc;
+  color: #fff;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  border: 2px double #f6ecdc;
+  border-radius: 5px;
+}
+#v-planer .header {
+  width: 100%;
+  min-width: fit-content;
+  height: 3rem;
+  margin-bottom: calc( ( 1.625rem / 2 ) + ( 2px / 2 ) + 2px );
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+#v-planer .header > * {
+  height: 100%;
+  width: 30%;
+  border-radius: 5px;
+}
+#v-planer .header .monthlyRefund {
+  font-size: 1rem;
+  text-align: center;
+  padding: 0rem 0rem 0.1rem 0rem;
+  background-color: #009240;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+#v-planer .header .funds {
+  font-size: 1rem;
+  text-align: center;
+  padding: 0rem 0rem 0.1rem 0rem;
+  border: none;
+  outline: none;
+}
+#v-planer .item {
+  width: fit-content;
+  height: 2.5rem;
+  padding: 0px 2px;
+  margin-bottom: 2px;
+  border: 2px solid #96beff;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 1ch;
+  border-radius: 5px;
+}
+#v-planer .item--part {
+  height: 2rem;
+  border: none;
+}
+#v-planer .item--part:focus {
+  outline: 2px solid #f6ecdc;
+}
+#v-planer .item--part:disabled {
+  background-color: #c4c0bd;
+}
+#v-planer .item--part.yDrag {
+  width: 1.5rem;
+  height: 1.8rem;
+  background-color: #277abc;
+  background-image: url("/svg/scroll.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+}
+#v-planer .item--part.priority {
+  width: 2.5rem;
+  text-align: center;
+}
+#v-planer .item--part.category {
+  width: 24ch;
+}
+#v-planer .item--part.description {
+  width: 30ch;
+}
+#v-planer .item--part.rawPrice {
+  width: 13ch;
+  text-align: center;
+}
+#v-planer .item--part.discount {
+  width: 8ch;
+  text-align: center;
+}
+#v-planer .item--part.finalPrice {
+  width: 13ch;
+  text-align: center;
+  background-color: #fff;
+  color: #2c2c2b;
+  font-size: 0.875rem;
+  padding: 0.4rem 0px;
+}
+#v-planer .item--part.delItem {
+  width: 1.5rem;
+  height: 1.8rem;
+  background-color: #ed2939;
+  background-image: url("/svg/cross-rounded.svg");
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-origin: border-box;
+  background-position: center;
+  border: 1px solid #231f20;
+  border-radius: 10%;
+}
+#v-planer .item--part.addItem {
+  width: 1.5rem;
+  height: 1.8rem;
+  background-color: #ffd744;
+  background-image: url("/svg/plus-rounded.svg");
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-origin: border-box;
+  background-position: center;
+  border: 1px solid #231f20;
+  border-radius: 10%;
+}
+#v-planer fieldset {
+  width: 80%;
+  min-width: fit-content;
+  padding: 0px 2px;
+  border: 2px double #f6ecdc;
+  border-radius: 5px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+#v-planer fieldset legend {
+  align-self: flex-end;
+  float: right;
+  position: relative;
+  bottom: 1rem;
+  right: -3.3ch;
+  background-color: #26619c;
+  border: 2px solid #231f20;
+}
+#v-planer fieldset .subResults {
+  width: calc(100% - ((24 / 20) * (1.5rem) * 2));
+  height: 1.8rem;
+  position: relative;
+  top: calc(1.8rem + 2px);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+#v-planer fieldset .subResults > * {
+  height: 100%;
+  width: 13ch;
+  border-radius: 5px;
+  padding: 0rem 0rem 0.1rem 0rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  border-radius: 0px 0px 20px 20px;
+  border: none;
+  outline: none;
+}
+#v-planer fieldset .subResults .subSaldoPlusPagos {
+  align-self: flex-start;
+  background-color: #009240;
+  border: none;
+}
+#v-planer fieldset .subResults .subRefund {
+  background-color: #26619c;
+  border: none;
+}
+#v-planer fieldset .subResults .subSpent {
+  align-self: flex-end;
+  background-color: #ed2939;
+  border: none;
+}
+#v-planer .footer {
+  width: 100%;
+  min-width: fit-content;
+  height: 1.8rem;
+  min-height: fit-content;
+  margin-top: 2.7rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+#v-planer .footer .actions {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+#v-planer .footer .actions background-color #fff > * {
+  height: 100%;
+  width: 13ch;
+  border-radius: 5px;
+}
+#v-planer .footer .actions background-color #fff .calc {
+  background-color: #ee82ee;
+}
+#v-planer .footer .actions background-color #fff .reset {
+  background-color: #ffa500;
+}
+#v-planer .footer .totals {
+  width: calc(100% - (((24 / 20) * (1.5rem) * 2) + 1ch));
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+#v-planer .footer .totals > * {
+  height: 100%;
+  width: 13ch;
+  border-radius: 5px;
+  padding: 0rem 0rem 0.1rem 0rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+#v-planer .footer .totals .totalSaldoPlusPagos {
+  background-color: #009240;
+}
+#v-planer .footer .totals .totalRefund {
+  background-color: #26619c;
+}
+#v-planer .footer .totals .totalSpent {
+  background-color: #ed2939;
+}
+/* +v-planer */

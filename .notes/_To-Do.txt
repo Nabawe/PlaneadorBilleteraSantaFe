@@ -1,0 +1,46 @@
++ Setup Github Repository.
+
+
++ Error Handling , xErrors de D:\Nabawe\D\Code\AHk\Game\Ori_and_the_Blind_Forest
+    y ver si recuerdo cual era el lugar original donde cree este sistema o donde fue q lo refine mejor, era para una app o algo de windows
+
+
++ Revisar estructura de directorios de D:\Nabawe\D\Code\AHk\kMapp
+
+
++ Test debbuger; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/debugger
+
+
++ Check all WIPs and ?
+
+
++ [feature] Hacer q todos los mensajes esten en un diccionario (map, hash).
+
+
++ [feature] Change select form input into datalist so that user can add tags on the fly, by default they will get the lowest priority (highest value).
+
+
++ [feature] Agregar link a pagina de Guia de Uso, Tips, FAQs
+
+
++ HTML title, tabindex
+
+
++ Use CSS to define "Skins" like the drag and drop button img, should be defined by CSS, since its part of its "looks"
+    Google "using backgroung image in HTML button"
+    https://css-tricks.com/replace-the-image-in-an-img-with-css/
+    https://www.w3docs.com/snippets/css/how-to-set-the-equivalent-of-src-attribute-of-an-img-tag-in-css.html
+    https://simplernerd.com/css-img-src/
+    https://stackoverflow.com/questions/2738920/how-to-add-background-image-for-input-type-button
+
+
++ Download Fonts to repo and map them
+
+
+! Revisar Rubicas
+
+
+! Avisar q los bordes se ven mal en Chrome, yo use Firefox Dev
+
+
+! Si se hace Zoom se puede ver q esta lleno de errores, nextLine no coincide el tamaño bien con el de item, los estilos en teoria los toma directamente de .item
