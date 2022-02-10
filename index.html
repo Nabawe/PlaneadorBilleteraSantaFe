@@ -31,8 +31,12 @@
           <div class="box-instances">
             <div id="instance-1" class="instance">
               <fieldset name="instance-1">
-                <!-- Otras posibles palabras serian Plazo, Desenbolzo, Previcion, Cuota -->
-                <legend>Instancia - <span class="instance--num">01</span></legend>
+                <!-- Otras posibles palabras serian Instancia, Movimiento, Plazo, Desenbolzo, Previcion, Cuota -->
+                <div class="legend--align">
+                  <legend>Movimiento - <span class="instance--num">01</span>
+                  </legend>
+                  <button class="delInstance"></button>
+                </div>
                 <!-- ? required Attribute -->
                 <div class="item">
                   <!-- Si falla usar slider y JS -->
@@ -85,6 +89,7 @@
         <div class="footer">
           <div class="actions">
             <button class="calc">Calcular</button>
+            <button class="addInstance"></button>
             <button class="reset">Reiniciar</button>
           </div>
           <div class="totals">

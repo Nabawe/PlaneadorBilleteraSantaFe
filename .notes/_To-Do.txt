@@ -37,7 +37,14 @@
 + Download Fonts to repo and map them
 
 
++ Float elements taking up space, since they are using position: relative isntead of an absolute.
+    Check legend, delInstance
+
+
 + [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
+
+
+! [feauture] Fecha Estimada del Reintegro, posiblemente inputtext serca de la legend para ingresar la fecha de la instancia y luego solapa en los subResultados con la fecha estimada.
 
 
 ! [fix inconsistencies] Implement GPS CSS Sections or something similar

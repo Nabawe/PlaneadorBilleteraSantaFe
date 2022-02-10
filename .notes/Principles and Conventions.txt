@@ -27,10 +27,10 @@
     v-      #view
     s-      #section
 
-    --      part of smth            card--cutoff or card--iframe
-    -       list, enumeration       btn-1
+    --      part of smth                            card--cutoff or card--iframe
+    -       list, enumeration, variation            btn-1
 
-    box-    container               box-instances
+    box-    container                               box-instances
 +
 
 

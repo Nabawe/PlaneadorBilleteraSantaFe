@@ -58,11 +58,11 @@ body {
 }
 main {
   width: 50%;
+  height: 100%;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
-  padding: 0px 3.3ch;
-  height: 100%;
+  padding: 0px 3.385ch;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -149,11 +149,11 @@ main {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  gap: 13ch;
+  gap: 4.75ch;
 }
 #v-planer form .actions > * {
   height: 2.5rem;
-  width: calc( 50% - ( 3.5ch + 19.5ch + 1ch ) );
+  width: calc( 50% - ( 2.375ch + 17.75ch + 3.5ch ) );
   border-radius: 5px;
   font-size: 1rem;
   text-align: center;
@@ -161,6 +161,18 @@ main {
 }
 #v-planer form .actions .calc {
   background-color: #96beff;
+}
+#v-planer form .actions .addInstance {
+  width: 3.5ch;
+  height: 4.2ch;
+  background-color: #26619c;
+  background-image: url("/svg/plus-squared-light.svg");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-origin: border-box;
+  background-position: center;
+  border-radius: 10%;
+  border: 1px solid #f6ecdc;
 }
 #v-planer form .actions .reset {
   background-color: #e8784d;
@@ -197,25 +209,47 @@ main {
 }
 #v-planer form .instance fieldset {
   width: 80%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
-  padding: 0px 2px;
+  padding: 0.8125rem 2px 0px;
   border: 2px double #f6ecdc;
   border-radius: 5px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-}
-#v-planer form .instance legend {
-  align-self: flex-end;
-  float: right;
   position: relative;
-  bottom: 1rem;
-  right: -3.3ch;
+}
+#v-planer form .instance .legend--align {
+  align-self: flex-end;
+  position: absolute;
+  top: -1rem;
+  right: -3.385ch;
+  z-index: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+#v-planer form .instance .legend--align legend {
   background-color: #26619c;
   border: 2px solid #231f20;
+}
+#v-planer form .instance .legend--align .delInstance {
+  width: 3.5ch;
+  height: 4.2ch;
+  background-color: #ed2939;
+  background-image: url("/svg/trash-opened.svg");
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-origin: border-box;
+  background-position: center;
+  border: 1px solid #231f20;
+  align-self: flex-end;
+  z-index: 2;
 }
 #v-planer form .instance .item {
   width: -webkit-fit-content;
@@ -223,7 +257,7 @@ main {
   width: fit-content;
   height: 2.5rem;
   padding: 0px 2px;
-  margin-bottom: 2px;
+  margin: 1px 0px;
   border: 2px solid #96beff;
   display: flex;
   flex-flow: row nowrap;
@@ -281,20 +315,20 @@ main {
   background-size: 80%;
   background-origin: border-box;
   background-position: center;
-  border: 1px solid #231f20;
   border-radius: 10%;
+  border: 1px solid #231f20;
 }
 #v-planer form .instance .item--part.addItem {
   width: 3.5ch;
   height: 4.2ch;
   background-color: #ffd744;
-  background-image: url("/svg/plus-rounded.svg");
+  background-image: url("/svg/plus-squared.svg");
   background-repeat: no-repeat;
   background-size: 80%;
   background-origin: border-box;
   background-position: center;
-  border: 1px solid #231f20;
   border-radius: 10%;
+  border: 1px solid #231f20;
 }
 #v-planer form .instance .item--part:focus {
   outline: 2px solid #f6ecdc;

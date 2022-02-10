@@ -4,8 +4,13 @@
 			"path": "stylus/main.styl",
 			"bookmarks": [
 				{
-					"line": 85,
-					"column": 13,
+					"line": 118,
+					"column": 22,
+					"label": ""
+				},
+				{
+					"line": 280,
+					"column": 20,
 					"label": ""
 				}
 			]
