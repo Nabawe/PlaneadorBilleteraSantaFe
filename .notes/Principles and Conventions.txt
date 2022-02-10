@@ -36,4 +36,5 @@
     $       variables
     $f-     functions
     $m-     mixins
+    $e-     extends
 +

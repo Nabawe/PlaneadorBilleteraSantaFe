@@ -28,56 +28,58 @@
         </div>
         <!-- WIP Si estoy usando un .footer y .header debería entonces definir un .main y a las 3 tratarlas como section de GPS CSS s- -->
         <div class="main">
-          <div class="instance-1">
-            <fieldset name="instance-1">
-              <!-- Otras posibles palabras serian Plazo, Desenbolzo, Previcion, Cuota -->
-              <legend>Instancia - <span class="instance--num">01</span></legend>
-              <!-- ? required Attribute -->
-              <div class="item">
-                <!-- Si falla usar slider y JS -->
-                <button class="item--part yDrag"></button>
-                <!-- set max min inputmode attributes -->
-                <input type="number" class="item--part priority" name="priority" min="00" max="99" value="00">
-                <select class="item--part category" name="category">
-                  <option value="normal">Populate by Code</option>
-                  <option value="normal">12345678901234567890</option>
-                </select>
-                <!-- set maxlength spellcheck autofocus Attributes -->
-                <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
-                <input type="text" class="item--part description" name="description">
-                <!-- set max min inputmode attributes -->
-                <input type="number" class="item--part rawPrice" name="rawPrice">
-                <select class="item--part discount" name="discount">
-                  <option value="30" selected>30%</option>
-                  <!-- <option value="30">Populate by Code</option> -->
-                </select>
-                <!-- ? Agregar IDs con JS --> <!-- Set Attributes readonly="readonly" -->
-                <output class="item--part finalPrice" name="finalPrice"></output>
-                <button class="item--part delItem"></button>
-              </div>
-              <!-- Duplicate w/ Grayed Disabled Style and Add New Line Button in place of priority input -->
-              <!-- disabled readonly -->
-              <div class="item nextLine">
-                <button class="item--part addItem"></button>
-                <input type="number" class="item--part priority" value="00" disabled>
-                <select class="item--part category" disabled>
-                  <option value="Categoria" selected>Categoría</option>
-                </select>
-                <input type="text" class="item--part description"value="Descripción" disabled>
-                <input type="text" class="item--part rawPrice" value="$" disabled>
-                <select class="item--part discount" disabled>
-                  <option value="30" selected>30%</option>
-                </select>
-                <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
-                <button class="item--part delItem" disabled></button>
-              </div>
-              <div class="subResults">
-                <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
-                <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="00000000" readonly>
-                <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="00000000" readonly>
-                <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="00000000" readonly>
-              </div>
-            </fieldset>
+          <div class="instancesBox">
+            <div id="instance-1" class="instance">
+              <fieldset name="instance-1">
+                <!-- Otras posibles palabras serian Plazo, Desenbolzo, Previcion, Cuota -->
+                <legend>Instancia - <span class="instance--num">01</span></legend>
+                <!-- ? required Attribute -->
+                <div class="item">
+                  <!-- Si falla usar slider y JS -->
+                  <button class="item--part yDrag"></button>
+                  <!-- set max min inputmode attributes -->
+                  <input type="number" class="item--part priority" name="priority" min="00" max="99" value="00">
+                  <select class="item--part category" name="category">
+                    <option value="normal">Populate by Code</option>
+                    <option value="normal">12345678901234567890</option>
+                  </select>
+                  <!-- set maxlength spellcheck autofocus Attributes -->
+                  <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
+                  <input type="text" class="item--part description" name="description">
+                  <!-- set max min inputmode attributes -->
+                  <input type="number" class="item--part rawPrice" name="rawPrice">
+                  <select class="item--part discount" name="discount">
+                    <option value="30" selected>30%</option>
+                    <!-- <option value="30">Populate by Code</option> -->
+                  </select>
+                  <!-- ? Agregar IDs con JS --> <!-- Set Attributes readonly="readonly" -->
+                  <output class="item--part finalPrice" name="finalPrice"></output>
+                  <button class="item--part delItem"></button>
+                </div>
+                <!-- Duplicate w/ Grayed Disabled Style and Add New Line Button in place of priority input -->
+                <!-- disabled readonly -->
+                <div class="item nextLine">
+                  <button class="item--part addItem"></button>
+                  <input type="number" class="item--part priority" value="00" disabled>
+                  <select class="item--part category" disabled>
+                    <option value="Categoria" selected>Categoría</option>
+                  </select>
+                  <input type="text" class="item--part description"value="Descripción" disabled>
+                  <input type="text" class="item--part rawPrice" value="$" disabled>
+                  <select class="item--part discount" disabled>
+                    <option value="30" selected>30%</option>
+                  </select>
+                  <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
+                  <button class="item--part delItem" disabled></button>
+                </div>
+                <div class="subResults">
+                  <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
+                  <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="00000000" readonly>
+                  <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="00000000" readonly>
+                  <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="00000000" readonly>
+                </div>
+              </fieldset>
+            </div>
           </div>
         </div>
         <div class="footer">

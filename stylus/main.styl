@@ -131,6 +131,24 @@
 /* +Mixins */
 
 
+/* +Extends */
+  $e-box
+    width: 100%
+    height: 100%
+    min-width: fit-content
+    min-height: fit-content
+
+  $e-box-colAligned
+    // @extends $e-box // It creates duplicates on the CSS
+    width: 100%
+    height: 100%
+    min-width: fit-content
+    min-height: fit-content
+    $m-colAlign(nowrap)
+    justify-content: center
+/* +Extends */
+
+
 /* +Init */
   *
     margin: 0px
@@ -206,89 +224,71 @@
           border: none
           outline: none
 
-      .item
-        width: fit-content
-        height: 2.5rem
-        padding: 0px 2px
-        margin-bottom: 2px
-        border: $theme.v-planer.form.item--border
-        $m-rowAlign()
-        justify-content: center
-        column-gap: 1ch
-        border-radius: 5px
-      .item--part
-        height: 2rem
-        border: none
-        &:focus
-          outline: $theme.v-planer.form.item--outline
-        &:disabled
-          background-color: $colors.disabled
-        &.yDrag
-          // WIP check coolors.co Palette Generator drag, and Drag n Drop API https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
-          // WIP Img is not centered https://developer.mozilla.org/en-US/docs/Web/CSS/background
-          width: 1.5rem
-          height: (24/20)*(@width)rem
-          // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-          background-color: $theme.v-planer.form.bg-c
-          background-image: url("/svg/scroll.svg")
-          background-repeat: no-repeat
-          background-size: cover
-          border: $theme.v-planer.form.item--yDrag--border
-        &.priority
-          width: 2.5rem
-          text-align: center
-        &.category
-          width: 24ch
-        &.description
-          width: 30ch
-        &.rawPrice
-          width: 13ch
-          text-align: center
-        &.discount
-          width: 8ch
-          text-align: center
-        &.finalPrice
-          width: 13ch
-          text-align: center
-          background-color: $theme.v-planer.form.item--bg-c
-          color: $theme.v-planer.form.item--fg-c
-          font-size: 0.875rem // WIP parece muy forzado
-          padding: 0.4rem 0px // WIP no encontre mejor forma de alinear, no logre hacer andar a vertical-align
-        &.delItem
-          width: 1.5rem
-          height: (24/20)*(@width)rem
-          // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-          background-color: $theme.v-planer.form.item--delItem--bg-c
-          background-image: url("/svg/cross-rounded.svg")
-          background-repeat: no-repeat
-          background-size: 80%
-          background-origin: border-box
-          background-position: center
-          border: $theme.v-planer.form.item--delItem--border
-          border-radius: 10%
-        &.addItem
-          width: 1.5rem
-          // ! WIP use a mixin or a function for this; "buttons proportions"
-          height: (24/20)*(@width)rem
-          // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-          background-color: $theme.v-planer.form.item--addItem--bg-c
-          background-image: url("/svg/plus-rounded.svg")
-          background-repeat: no-repeat
-          background-size: 80%
-          background-origin: border-box
-          background-position: center
-          border: $theme.v-planer.form.item--addItem--border
-          border-radius: 10%
+      .main
+        @extends $e-box-colAligned
+        .instances-box
+          @extends $e-box-colAligned
 
-      fieldset
-        // WIP los 2 float causan exceso de padding vertical equivalentes a sus alturas, quiero mantenerlos dentro del fieldset pero q no afecten con su altura el contenido
-        width: 80%
+      .footer
+        width: 100%
         min-width: fit-content
-        padding: 0px 2px
-        border: $theme.v-planer.form.fieldset--border
-        border-radius: 5px
+        height: $ref.v-planer.footer.h
+        min-height: fit-content
+        margin-top: (@height * (3/2))
+          // posiblemente modificar el form padding con algo en funcion a las alturas padding: 0rem 0rem 5rem
         $m-colAlign()
-        justify-content: center
+        // justify-content: center
+        .actions
+          width: 100%
+          height: 300px
+          $m-rowAlign()
+          justify-content: space-around
+          background-color #fff
+            & > *
+              height: 100%
+              width: 13ch
+              border-radius: 5px
+            .calc
+              background-color violet
+            .reset
+              background-color orange
+
+      .totals
+        // WIP agregue 1ch al calculo como compensador de borders, padding, etc q no se acomodase con box-sizing o lo q sea pero esto esta mal hecho abria q mejorar el calculo inicial en .subResults y luego adaptar este, pero dejando a footer con 100%
+        width: calc(100% - (((24/20)*(1.5rem)*2) + 1ch))
+        height: 100%
+        $m-rowAlign()
+        justify-content: space-between
+        // margin-top: $ref.v-planer.subResults.h
+        & > *
+          height: 100%
+          width: 13ch
+          border-radius: 5px
+          // ? WIP Search for a vetter solution for vertical alignment (vertical-align didn' work)
+          // padding: 0.25rem 0rem 0rem
+          padding: 0rem 0rem 0.1rem 0rem
+          font-size: 1rem
+          text-align: center
+          color: $theme.v-planer.form.fg-c
+          border: none
+          outline: none
+        .totalSaldoPlusPagos
+          background-color: $theme.v-planer.totals.totalSaldoPlusPagos.bg-c
+        .totalRefund
+          background-color: $theme.v-planer.totals.totalRefund.bg-c
+        .totalSpent
+          background-color: $theme.v-planer.totals.totalSpent.bg-c
+
+      .instance
+        @extends $e-box-colAligned
+        fieldset
+          width: 80%
+          min-width: fit-content
+          padding: 0px 2px
+          border: $theme.v-planer.form.fieldset--border
+          border-radius: 5px
+          $m-colAlign()
+          justify-content: center
 
         legend
           align-self: flex-end
@@ -298,6 +298,81 @@
           right: $ref.v-planer.legend.xOffset
           background-color: $theme.v-planer.form.legend--bg-c
           border: $theme.v-planer.form.legend--border
+
+        .item
+          width: fit-content
+          height: 2.5rem
+          padding: 0px 2px
+          margin-bottom: 2px
+          border: $theme.v-planer.form.item--border
+          $m-rowAlign()
+          justify-content: center
+          column-gap: 1ch
+          border-radius: 5px
+
+        .item--part
+          height: 2rem
+          border: none
+          &:focus
+            outline: $theme.v-planer.form.item--outline
+          &:disabled
+            background-color: $colors.disabled
+          &.yDrag
+            // WIP check coolors.co Palette Generator drag, and Drag n Drop API https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
+            // WIP Img is not centered https://developer.mozilla.org/en-US/docs/Web/CSS/background
+            width: 1.5rem
+            height: (24/20)*(@width)rem
+            // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
+            background-color: $theme.v-planer.form.bg-c
+            background-image: url("/svg/scroll.svg")
+            background-repeat: no-repeat
+            background-size: cover
+            border: $theme.v-planer.form.item--yDrag--border
+          &.priority
+            width: 2.5rem
+            text-align: center
+          &.category
+            width: 24ch
+          &.description
+            width: 30ch
+          &.rawPrice
+            width: 13ch
+            text-align: center
+          &.discount
+            width: 8ch
+            text-align: center
+          &.finalPrice
+            width: 13ch
+            text-align: center
+            background-color: $theme.v-planer.form.item--bg-c
+            color: $theme.v-planer.form.item--fg-c
+            font-size: 0.875rem // WIP parece muy forzado
+            padding: 0.4rem 0px // WIP no encontre mejor forma de alinear, no logre hacer andar a vertical-align
+          &.delItem
+            width: 1.5rem
+            height: (24/20)*(@width)rem
+            // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
+            background-color: $theme.v-planer.form.item--delItem--bg-c
+            background-image: url("/svg/cross-rounded.svg")
+            background-repeat: no-repeat
+            background-size: 80%
+            background-origin: border-box
+            background-position: center
+            border: $theme.v-planer.form.item--delItem--border
+            border-radius: 10%
+          &.addItem
+            width: 1.5rem
+            // ! WIP use a mixin or a function for this; "buttons proportions"
+            height: (24/20)*(@width)rem
+            // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
+            background-color: $theme.v-planer.form.item--addItem--bg-c
+            background-image: url("/svg/plus-rounded.svg")
+            background-repeat: no-repeat
+            background-size: 80%
+            background-origin: border-box
+            background-position: center
+            border: $theme.v-planer.form.item--addItem--border
+            border-radius: 10%
 
         .subResults
           // WIP set into a $ref var, 24/20 es el ratio de los botones * 1.5rem su tamaño * 2 ya q hay uno de cada lado
@@ -331,64 +406,5 @@
             align-self: flex-end
             background-color: $theme.v-planer.form.subSpent--bg-c
             border: $theme.v-planer.form.subSpent--border
-
-      .footer
-        width: 100%
-        min-width: fit-content
-        height: $ref.v-planer.footer.h
-        min-height: fit-content
-        margin-top: (@height * (3/2))
-          // posiblemente modificar el form padding con algo en funcion a las alturas padding: 0rem 0rem 5rem
-        $m-colAlign()
-        // justify-content: center
-        .actions
-          width: 100%
-          height: 300px
-          $m-rowAlign()
-          justify-content: space-around
-          background-color #fff
-            & > *
-              height: 100%
-              width: 13ch
-              border-radius: 5px
-            .calc
-              background-color violet
-            .reset
-              background-color orange
-
-        .totals
-          // WIP agregue 1ch al calculo como compensador de borders, padding, etc q no se acomodase con box-sizing o lo q sea pero esto esta mal hecho abria q mejorar el calculo inicial en .subResults y luego adaptar este, pero dejando a footer con 100%
-          width: calc(100% - (((24/20)*(1.5rem)*2) + 1ch))
-          height: 100%
-          $m-rowAlign()
-          justify-content: space-between
-          // margin-top: $ref.v-planer.subResults.h
-          & > *
-            height: 100%
-            width: 13ch
-            border-radius: 5px
-            // ? WIP Search for a vetter solution for vertical alignment (vertical-align didn' work)
-            // padding: 0.25rem 0rem 0rem
-            padding: 0rem 0rem 0.1rem 0rem
-            font-size: 1rem
-            text-align: center
-            color: $theme.v-planer.form.fg-c
-            border: none
-            outline: none
-          .totalSaldoPlusPagos
-            background-color: $theme.v-planer.totals.totalSaldoPlusPagos.bg-c
-          .totalRefund
-            background-color: $theme.v-planer.totals.totalRefund.bg-c
-          .totalSpent
-            background-color: $theme.v-planer.totals.totalSpent.bg-c
-
-
-
-
-
-
-
-
-
 /* +v-planer */
 

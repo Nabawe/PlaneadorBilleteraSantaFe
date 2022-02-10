@@ -37,6 +37,9 @@
 + Download Fonts to repo and map them
 
 
++ [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
+
+
 ! Revisar Rubicas
 
 
