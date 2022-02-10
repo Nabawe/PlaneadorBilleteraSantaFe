@@ -19,6 +19,7 @@
 <body id="p-index">
   <main>
     <div id="v-planer">
+      <!-- ! WIP la separacion entre v-planer y form era por si habia algo más q no fuera el form pero no lo veo sucediendo, deberia conciderar borrar la div, darle el id a form de v-planer y cambiar el .styl -->
       <!-- WIP set action? -->
       <form id="v-planer--form" class="" action="">
         <div class="header">
@@ -26,9 +27,8 @@
           <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly>
           <input type="number" class="funds" name="funds" min="00" title="Fondos Iniciales" placeholder="Fondos Iniciales">
         </div>
-        <!-- WIP Si estoy usando un .footer y .header debería entonces definir un .main y a las 3 tratarlas como section de GPS CSS s- -->
         <div class="main">
-          <div class="instancesBox">
+          <div class="box-instances">
             <div id="instance-1" class="instance">
               <fieldset name="instance-1">
                 <!-- Otras posibles palabras serian Plazo, Desenbolzo, Previcion, Cuota -->
@@ -36,7 +36,7 @@
                 <!-- ? required Attribute -->
                 <div class="item">
                   <!-- Si falla usar slider y JS -->
-                  <button class="item--part yDrag"></button>
+                  <button class="item--part btn yDrag"></button>
                   <!-- set max min inputmode attributes -->
                   <input type="number" class="item--part priority" name="priority" min="00" max="99" value="00">
                   <select class="item--part category" name="category">
@@ -54,12 +54,12 @@
                   </select>
                   <!-- ? Agregar IDs con JS --> <!-- Set Attributes readonly="readonly" -->
                   <output class="item--part finalPrice" name="finalPrice"></output>
-                  <button class="item--part delItem"></button>
+                  <button class="item--part btn delItem"></button>
                 </div>
                 <!-- Duplicate w/ Grayed Disabled Style and Add New Line Button in place of priority input -->
                 <!-- disabled readonly -->
                 <div class="item nextLine">
-                  <button class="item--part addItem"></button>
+                  <button class="item--part btn addItem"></button>
                   <input type="number" class="item--part priority" value="00" disabled>
                   <select class="item--part category" disabled>
                     <option value="Categoria" selected>Categoría</option>
@@ -72,13 +72,13 @@
                   <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
                   <button class="item--part delItem" disabled></button>
                 </div>
-                <div class="subResults">
-                  <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
-                  <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="00000000" readonly>
-                  <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="00000000" readonly>
-                  <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="00000000" readonly>
-                </div>
               </fieldset>
+              <div class="subResults">
+                <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
+                <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="00000000" readonly>
+                <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="00000000" readonly>
+                <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="00000000" readonly>
+              </div>
             </div>
           </div>
         </div>

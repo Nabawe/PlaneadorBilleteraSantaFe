@@ -40,10 +40,13 @@
 + [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
 
 
+! [fix inconsistencies] Implement GPS CSS Sections or something similar
+
+
 ! Revisar Rubicas
 
 
-! Avisar q los bordes se ven mal en Chrome, yo use Firefox Dev
+! Crear classes para los distintos tipos de botones con las caracteristicas visuales comunes.
 
 
 ! Si se hace Zoom se puede ver q esta lleno de errores, nextLine no coincide el tamaño bien con el de item, los estilos en teoria los toma directamente de .item

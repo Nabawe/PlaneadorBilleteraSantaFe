@@ -11,9 +11,19 @@
 /* +Mixins */
 /* +Mixins */
 /* +Extends */
-#v-planer .main,
-#v-planer .main .instances-box,
-#v-planer .instance {
+#v-planer form .footer {
+  width: 100%;
+  height: 100%;
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
+}
+#v-planer form .main,
+#v-planer form .main .box-instances,
+#v-planer form .instance {
   width: 100%;
   height: 100%;
   min-width: -webkit-fit-content;
@@ -74,6 +84,9 @@ main {
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   margin-top: 5rem;
   padding: 0px 2px;
   background-color: #277abc;
@@ -85,24 +98,27 @@ main {
   border: 2px double #f6ecdc;
   border-radius: 5px;
 }
-#v-planer .header {
+#v-planer form .header {
   width: 100%;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
   height: 3rem;
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
   margin-bottom: calc( ( 1.625rem / 2 ) + ( 2px / 2 ) + 2px );
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
 }
-#v-planer .header > * {
-  height: 100%;
+#v-planer form .header > * {
   width: 30%;
+  height: 3rem;
   border-radius: 5px;
 }
-#v-planer .header .monthlyRefund {
+#v-planer form .header .monthlyRefund {
   font-size: 1rem;
   text-align: center;
   padding: 0rem 0rem 0.1rem 0rem;
@@ -111,56 +127,56 @@ main {
   border: none;
   outline: none;
 }
-#v-planer .header .funds {
+#v-planer form .header .funds {
   font-size: 1rem;
   text-align: center;
   padding: 0rem 0rem 0.1rem 0rem;
   border: none;
   outline: none;
 }
-#v-planer .footer {
-  width: 100%;
-  min-width: -webkit-fit-content;
-  min-width: -moz-fit-content;
-  min-width: fit-content;
-  height: 1.8rem;
-  min-height: -webkit-fit-content;
-  min-height: -moz-fit-content;
-  min-height: fit-content;
-  margin-top: 2.7rem;
+#v-planer form .footer {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
 }
-#v-planer .footer .actions {
+#v-planer form .actions {
   width: 100%;
-  height: 300px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 20px 0px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 13ch;
 }
-#v-planer .footer .actions background-color #fff > * {
-  height: 100%;
-  width: 13ch;
+#v-planer form .actions > * {
+  height: 2.5rem;
+  width: calc( 50% - ( 3.5ch + 19.5ch + 1ch ) );
   border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
 }
-#v-planer .footer .actions background-color #fff .calc {
-  background-color: #ee82ee;
+#v-planer form .actions .calc {
+  background-color: #96beff;
 }
-#v-planer .footer .actions background-color #fff .reset {
-  background-color: #ffa500;
+#v-planer form .actions .reset {
+  background-color: #e8784d;
 }
-#v-planer .totals {
-  width: calc(100% - (((24 / 20) * (1.5rem) * 2) + 1ch));
-  height: 100%;
+#v-planer form .totals {
+  width: calc( 100% - ( 3.5ch * 2 ) );
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
 }
-#v-planer .totals > * {
-  height: 100%;
+#v-planer form .totals > * {
+  height: 1.8rem;
   width: 13ch;
   border-radius: 5px;
   padding: 0rem 0rem 0.1rem 0rem;
@@ -170,16 +186,16 @@ main {
   border: none;
   outline: none;
 }
-#v-planer .totals .totalSaldoPlusPagos {
+#v-planer form .totals .totalSaldoPlusPagos {
   background-color: #009240;
 }
-#v-planer .totals .totalRefund {
+#v-planer form .totals .totalRefund {
   background-color: #26619c;
 }
-#v-planer .totals .totalSpent {
+#v-planer form .totals .totalSpent {
   background-color: #ed2939;
 }
-#v-planer .instance fieldset {
+#v-planer form .instance fieldset {
   width: 80%;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
@@ -192,7 +208,7 @@ main {
   align-items: center;
   justify-content: center;
 }
-#v-planer .instance legend {
+#v-planer form .instance legend {
   align-self: flex-end;
   float: right;
   position: relative;
@@ -201,7 +217,7 @@ main {
   background-color: #26619c;
   border: 2px solid #231f20;
 }
-#v-planer .instance .item {
+#v-planer form .instance .item {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -217,44 +233,38 @@ main {
        column-gap: 1ch;
   border-radius: 5px;
 }
-#v-planer .instance .item--part {
+#v-planer form .instance .item--part {
   height: 2rem;
   border: none;
 }
-#v-planer .instance .item--part:focus {
-  outline: 2px solid #f6ecdc;
-}
-#v-planer .instance .item--part:disabled {
-  background-color: #c4c0bd;
-}
-#v-planer .instance .item--part.yDrag {
-  width: 1.5rem;
-  height: 1.8rem;
+#v-planer form .instance .item--part.yDrag {
+  width: 3.5ch;
+  height: 4.2ch;
   background-color: #277abc;
   background-image: url("/svg/scroll.svg");
   background-repeat: no-repeat;
   background-size: cover;
   border: none;
 }
-#v-planer .instance .item--part.priority {
+#v-planer form .instance .item--part.priority {
   width: 2.5rem;
   text-align: center;
 }
-#v-planer .instance .item--part.category {
+#v-planer form .instance .item--part.category {
   width: 24ch;
 }
-#v-planer .instance .item--part.description {
+#v-planer form .instance .item--part.description {
   width: 30ch;
 }
-#v-planer .instance .item--part.rawPrice {
+#v-planer form .instance .item--part.rawPrice {
   width: 13ch;
   text-align: center;
 }
-#v-planer .instance .item--part.discount {
+#v-planer form .instance .item--part.discount {
   width: 8ch;
   text-align: center;
 }
-#v-planer .instance .item--part.finalPrice {
+#v-planer form .instance .item--part.finalPrice {
   width: 13ch;
   text-align: center;
   background-color: #fff;
@@ -262,9 +272,9 @@ main {
   font-size: 0.875rem;
   padding: 0.4rem 0px;
 }
-#v-planer .instance .item--part.delItem {
-  width: 1.5rem;
-  height: 1.8rem;
+#v-planer form .instance .item--part.delItem {
+  width: 3.5ch;
+  height: 4.2ch;
   background-color: #ed2939;
   background-image: url("/svg/cross-rounded.svg");
   background-repeat: no-repeat;
@@ -274,9 +284,9 @@ main {
   border: 1px solid #231f20;
   border-radius: 10%;
 }
-#v-planer .instance .item--part.addItem {
-  width: 1.5rem;
-  height: 1.8rem;
+#v-planer form .instance .item--part.addItem {
+  width: 3.5ch;
+  height: 4.2ch;
   background-color: #ffd744;
   background-image: url("/svg/plus-rounded.svg");
   background-repeat: no-repeat;
@@ -286,18 +296,24 @@ main {
   border: 1px solid #231f20;
   border-radius: 10%;
 }
-#v-planer .instance .subResults {
-  width: calc(100% - ((24 / 20) * (1.5rem) * 2));
-  height: 1.8rem;
-  position: relative;
-  top: calc(1.8rem + 2px);
+#v-planer form .instance .item--part:focus {
+  outline: 2px solid #f6ecdc;
+}
+#v-planer form .instance .item--part:disabled {
+  background-color: #c4c0bd;
+}
+#v-planer form .instance .subResults {
+  width: calc( 100% - ( 3.5ch * 2 ) );
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
 }
-#v-planer .instance .subResults > * {
-  height: 100%;
+#v-planer form .instance .subResults > * {
+  height: 1.8rem;
   width: 13ch;
   border-radius: 5px;
   padding: 0rem 0rem 0.1rem 0rem;
@@ -308,16 +324,16 @@ main {
   border: none;
   outline: none;
 }
-#v-planer .instance .subResults .subSaldoPlusPagos {
+#v-planer form .instance .subResults .subSaldoPlusPagos {
   align-self: flex-start;
   background-color: #009240;
   border: none;
 }
-#v-planer .instance .subResults .subRefund {
+#v-planer form .instance .subResults .subRefund {
   background-color: #26619c;
   border: none;
 }
-#v-planer .instance .subResults .subSpent {
+#v-planer form .instance .subResults .subSpent {
   align-self: flex-end;
   background-color: #ed2939;
   border: none;

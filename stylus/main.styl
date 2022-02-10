@@ -16,6 +16,7 @@
     tertiary:       #26619C     // Lapiz Lazuli
     quaternary:     #ED2939     // Imperial Red
     success:        #009240     // Spanish Green
+    fail:           #E8784D     // Mandarin
     disabled:       #C4C0BD,    // Pale Silver
     focus:          #F6ECDC,    // Antique White
     highlight:      #FFD744,    // Mustard
@@ -23,7 +24,7 @@
     text-dark:      #2C2C2B,    // Jet
     topic-flag:     #96BEFF,    // Baby Blue Eyes     Color Fundamental de la Bandera de Santa Fe
     border-light:   #F6ECDC,    // Antique White
-    border-dark:    #231F20    // Raisin Black
+    border-dark:    #231F20     // Raisin Black
   }
 
   // Referemces: Values used for alignment and positioning
@@ -35,7 +36,11 @@
       border-w: {
         def: 2px,
         btn: 1px
-      }
+      },
+      btn: {
+        w: 3.5ch,
+        h: (24/20) * (3.5ch) * 1rem
+      },
       legend: {
         w: 11ch, // Marcaba raro si ponia width, aun si no tiraba error
         h: 1.625rem,
@@ -43,9 +48,14 @@
         yOffset: 1rem
       },
       subResults: {
+        w: 13ch,
         h: 1.8rem
       },
-      footer: {
+      actions: {
+        h: 2.5rem
+      },
+      totals: {
+        w: 13ch,
         h: 1.8rem
       }
     }
@@ -72,6 +82,7 @@
           bg-c: $colors.success
         }
       }
+      // ! WIP es incorrecto usar form aqui, tendria q ser main sino abria q meter header footer dentro
       form: {
         // ! WIP Replace -- with a new level {}
         // WIP Mejorar conceptualizacion, cosas como border q agrupan varias propiedades son mejor, ya q reemplazar el CSS por variables no tiene sentido, afinar más q apunte a Skinning, Colores, Bordes, Degrades, etc
@@ -96,7 +107,15 @@
         item--delItem--border: $ref.v-planer.border-w.btn solid $colors.border-dark,
         item--addItem--bg-c: $colors.highlight,
         item--addItem--border: $ref.v-planer.border-w.btn solid $colors.border-dark,
-        item--yDrag--border: none
+        item--yDrag--border: none,
+      },
+      actions: {
+        calc: {
+          bg-c: $colors.topic-flag
+        },
+        reset: {
+          bg-c: $colors.fail
+        }
       },
       totals: {
         totalSaldoPlusPagos: {
@@ -111,7 +130,6 @@
       }
     }
   }
-  // $theme.fonts["mainStack"] = "Open Sans", Arial, Helvetica, sans-serif; // For whatever reason I neeed the ; make it work, solved it Escaping the commas
 /* +Vars */
 
 
@@ -160,7 +178,7 @@
 /* +Defaults */
   :root
     font-family: $theme.fonts.mainStack
-    height: 100% // ? Research : Esto esta muy bueno para evitar problemas usando vh, se coloca en :root y body
+    height: 100% // ? Research : Esto esta muy bueno para evitar problemas usando 100vh en una section main o similares, se coloca en :root y body
 
   body
     $m-colAlign()
@@ -185,6 +203,7 @@
     form
       width: 90%
       min-width: fit-content
+      height: fit-content
       margin-top: 5rem
       // padding: 2px 0px ($ref.v-planer.subResults.h / 2) // Fixed thru a margin in the footer
       padding: 0px 2px
@@ -195,24 +214,23 @@
       border: $theme.v-planer.form.border
       border-radius: 5px
 
-    // ! WIP filosofar sobre q tendria q ser el item en si, su container y si .item--part no tendria q existir y tendria q ser usado como .item .part
-      // las propiedades del Contenedor y Alineacion tienen q estar separadas del concepto q representa .item asi estas no son aplicadas a sus partes
       .header
         width: 100%
         min-width: fit-content // ? Si el form ya tiene esto definido así entonces no creo q sea necesario repetirla
         height: 3rem
+        min-height: fit-content
         // (legend.h / 2) + (legend.boder / 2) + padding
         margin-bottom: "calc( ( %s / 2 ) + ( %s / 2 ) + %s )" % ($ref.v-planer.legend.h $ref.v-planer.border-w.def $ref.v-planer.padding.def)
         $m-rowAlign()
         justify-content: space-around
         & > *
-          height: 100%
           width: 30%
+          height: 3rem // ? No se pork no me deja usar 100% y q use el alto del .header
           border-radius: 5px
         .monthlyRefund
           font-size: 1rem
           text-align: center
-          padding: 0rem 0rem 0.1rem 0rem // ? WIP Search for a vetter solution for vertical alignment (vertical-align didn' work)
+          padding: 0rem 0rem 0.1rem 0rem // ? WIP Search for a better solution for vertical alignment (vertical-align didn' work)
           background-color: $theme.v-planer.header.monthlyRefund.bg-c
           color: $theme.v-planer.form.fg-c
           border: none
@@ -220,51 +238,52 @@
         .funds
           font-size: 1rem
           text-align: center
-          padding: 0rem 0rem 0.1rem 0rem // ? WIP Search for a vetter solution for vertical alignment (vertical-align didn' work)
+          padding: 0rem 0rem 0.1rem 0rem // ? WIP Search for a better solution for vertical alignment (vertical-align didn' work)
           border: none
           outline: none
 
       .main
         @extends $e-box-colAligned
-        .instances-box
+        .box-instances
           @extends $e-box-colAligned
 
       .footer
-        width: 100%
-        min-width: fit-content
-        height: $ref.v-planer.footer.h
-        min-height: fit-content
-        margin-top: (@height * (3/2))
-          // posiblemente modificar el form padding con algo en funcion a las alturas padding: 0rem 0rem 5rem
+        @extends $e-box
         $m-colAlign()
-        // justify-content: center
-        .actions
-          width: 100%
-          height: 300px
-          $m-rowAlign()
-          justify-content: space-around
-          background-color #fff
-            & > *
-              height: 100%
-              width: 13ch
-              border-radius: 5px
-            .calc
-              background-color violet
-            .reset
-              background-color orange
+
+      .actions
+        width: 100%
+        height: fit-content
+        padding: 20px 0px
+        $m-rowAlign()
+        justify-content: center
+        gap: $ref.v-planer.subResults.w
+        // background-color #fff
+        & > *
+          height: $ref.v-planer.actions.h
+          // Calculo para meter los 2 botones alineados a los subResults, el 1ch es un extra para compensar paddings, borders o cosas extra q no vea, el 3/2 es porq es la mitad del subResults q esta en el medio + el subResults del costado correspondiente
+          width: "calc( 50% - ( %s + %s + 1ch ) )" % ( $ref.v-planer.btn.w ( $ref.v-planer.subResults.w * (3/2) ) )
+          border-radius: 5px
+          font-size: 1rem
+          text-align: center
+          color: $theme.v-planer.form.fg-c
+        // WIP Chrome renderiza los botones distintos y si cambio el border anula los comportamientos graficos del boton
+        .calc
+          background-color $theme.v-planer.actions.calc.bg-c
+        .reset
+          background-color $theme.v-planer.actions.reset.bg-c
 
       .totals
-        // WIP agregue 1ch al calculo como compensador de borders, padding, etc q no se acomodase con box-sizing o lo q sea pero esto esta mal hecho abria q mejorar el calculo inicial en .subResults y luego adaptar este, pero dejando a footer con 100%
-        width: calc(100% - (((24/20)*(1.5rem)*2) + 1ch))
-        height: 100%
+        // Calculo para alinearlo con los subResults
+        width: "calc( 100% - ( %s * 2 ) )" % ( $ref.v-planer.btn.w )
+        height: fit-content
         $m-rowAlign()
         justify-content: space-between
-        // margin-top: $ref.v-planer.subResults.h
         & > *
-          height: 100%
-          width: 13ch
+          height: $ref.v-planer.totals.h
+          width: $ref.v-planer.totals.w
           border-radius: 5px
-          // ? WIP Search for a vetter solution for vertical alignment (vertical-align didn' work)
+          // ? WIP Search for a better solution for vertical alignment (vertical-align didn' work)
           // padding: 0.25rem 0rem 0rem
           padding: 0rem 0rem 0.1rem 0rem
           font-size: 1rem
@@ -299,6 +318,8 @@
           background-color: $theme.v-planer.form.legend--bg-c
           border: $theme.v-planer.form.legend--border
 
+        // ! WIP filosofar sobre q tendria q ser el item en si, su container y si .item--part no tendria q existir y tendria q ser usado como .item .part
+          // las propiedades del Contenedor y Alineacion tienen q estar separadas del concepto q representa .item asi estas no son aplicadas a sus partes
         .item
           width: fit-content
           height: 2.5rem
@@ -313,15 +334,11 @@
         .item--part
           height: 2rem
           border: none
-          &:focus
-            outline: $theme.v-planer.form.item--outline
-          &:disabled
-            background-color: $colors.disabled
           &.yDrag
             // WIP check coolors.co Palette Generator drag, and Drag n Drop API https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
             // WIP Img is not centered https://developer.mozilla.org/en-US/docs/Web/CSS/background
-            width: 1.5rem
-            height: (24/20)*(@width)rem
+            width: $ref.v-planer.btn.w
+            height: $ref.v-planer.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
             background-color: $theme.v-planer.form.bg-c
             background-image: url("/svg/scroll.svg")
@@ -349,8 +366,8 @@
             font-size: 0.875rem // WIP parece muy forzado
             padding: 0.4rem 0px // WIP no encontre mejor forma de alinear, no logre hacer andar a vertical-align
           &.delItem
-            width: 1.5rem
-            height: (24/20)*(@width)rem
+            width: $ref.v-planer.btn.w
+            height: $ref.v-planer.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
             background-color: $theme.v-planer.form.item--delItem--bg-c
             background-image: url("/svg/cross-rounded.svg")
@@ -361,9 +378,8 @@
             border: $theme.v-planer.form.item--delItem--border
             border-radius: 10%
           &.addItem
-            width: 1.5rem
-            // ! WIP use a mixin or a function for this; "buttons proportions"
-            height: (24/20)*(@width)rem
+            width: $ref.v-planer.btn.w
+            height: $ref.v-planer.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
             background-color: $theme.v-planer.form.item--addItem--bg-c
             background-image: url("/svg/plus-rounded.svg")
@@ -373,21 +389,21 @@
             background-position: center
             border: $theme.v-planer.form.item--addItem--border
             border-radius: 10%
+          &:focus
+            outline: $theme.v-planer.form.item--outline
+          &:disabled
+            background-color: $colors.disabled
 
         .subResults
-          // WIP set into a $ref var, 24/20 es el ratio de los botones * 1.5rem su tamaño * 2 ya q hay uno de cada lado
           // WIP there must be a better Stylus way for calcs w/ different units
-          width: calc(100% - ((24/20)*(1.5rem)*2))
-          height: $ref.v-planer.subResults.h
-          position: relative
-          top: "calc(%s + %s)" % (@height $ref.v-planer.border-w.def) // stylus-lang Sprintf
+          width: "calc( 100% - ( %s * 2 ) )" % ( $ref.v-planer.btn.w )
+          height: fit-content
           $m-rowAlign()
           justify-content: space-between
           & > *
-            height: 100%
-            width: 13ch
+            height: $ref.v-planer.subResults.h
+            width: $ref.v-planer.subResults.w
             border-radius: 5px
-            // padding: 0.25rem 0rem 0rem
             padding: 0rem 0rem 0.1rem 0rem
             font-size: 1rem
             text-align: center
