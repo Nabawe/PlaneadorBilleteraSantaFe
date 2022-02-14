@@ -4,13 +4,33 @@
 			"path": "stylus/main.styl",
 			"bookmarks": [
 				{
-					"line": 118,
-					"column": 22,
+					"line": 50,
+					"column": 30,
 					"label": ""
 				},
 				{
-					"line": 280,
-					"column": 20,
+					"line": 217,
+					"column": 38,
+					"label": ""
+				},
+				{
+					"line": 257,
+					"column": 18,
+					"label": ""
+				},
+				{
+					"line": 324,
+					"column": 16,
+					"label": ""
+				},
+				{
+					"line": 328,
+					"column": 55,
+					"label": ""
+				},
+				{
+					"line": 375,
+					"column": 25,
 					"label": ""
 				}
 			]

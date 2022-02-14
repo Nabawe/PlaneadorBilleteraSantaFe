@@ -42,12 +42,13 @@
         h: (24/20) * (3.5ch) * 1rem
       },
       legend: {
-        w: 11ch,
+        // w: 14ch,
         h: 1.625rem,
         // WIP Originalmente -3.3ch para q calze en el medio del guion pero lo tube q modificar por el ancho del boton y agregar un modificador de los bordes, padding, etc externos a .legend--align, es mejor definirlo de alguna forma funcional y q concidere cual de las 2 medidas es mayor hasta un limite (el guion) y de excederse q desborde para marcar error de diceño al poner un botom muy ancho
         // WIP ademas de usar un border-radius en el boton se genera una seccion tipo una hiperbole de espacio q deja ver el fondo
         // xOffset: -( 3.5ch - 0.048ch ), // Este era el numero al q llegue haciendo zoom
-        xOffset: -( 3.5ch - 0.115ch ), // Este el q se veia mejor normal
+        // xOffset: -( 3.5ch - 0.115ch ), // Este el q se veia mejor normal
+        xOffset: -( 3.013ch ),
         yOffset: -1rem
       },
       subResults: {
@@ -211,6 +212,7 @@
       width: 90%
       min-width: fit-content
       height: fit-content
+      // min-height: fit-content
       margin-top: 5rem
       // padding: 2px 0px ($ref.v-planer.subResults.h / 2) // Fixed thru a margin in the footer
       padding: 0px 2px
@@ -253,6 +255,7 @@
         @extends $e-box-colAligned
         .box-instances
           @extends $e-box-colAligned
+          padding: 0px $ref.v-planer.btn.w
 
       .footer
         @extends $e-box
@@ -341,7 +344,9 @@
           z-index: 1
           $m-colAlign(nowrap)
           legend
-            // font-size: 1rem
+            // width: $ref.v-planer.legend.w
+            height: $ref.v-planer.legend.h
+            font-size: 1rem
             background-color: $theme.v-planer.form.legend--bg-c
             border: $theme.v-planer.form.legend--border
           .delInstance

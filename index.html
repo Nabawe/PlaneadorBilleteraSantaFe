@@ -41,12 +41,12 @@
                 <div class="item">
                   <!-- Si falla usar slider y JS -->
                   <button class="item--part btn yDrag"></button>
-                  <!-- set max min inputmode attributes -->
-                  <input type="number" class="item--part priority" name="priority" min="00" max="99" value="00">
                   <select class="item--part category" name="category">
                     <option value="normal">Populate by Code</option>
                     <option value="normal">12345678901234567890</option>
                   </select>
+                  <!-- set max min inputmode attributes -->
+                  <input type="number" class="item--part priority" name="priority" min="00" max="99" value="00">
                   <!-- set maxlength spellcheck autofocus Attributes -->
                   <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
                   <input type="text" class="item--part description" name="description">
@@ -64,10 +64,10 @@
                 <!-- disabled readonly -->
                 <div class="item nextLine">
                   <button class="item--part btn addItem"></button>
-                  <input type="number" class="item--part priority" value="00" disabled>
                   <select class="item--part category" disabled>
                     <option value="Categoria" selected>Categoría</option>
                   </select>
+                  <input type="number" class="item--part priority" value="00" disabled>
                   <input type="text" class="item--part description"value="Descripción" disabled>
                   <input type="text" class="item--part rawPrice" value="$" disabled>
                   <select class="item--part discount" disabled>
@@ -103,5 +103,9 @@
     <div id="v-catsEditor">
     </div>
   </main>
+
+  <!-- +Scripts -->
+    <script type="text/javascript" src="js/main.js"></script>
+  <!-- +Scripts -->
 </body>
 </html>

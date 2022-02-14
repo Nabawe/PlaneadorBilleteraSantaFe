@@ -62,7 +62,7 @@ main {
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
-  padding: 0px 3.385ch;
+  padding: 0px 3.013ch;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -133,6 +133,9 @@ main {
   padding: 0rem 0rem 0.1rem 0rem;
   border: none;
   outline: none;
+}
+#v-planer form .main .box-instances {
+  padding: 0px 3.5ch;
 }
 #v-planer form .footer {
   display: flex;
@@ -228,13 +231,15 @@ main {
   align-self: flex-end;
   position: absolute;
   top: -1rem;
-  right: -3.385ch;
+  right: -3.013ch;
   z-index: 1;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
 }
 #v-planer form .instance .legend--align legend {
+  height: 1.625rem;
+  font-size: 1rem;
   background-color: #26619c;
   border: 2px solid #231f20;
 }
