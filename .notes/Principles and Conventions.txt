@@ -1,9 +1,13 @@
 + CODEX
++ JavaScript
 + Una f no tiene q funcionar si le falta algo fundamental ( ? Critico )
 + GPS CSS
 
 
 + CODEX
+
+
++ JavaScript
     g_globalVar
     g_in_var
         global input var

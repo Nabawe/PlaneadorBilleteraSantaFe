@@ -44,7 +44,7 @@
 + [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
 
 
-!  [APIs] Ads, Drag and Drop, Dates, Export | Import to Google Sheets or Excell
+!  [APIs] Ads, Drag and Drop, Dates, Export | Import to Google Sheets or Excell, validacion de inputs, datos
 
 
 ! [feauture] Fecha Estimada del Reintegro, posiblemente inputtext serca de la legend para ingresar la fecha de la instancia y luego solapa en los subResultados con la fecha estimada.
