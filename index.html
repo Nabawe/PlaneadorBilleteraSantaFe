@@ -18,12 +18,13 @@
 
 <body id="p-index">
   <main>
-    <div id="v-planer">
-      <!-- ! WIP la separacion entre v-planer y form era por si habia algo más q no fuera el form pero no lo veo sucediendo, deberia conciderar borrar la div, darle el id a form de v-planer y cambiar el .styl -->
+    <div id="v-planner">
+      <!-- ! WIP la separacion entre v-planner y form era por si habia algo más q no fuera el form pero no lo veo sucediendo, deberia conciderar borrar la div, darle el id a form de v-planner y cambiar el .styl y cuando coloque el catEditor ponerlo afuera -->
       <!-- WIP set action? -->
-      <form id="v-planer--form" class="" action="">
+      <!-- class="" action="" -->
+      <!-- onsubmit="return false;" failsafe en caso de q algo causara un submit -->
+      <form id="v-planner--form" onsubmit="return false;">
         <div class="header">
-          <!-- WIP Check if value can extrated with DOM from a label -->
           <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly>
           <input type="number" class="funds" name="funds" min="00" title="Fondos Iniciales" placeholder="Fondos Iniciales">
         </div>
@@ -35,18 +36,17 @@
                 <div class="legend--align">
                   <legend>Movimiento - <span class="instance--num">01</span>
                   </legend>
-                  <button class="delInstance"></button>
+                  <button class="delInstance" type="button"></button>
                 </div>
                 <!-- ? required Attribute -->
                 <div class="item">
                   <!-- Si falla usar slider y JS -->
-                  <button class="item--part btn yDrag"></button>
+                  <button class="item--part btn yDrag" type="button"></button>
+                  <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
                   <select class="item--part category" name="category">
                     <option value="normal">Populate by Code</option>
                     <option value="normal">12345678901234567890</option>
                   </select>
-                  <!-- set max min inputmode attributes -->
-                  <input type="number" class="item--part priority" name="priority" min="00" max="99" value="00">
                   <!-- set maxlength spellcheck autofocus Attributes -->
                   <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
                   <input type="text" class="item--part description" name="description">
@@ -56,18 +56,16 @@
                     <option value="30" selected>30%</option>
                     <!-- <option value="30">Populate by Code</option> -->
                   </select>
-                  <!-- ? Agregar IDs con JS --> <!-- Set Attributes readonly="readonly" -->
+                  <!-- Set Attributes readonly="readonly" -->
                   <output class="item--part finalPrice" name="finalPrice"></output>
-                  <button class="item--part btn delItem"></button>
+                  <button class="item--part btn delItem" type="button"></button>
                 </div>
-                <!-- Duplicate w/ Grayed Disabled Style and Add New Line Button in place of priority input -->
-                <!-- disabled readonly -->
                 <div class="item nextLine">
-                  <button class="item--part btn addItem"></button>
+                  <button class="item--part btn addItem" type="button"></button>
+                  <input type="number" class="item--part order" value="00" disabled>
                   <select class="item--part category" disabled>
                     <option value="Categoria" selected>Categoría</option>
                   </select>
-                  <input type="number" class="item--part priority" value="00" disabled>
                   <input type="text" class="item--part description"value="Descripción" disabled>
                   <input type="text" class="item--part rawPrice" value="$" disabled>
                   <select class="item--part discount" disabled>
@@ -88,9 +86,9 @@
         </div>
         <div class="footer">
           <div class="actions">
-            <button class="calc">Calcular</button>
-            <button class="addInstance"></button>
-            <button class="reset">Reiniciar</button>
+            <button class="calc" type="button">Calcular</button>
+            <button class="addInstance" type="button"></button>
+            <button class="reset" type="reset">Reiniciar</button>
           </div>
           <div class="totals">
             <input type="text"  class="totalSaldoPlusPagos" name="totalSaldoPlusPagos" title="Saldo Plus Pagos" value="00000000" readonly>
@@ -105,8 +103,14 @@
   </main>
 
   <!-- +Scripts -->
+    <script type="text/javascript" src="js/aliaces.js"></script>
+    <script type="text/javascript" src="data/messages.js"></script>
+    <script type="text/javascript" src="data/categories.js"></script>
+    <script type="text/javascript" src="js/objects/v-planner.js"></script>
+    <script type="text/javascript" src="js/model.js"></script>
+    <script type="text/javascript" src="js/view.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/cheatsheet.js"></script>
+    <!-- <script type="text/javascript" src="js/cheatsheet.js"></script> -->
   <!-- +Scripts -->
 </body>
 </html>

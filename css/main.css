@@ -11,7 +11,7 @@
 /* +Mixins */
 /* +Mixins */
 /* +Extends */
-#v-planer form .footer {
+#v-planner form .footer {
   width: 100%;
   height: 100%;
   min-width: -webkit-fit-content;
@@ -21,9 +21,9 @@
   min-height: -moz-fit-content;
   min-height: fit-content;
 }
-#v-planer form .main,
-#v-planer form .main .box-instances,
-#v-planer form .instance {
+#v-planner form .main,
+#v-planner form .main .box-instances,
+#v-planner form .instance {
   width: 100%;
   height: 100%;
   min-width: -webkit-fit-content;
@@ -69,8 +69,8 @@ main {
   background-color: #96beff;
 }
 /* +Defaults */
-/* +v-planer */
-#v-planer {
+/* +v-planner */
+#v-planner {
   width: 90%;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
@@ -79,7 +79,7 @@ main {
   flex-flow: column nowrap;
   align-items: center;
 }
-#v-planer form {
+#v-planner form {
   width: 90%;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
@@ -98,7 +98,7 @@ main {
   border: 2px double #f6ecdc;
   border-radius: 5px;
 }
-#v-planer form .header {
+#v-planner form .header {
   width: 100%;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
@@ -113,12 +113,12 @@ main {
   align-items: center;
   justify-content: space-around;
 }
-#v-planer form .header > * {
+#v-planner form .header > * {
   width: 30%;
   height: 3rem;
   border-radius: 5px;
 }
-#v-planer form .header .monthlyRefund {
+#v-planner form .header .monthlyRefund {
   font-size: 1rem;
   text-align: center;
   padding: 0rem 0rem 0.1rem 0rem;
@@ -127,22 +127,22 @@ main {
   border: none;
   outline: none;
 }
-#v-planer form .header .funds {
+#v-planner form .header .funds {
   font-size: 1rem;
   text-align: center;
   padding: 0rem 0rem 0.1rem 0rem;
   border: none;
   outline: none;
 }
-#v-planer form .main .box-instances {
+#v-planner form .main .box-instances {
   padding: 0px 3.5ch;
 }
-#v-planer form .footer {
+#v-planner form .footer {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
 }
-#v-planer form .actions {
+#v-planner form .actions {
   width: 100%;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -154,7 +154,7 @@ main {
   justify-content: center;
   gap: 4.75ch;
 }
-#v-planer form .actions > * {
+#v-planner form .actions > * {
   height: 2.5rem;
   width: calc( 50% - ( 2.375ch + 17.75ch + 3.5ch ) );
   border-radius: 5px;
@@ -162,10 +162,10 @@ main {
   text-align: center;
   color: #fff;
 }
-#v-planer form .actions .calc {
+#v-planner form .actions .calc {
   background-color: #96beff;
 }
-#v-planer form .actions .addInstance {
+#v-planner form .actions .addInstance {
   width: 3.5ch;
   height: 4.2ch;
   background-color: #26619c;
@@ -177,10 +177,10 @@ main {
   border-radius: 10%;
   border: 1px solid #f6ecdc;
 }
-#v-planer form .actions .reset {
+#v-planner form .actions .reset {
   background-color: #e8784d;
 }
-#v-planer form .totals {
+#v-planner form .totals {
   width: calc( 100% - ( 3.5ch * 2 ) );
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -190,7 +190,7 @@ main {
   align-items: center;
   justify-content: space-between;
 }
-#v-planer form .totals > * {
+#v-planner form .totals > * {
   height: 1.8rem;
   width: 13ch;
   border-radius: 5px;
@@ -201,16 +201,16 @@ main {
   border: none;
   outline: none;
 }
-#v-planer form .totals .totalSaldoPlusPagos {
+#v-planner form .totals .totalSaldoPlusPagos {
   background-color: #009240;
 }
-#v-planer form .totals .totalRefund {
+#v-planner form .totals .totalRefund {
   background-color: #26619c;
 }
-#v-planer form .totals .totalSpent {
+#v-planner form .totals .totalSpent {
   background-color: #ed2939;
 }
-#v-planer form .instance fieldset {
+#v-planner form .instance fieldset {
   width: 80%;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -227,7 +227,7 @@ main {
   justify-content: center;
   position: relative;
 }
-#v-planer form .instance .legend--align {
+#v-planner form .instance .legend--align {
   align-self: flex-end;
   position: absolute;
   top: -1rem;
@@ -237,13 +237,13 @@ main {
   flex-flow: column nowrap;
   align-items: center;
 }
-#v-planer form .instance .legend--align legend {
+#v-planner form .instance .legend--align legend {
   height: 1.625rem;
   font-size: 1rem;
   background-color: #26619c;
   border: 2px solid #231f20;
 }
-#v-planer form .instance .legend--align .delInstance {
+#v-planner form .instance .legend--align .delInstance {
   width: 3.5ch;
   height: 4.2ch;
   background-color: #ed2939;
@@ -256,7 +256,7 @@ main {
   align-self: flex-end;
   z-index: 2;
 }
-#v-planer form .instance .item {
+#v-planner form .instance .item {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -272,11 +272,11 @@ main {
        column-gap: 1ch;
   border-radius: 5px;
 }
-#v-planer form .instance .item--part {
+#v-planner form .instance .item--part {
   height: 2rem;
   border: none;
 }
-#v-planer form .instance .item--part.yDrag {
+#v-planner form .instance .item--part.yDrag {
   width: 3.5ch;
   height: 4.2ch;
   background-color: #277abc;
@@ -285,25 +285,25 @@ main {
   background-size: cover;
   border: none;
 }
-#v-planer form .instance .item--part.priority {
+#v-planner form .instance .item--part.order {
   width: 2.5rem;
   text-align: center;
 }
-#v-planer form .instance .item--part.category {
+#v-planner form .instance .item--part.category {
   width: 24ch;
 }
-#v-planer form .instance .item--part.description {
+#v-planner form .instance .item--part.description {
   width: 30ch;
 }
-#v-planer form .instance .item--part.rawPrice {
+#v-planner form .instance .item--part.rawPrice {
   width: 13ch;
   text-align: center;
 }
-#v-planer form .instance .item--part.discount {
+#v-planner form .instance .item--part.discount {
   width: 8ch;
   text-align: center;
 }
-#v-planer form .instance .item--part.finalPrice {
+#v-planner form .instance .item--part.finalPrice {
   width: 13ch;
   text-align: center;
   background-color: #fff;
@@ -311,7 +311,7 @@ main {
   font-size: 0.875rem;
   padding: 0.4rem 0px;
 }
-#v-planer form .instance .item--part.delItem {
+#v-planner form .instance .item--part.delItem {
   width: 3.5ch;
   height: 4.2ch;
   background-color: #ed2939;
@@ -323,7 +323,7 @@ main {
   border-radius: 10%;
   border: 1px solid #231f20;
 }
-#v-planer form .instance .item--part.addItem {
+#v-planner form .instance .item--part.addItem {
   width: 3.5ch;
   height: 4.2ch;
   background-color: #ffd744;
@@ -335,13 +335,13 @@ main {
   border-radius: 10%;
   border: 1px solid #231f20;
 }
-#v-planer form .instance .item--part:focus {
+#v-planner form .instance .item--part:focus {
   outline: 2px solid #f6ecdc;
 }
-#v-planer form .instance .item--part:disabled {
+#v-planner form .instance .item--part:disabled {
   background-color: #c4c0bd;
 }
-#v-planer form .instance .subResults {
+#v-planner form .instance .subResults {
   width: calc( 100% - ( 3.5ch * 2 ) );
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -351,7 +351,7 @@ main {
   align-items: center;
   justify-content: space-between;
 }
-#v-planer form .instance .subResults > * {
+#v-planner form .instance .subResults > * {
   height: 1.8rem;
   width: 13ch;
   border-radius: 5px;
@@ -363,18 +363,18 @@ main {
   border: none;
   outline: none;
 }
-#v-planer form .instance .subResults .subSaldoPlusPagos {
+#v-planner form .instance .subResults .subSaldoPlusPagos {
   align-self: flex-start;
   background-color: #009240;
   border: none;
 }
-#v-planer form .instance .subResults .subRefund {
+#v-planner form .instance .subResults .subRefund {
   background-color: #26619c;
   border: none;
 }
-#v-planer form .instance .subResults .subSpent {
+#v-planner form .instance .subResults .subSpent {
   align-self: flex-end;
   background-color: #ed2939;
   border: none;
 }
-/* +v-planer */
+/* +v-planner */

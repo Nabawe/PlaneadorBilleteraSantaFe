@@ -15,6 +15,7 @@
     .m_method
     o_Object
     c_Class
+    e_HTMLElement
 +
 
 

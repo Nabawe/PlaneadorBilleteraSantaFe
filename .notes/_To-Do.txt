@@ -17,6 +17,9 @@
 + [feature] Hacer q todos los mensajes esten en un diccionario (map, hash).
 
 
++ [feature] sacar item--part order, moverlo a la derecha de las categorias y q sea un valor de prioridad o sino simplemente sacar el elemento y q se maneje por un array y la categoria elegida.
+
+
 + [feature] Change select form input into datalist so that user can add tags on the fly, by default they will get the lowest priority (highest value).
 
 
@@ -42,6 +45,9 @@
 
 
 + [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
+
+
+! set <script> s to the header, use defer or others
 
 
 !  [APIs] Ads, Drag and Drop, Dates, Export | Import to Google Sheets or Excell, validacion de inputs, datos

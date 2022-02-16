@@ -29,7 +29,7 @@
 
   // Referemces: Values used for alignment and positioning
   $ref = {
-    v-planer: {
+    v-planner: {
       padding: {
         def: 2px
       },
@@ -69,7 +69,7 @@
     // Note that while you can’t use variables or interpolations in curly braces defines, you can use variables inside brackets
       // May be this is only for the keys?
       // $theme = {}
-      // $theme["v-planer"]["form"]["bg"] = #0E70A7
+      // $theme["v-planner"]["form"]["bg"] = #0E70A7
         // I think I need to set a new {} for each level
   // $fontStack = mainStack: "Open Sans", Arial, Helvetica, sans-serif
   $theme = {
@@ -80,7 +80,7 @@
     main: {
       bg-c: $colors.topic-flag
     },
-    v-planer: {
+    v-planner: {
       header: {
         monthlyRefund: {
           bg-c: $colors.success
@@ -93,24 +93,24 @@
         // WIP agregar más propiedades a $theme
         bg-c: $colors.accent, // WIP Si es un accent no es un Background Color!!!
         fg-c: $colors.text-light,
-        border: $ref.v-planer.border-w.def double $colors.border-light, // ! WIP estar alerta lo marca raro a la palabra border
-        fieldset--border: $ref.v-planer.border-w.def double $colors.border-light,
+        border: $ref.v-planner.border-w.def double $colors.border-light, // ! WIP estar alerta lo marca raro a la palabra border
+        fieldset--border: $ref.v-planner.border-w.def double $colors.border-light,
         legend--bg-c: $colors.tertiary,
-        legend--border: $ref.v-planer.border-w.def solid $colors.border-dark,
+        legend--border: $ref.v-planner.border-w.def solid $colors.border-dark,
         subSaldoPlusPagos--bg-c: $colors.success,
         subSaldoPlusPagos--border: none,
         subRefund--bg-c: $colors.tertiary,
         subRefund--border: none,
         subSpent--bg-c: $colors.quaternary,
         subSpent--border: none,
-        item--border: $ref.v-planer.border-w.def solid $colors.topic-flag,
-        item--outline: $ref.v-planer.border-w.def solid $colors.focus,
+        item--border: $ref.v-planner.border-w.def solid $colors.topic-flag,
+        item--outline: $ref.v-planner.border-w.def solid $colors.focus,
         item--bg-c: $colors.primary,
         item--fg-c: $colors.text-dark,
         item--delItem--bg-c: $colors.quaternary,
-        item--delItem--border: $ref.v-planer.border-w.btn solid $colors.border-dark,
+        item--delItem--border: $ref.v-planner.border-w.btn solid $colors.border-dark,
         item--addItem--bg-c: $colors.highlight,
-        item--addItem--border: $ref.v-planer.border-w.btn solid $colors.border-dark,
+        item--addItem--border: $ref.v-planner.border-w.btn solid $colors.border-dark,
         item--yDrag--border: none,
       },
       actions: {
@@ -119,7 +119,7 @@
         },
         addInstance: {
           bg-c: $colors.tertiary,
-          border: $ref.v-planer.border-w.btn solid $colors.border-light
+          border: $ref.v-planner.border-w.btn solid $colors.border-light
         },
         reset: {
           bg-c: $colors.fail
@@ -196,14 +196,14 @@
     width: 50%
     height: 100%
     min-width: fit-content
-    padding: 0px abs($ref.v-planer.legend.xOffset)
+    padding: 0px abs($ref.v-planner.legend.xOffset)
     $m-colAlign()
     background-color: $theme.main.bg-c
 /* +Defaults */
 
 
-/* +v-planer */
-  #v-planer
+/* +v-planner */
+  #v-planner
     width: 90%
     min-width: fit-content
     $m-colAlign()
@@ -214,13 +214,13 @@
       height: fit-content
       // min-height: fit-content
       margin-top: 5rem
-      // padding: 2px 0px ($ref.v-planer.subResults.h / 2) // Fixed thru a margin in the footer
+      // padding: 2px 0px ($ref.v-planner.subResults.h / 2) // Fixed thru a margin in the footer
       padding: 0px 2px
-      background-color: $theme.v-planer.form.bg-c
-      color: $theme.v-planer.form.fg-c
+      background-color: $theme.v-planner.form.bg-c
+      color: $theme.v-planner.form.fg-c
       $m-colAlign()
       justify-content: center
-      border: $theme.v-planer.form.border
+      border: $theme.v-planner.form.border
       border-radius: 5px
 
       .header
@@ -229,7 +229,7 @@
         height: 3rem
         min-height: fit-content
         // (legend.h / 2) + (legend.boder / 2) + padding
-        margin-bottom: "calc( ( %s / 2 ) + ( %s / 2 ) + %s )" % ($ref.v-planer.legend.h $ref.v-planer.border-w.def $ref.v-planer.padding.def)
+        margin-bottom: "calc( ( %s / 2 ) + ( %s / 2 ) + %s )" % ($ref.v-planner.legend.h $ref.v-planner.border-w.def $ref.v-planner.padding.def)
         $m-rowAlign()
         justify-content: space-around
         & > *
@@ -240,8 +240,8 @@
           font-size: 1rem
           text-align: center
           padding: 0rem 0rem 0.1rem 0rem // ? WIP Search for a better solution for vertical alignment (vertical-align didn' work)
-          background-color: $theme.v-planer.header.monthlyRefund.bg-c
-          color: $theme.v-planer.form.fg-c
+          background-color: $theme.v-planner.header.monthlyRefund.bg-c
+          color: $theme.v-planner.form.fg-c
           border: none
           outline: none
         .funds
@@ -255,7 +255,7 @@
         @extends $e-box-colAligned
         .box-instances
           @extends $e-box-colAligned
-          padding: 0px $ref.v-planer.btn.w
+          padding: 0px $ref.v-planner.btn.w
 
       .footer
         @extends $e-box
@@ -267,58 +267,58 @@
         padding: 20px 0px
         $m-rowAlign()
         justify-content: center
-        gap: ( abs( $ref.v-planer.subResults.w - $ref.v-planer.btn.w ) / 2 )
+        gap: ( abs( $ref.v-planner.subResults.w - $ref.v-planner.btn.w ) / 2 )
         & > *
-          height: $ref.v-planer.actions.h
+          height: $ref.v-planner.actions.h
           // Calculo viejo mantengo el texto ya q por ahi vuelva a dejarlo con solo 2 botones
           // Calculo para meter los 2 botones alineados a los subResults, el 1ch es un extra para compensar paddings, borders o cosas extra q no vea, el 3/2 es porq es la mitad del subResults q esta en el medio + el subResults del costado correspondiente. Luego esta el ancho del boton q esta a cada lado
-          // width: "calc( 50% - ( %s + %s + 1ch ) )" % ( ( $ref.v-planer.subResults.w * (3/2) ) $ref.v-planer.btn.w )
-          width: "calc( 50% - ( %s + %s + %s ) )" % ( ( @gap / 2 ) ( $ref.v-planer.subResults.w + @gap ) $ref.v-planer.btn.w )
+          // width: "calc( 50% - ( %s + %s + 1ch ) )" % ( ( $ref.v-planner.subResults.w * (3/2) ) $ref.v-planner.btn.w )
+          width: "calc( 50% - ( %s + %s + %s ) )" % ( ( @gap / 2 ) ( $ref.v-planner.subResults.w + @gap ) $ref.v-planner.btn.w )
           border-radius: 5px
           font-size: 1rem
           text-align: center
-          color: $theme.v-planer.form.fg-c
+          color: $theme.v-planner.form.fg-c
         // WIP Chrome renderiza los botones distintos y si cambio el border anula los comportamientos graficos del boton
         .calc
-          background-color $theme.v-planer.actions.calc.bg-c
+          background-color $theme.v-planner.actions.calc.bg-c
         .addInstance
-          width: $ref.v-planer.btn.w
-          height: $ref.v-planer.btn.h
-          background-color $theme.v-planer.actions.addInstance.bg-c
+          width: $ref.v-planner.btn.w
+          height: $ref.v-planner.btn.h
+          background-color $theme.v-planner.actions.addInstance.bg-c
           background-image: url("/svg/plus-squared-light.svg")
           background-repeat: no-repeat
           background-size: 50%
           background-origin: border-box
           background-position: center
           border-radius: 10%
-          border: $theme.v-planer.actions.addInstance.border
+          border: $theme.v-planner.actions.addInstance.border
         .reset
-          background-color $theme.v-planer.actions.reset.bg-c
+          background-color $theme.v-planner.actions.reset.bg-c
 
       .totals
         // Calculo para alinearlo con los subResults
-        width: "calc( 100% - ( %s * 2 ) )" % ( $ref.v-planer.btn.w )
+        width: "calc( 100% - ( %s * 2 ) )" % ( $ref.v-planner.btn.w )
         height: fit-content
         $m-rowAlign()
         justify-content: space-between
         & > *
-          height: $ref.v-planer.totals.h
-          width: $ref.v-planer.totals.w
+          height: $ref.v-planner.totals.h
+          width: $ref.v-planner.totals.w
           border-radius: 5px
           // ? WIP Search for a better solution for vertical alignment (vertical-align didn' work)
           // padding: 0.25rem 0rem 0rem
           padding: 0rem 0rem 0.1rem 0rem
           font-size: 1rem
           text-align: center
-          color: $theme.v-planer.form.fg-c
+          color: $theme.v-planner.form.fg-c
           border: none
           outline: none
         .totalSaldoPlusPagos
-          background-color: $theme.v-planer.totals.totalSaldoPlusPagos.bg-c
+          background-color: $theme.v-planner.totals.totalSaldoPlusPagos.bg-c
         .totalRefund
-          background-color: $theme.v-planer.totals.totalRefund.bg-c
+          background-color: $theme.v-planner.totals.totalRefund.bg-c
         .totalSpent
-          background-color: $theme.v-planer.totals.totalSpent.bg-c
+          background-color: $theme.v-planner.totals.totalSpent.bg-c
 
       .instance
         @extends $e-box-colAligned
@@ -326,8 +326,8 @@
           width: 80%
           height: fit-content
           min-width: fit-content
-          padding: ($ref.v-planer.legend.h / 2) 2px 0px
-          border: $theme.v-planer.form.fieldset--border
+          padding: ($ref.v-planner.legend.h / 2) 2px 0px
+          border: $theme.v-planner.form.fieldset--border
           border-radius: 5px
           $m-colAlign()
           justify-content: center
@@ -339,27 +339,27 @@
           // justify-self: flex-end
           // float: right
           position: absolute
-          top: $ref.v-planer.legend.yOffset
-          right: $ref.v-planer.legend.xOffset
+          top: $ref.v-planner.legend.yOffset
+          right: $ref.v-planner.legend.xOffset
           z-index: 1
           $m-colAlign(nowrap)
           legend
-            // width: $ref.v-planer.legend.w
-            height: $ref.v-planer.legend.h
+            // width: $ref.v-planner.legend.w
+            height: $ref.v-planner.legend.h
             font-size: 1rem
-            background-color: $theme.v-planer.form.legend--bg-c
-            border: $theme.v-planer.form.legend--border
+            background-color: $theme.v-planner.form.legend--bg-c
+            border: $theme.v-planner.form.legend--border
           .delInstance
-            width: $ref.v-planer.btn.w
-            height: $ref.v-planer.btn.h
+            width: $ref.v-planner.btn.w
+            height: $ref.v-planner.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-            background-color: $theme.v-planer.form.item--delItem--bg-c
+            background-color: $theme.v-planner.form.item--delItem--bg-c
             background-image: url("/svg/trash-opened.svg")
             background-repeat: no-repeat
             background-size: 80%
             background-origin: border-box
             background-position: center
-            border: $theme.v-planer.form.item--delItem--border
+            border: $theme.v-planner.form.item--delItem--border
             // border-radius: 10%
             align-self: flex-end
             // justify-self: flex-start
@@ -374,7 +374,7 @@
           height: 2.5rem
           padding: 0px 2px
           margin: 1px 0px
-          border: $theme.v-planer.form.item--border
+          border: $theme.v-planner.form.item--border
           $m-rowAlign()
           justify-content: center
           column-gap: 1ch
@@ -386,15 +386,15 @@
           &.yDrag
             // WIP check coolors.co Palette Generator drag, and Drag n Drop API https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
             // WIP Img is not centered https://developer.mozilla.org/en-US/docs/Web/CSS/background
-            width: $ref.v-planer.btn.w
-            height: $ref.v-planer.btn.h
+            width: $ref.v-planner.btn.w
+            height: $ref.v-planner.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-            background-color: $theme.v-planer.form.bg-c
+            background-color: $theme.v-planner.form.bg-c
             background-image: url("/svg/scroll.svg")
             background-repeat: no-repeat
             background-size: cover
-            border: $theme.v-planer.form.item--yDrag--border
-          &.priority
+            border: $theme.v-planner.form.item--yDrag--border
+          &.order
             width: 2.5rem
             text-align: center
           &.category
@@ -410,66 +410,66 @@
           &.finalPrice
             width: 13ch
             text-align: center
-            background-color: $theme.v-planer.form.item--bg-c
-            color: $theme.v-planer.form.item--fg-c
+            background-color: $theme.v-planner.form.item--bg-c
+            color: $theme.v-planner.form.item--fg-c
             font-size: 0.875rem // WIP parece muy forzado
             padding: 0.4rem 0px // WIP no encontre mejor forma de alinear, no logre hacer andar a vertical-align
           &.delItem
-            width: $ref.v-planer.btn.w
-            height: $ref.v-planer.btn.h
+            width: $ref.v-planner.btn.w
+            height: $ref.v-planner.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-            background-color: $theme.v-planer.form.item--delItem--bg-c
+            background-color: $theme.v-planner.form.item--delItem--bg-c
             background-image: url("/svg/cross-rounded.svg")
             background-repeat: no-repeat
             background-size: 80%
             background-origin: border-box
             background-position: center
             border-radius: 10%
-            border: $theme.v-planer.form.item--delItem--border
+            border: $theme.v-planner.form.item--delItem--border
           &.addItem
-            width: $ref.v-planer.btn.w
-            height: $ref.v-planer.btn.h
+            width: $ref.v-planner.btn.w
+            height: $ref.v-planner.btn.h
             // ! WIP the bg-c here should be set to something distinguisheable in case bg-image fails, its temporarily set to the forms bg-c to cover the miss align and stretch
-            background-color: $theme.v-planer.form.item--addItem--bg-c
+            background-color: $theme.v-planner.form.item--addItem--bg-c
             background-image: url("/svg/plus-squared.svg")
             background-repeat: no-repeat
             background-size: 80%
             background-origin: border-box
             background-position: center
             border-radius: 10%
-            border: $theme.v-planer.form.item--addItem--border
+            border: $theme.v-planner.form.item--addItem--border
           &:focus
-            outline: $theme.v-planer.form.item--outline
+            outline: $theme.v-planner.form.item--outline
           &:disabled
             background-color: $colors.disabled
 
         .subResults
           // WIP there must be a better Stylus way for calcs w/ different units
-          width: "calc( 100% - ( %s * 2 ) )" % ( $ref.v-planer.btn.w )
+          width: "calc( 100% - ( %s * 2 ) )" % ( $ref.v-planner.btn.w )
           height: fit-content
           $m-rowAlign()
           justify-content: space-between
           & > *
-            height: $ref.v-planer.subResults.h
-            width: $ref.v-planer.subResults.w
+            height: $ref.v-planner.subResults.h
+            width: $ref.v-planner.subResults.w
             border-radius: 5px
             padding: 0rem 0rem 0.1rem 0rem
             font-size: 1rem
             text-align: center
-            color: $theme.v-planer.form.fg-c
+            color: $theme.v-planner.form.fg-c
             border-radius: 0px 0px 20px 20px
             border: none
             outline: none
           .subSaldoPlusPagos
             align-self: flex-start
-            background-color: $theme.v-planer.form.subSaldoPlusPagos--bg-c
-            border: $theme.v-planer.form.subSaldoPlusPagos--border
+            background-color: $theme.v-planner.form.subSaldoPlusPagos--bg-c
+            border: $theme.v-planner.form.subSaldoPlusPagos--border
           .subRefund
-            background-color: $theme.v-planer.form.subRefund--bg-c
-            border: $theme.v-planer.form.subRefund--border
+            background-color: $theme.v-planner.form.subRefund--bg-c
+            border: $theme.v-planner.form.subRefund--border
           .subSpent
             align-self: flex-end
-            background-color: $theme.v-planer.form.subSpent--bg-c
-            border: $theme.v-planer.form.subSpent--border
-/* +v-planer */
+            background-color: $theme.v-planner.form.subSpent--bg-c
+            border: $theme.v-planner.form.subSpent--border
+/* +v-planner */
 
