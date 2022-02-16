@@ -156,18 +156,25 @@ let selectedOptionTitle = selectElement[selectElement.selectedIndex].title
         });
 
     // Vanilla JavaScript
-        if (element.addEventListener) {
-            element.addEventListener("submit", function(evt) {
-                evt.preventDefault();
-                window.history.back();
-            }, true);
-        }
-        else {
-            element.attachEvent('onsubmit', function(evt){
-                evt.preventDefault();
-                window.history.back();
-            });
-        }
+        // Didn't seam to work
+        if ( element.addEventListener ) {
+            element.addEventListener(
+                "submit",
+                function( evt ) {
+                    evt.preventDefault();
+                    window.history.back();
+                },
+                true
+            );
+        } else {
+            element.attachEvent(
+                'onsubmit',
+                function( evt ) {
+                    evt.preventDefault();
+                    window.history.back();
+                }
+            );
+        };
 
     // <form onsubmit="return false;"> // It didn't seam reliable, or it might not work on all browsers
 

@@ -29,6 +29,9 @@
 + HTML title, tabindex
 
 
++ categories.json poner en algun lado q el max length es lo q diga en el .styl -4 si se muestra la flechita para abajo, yo lo setie como 20ch + 4ch
+
+
 + Use CSS to define "Skins" like the drag and drop button img, should be defined by CSS, since its part of its "looks"
     Google "using backgroung image in HTML button"
     https://css-tricks.com/replace-the-image-in-an-img-with-css/
@@ -50,7 +53,11 @@
 ! set <script> s to the header, use defer or others
 
 
-!  [APIs] Ads, Drag and Drop, Dates, Export | Import to Google Sheets or Excell, validacion de inputs, datos
+! La carga de categories.json y otros archivos definibles por el usuario q tengan una definicion como categories = f_validate(user_provided.json) || default_categories.json, ver Principles en caso de q expanda esta definicion (+ User Defined Files Load).
+    Para categories seria primero correr verificacion en el archivo q este /user/data y si esta falla usar el q este en /data/defaults
+
+
+!  [APIs] Ads, Drag and Drop, Dates, Export | Import to Google Sheets or Excell, validacion de inputs, datos, subir archivo JSON con las categorias
 
 
 ! [feauture] Fecha Estimada del Reintegro, posiblemente inputtext serca de la legend para ingresar la fecha de la instancia y luego solapa en los subResultados con la fecha estimada.
@@ -66,3 +73,6 @@
 
 
 ! Si se hace Zoom se puede ver q esta lleno de errores, nextLine no coincide el tamaño bien con el de item, los estilos en teoria los toma directamente de .item
+
+
+! Use SRI (Sub Resourse Integrity) for jQuery

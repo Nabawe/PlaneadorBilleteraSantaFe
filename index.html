@@ -69,7 +69,16 @@
                   <input type="text" class="item--part description"value="Descripción" disabled>
                   <input type="text" class="item--part rawPrice" value="$" disabled>
                   <select class="item--part discount" disabled>
+                    <option value="50" selected>50%</option>
+                    <option value="45" selected>45%</option>
+                    <option value="40" selected>40%</option>
+                    <option value="35" selected>35%</option>
                     <option value="30" selected>30%</option>
+                    <option value="25" selected>25%</option>
+                    <option value="20" selected>20%</option>
+                    <option value="15" selected>15%</option>
+                    <option value="10" selected>10%</option>
+                    <option value="5"  selected>05%</option>
                   </select>
                   <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
                   <button class="item--part delItem" disabled></button>
@@ -103,10 +112,13 @@
   </main>
 
   <!-- +Scripts -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+    <!-- ? Funcionara el checkeo de integridad en archivos locales?. -->
+    <script src="libs/jQuery/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="js/aliaces.js"></script>
     <script type="text/javascript" src="data/messages.js"></script>
-    <script type="text/javascript" src="data/categories.js"></script>
-    <script type="text/javascript" src="js/objects/v-planner.js"></script>
+    <!-- <script type="text/javascript" src="data/categories.js"></script> -->
+    <script type="text/javascript" src="js/classes/v-planner.js"></script>
     <script type="text/javascript" src="js/model.js"></script>
     <script type="text/javascript" src="js/view.js"></script>
     <script type="text/javascript" src="js/main.js"></script>

@@ -2,6 +2,7 @@
 + JavaScript
 + Una f no tiene q funcionar si le falta algo fundamental ( ? Critico )
 + GPS CSS
++ User Defined Files Load
 
 
 + CODEX
@@ -44,4 +45,13 @@
     $f-     functions
     $m-     mixins
     $e-     extends
++
+
+
++ User Defined Files Load
+    When loading files defined by the user always add a "default" in case they fail to load, comply, etc.
+
+    categories = f_validate( user_provided.json ) || f_validate( default_categories.json )
+
+    The default files need to be validated too, and this does not avoid the need to make checks to the asigned var afterwards.
 +

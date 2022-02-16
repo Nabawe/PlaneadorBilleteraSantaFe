@@ -1,6 +1,6 @@
 const _Q = {
-    qS      : document.querySelector,
-    qSA     : document.querySelectorAll,
-    qID     : document.getElementById
+    qS      : arg => document.querySelector(arg),
+    qSA     : arg => document.querySelectorAll(arg),
+    qID     : arg => document.getElementById(arg)
 }
 

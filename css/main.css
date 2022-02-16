@@ -286,7 +286,7 @@ main {
   border: none;
 }
 #v-planner form .instance .item--part.order {
-  width: 2.5rem;
+  width: 6ch;
   text-align: center;
 }
 #v-planner form .instance .item--part.category {
