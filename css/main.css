@@ -37,6 +37,18 @@
   align-items: center;
   justify-content: center;
 }
+#v-planner form .main .box-items {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
 /* +Extends */
 /* +Init */
 * {
@@ -210,6 +222,9 @@ main {
 #v-planner form .totals .totalSpent {
   background-color: #ed2939;
 }
+#v-planner form .instance {
+  margin-bottom: 1.625rem;
+}
 #v-planner form .instance fieldset {
   width: 80%;
   height: -webkit-fit-content;
@@ -218,7 +233,7 @@ main {
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
-  padding: 0.8125rem 2px 0px;
+  padding: 0.8125rem 2px 1px;
   border: 2px double #f6ecdc;
   border-radius: 5px;
   display: flex;
@@ -232,7 +247,7 @@ main {
   position: absolute;
   top: -1rem;
   right: -3.013ch;
-  z-index: 1;
+  z-index: 0;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -310,6 +325,7 @@ main {
   color: #2c2c2b;
   font-size: 0.875rem;
   padding: 0.4rem 0px;
+  z-index: 2;
 }
 #v-planner form .instance .item--part.delItem {
   width: 3.5ch;
@@ -322,6 +338,7 @@ main {
   background-position: center;
   border-radius: 10%;
   border: 1px solid #231f20;
+  z-index: 2;
 }
 #v-planner form .instance .item--part.addItem {
   width: 3.5ch;

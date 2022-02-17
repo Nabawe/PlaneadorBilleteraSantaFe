@@ -16,7 +16,7 @@
     .m_method
     o_Object
     c_Class
-    e_HTMLElement
+    e_HTMLElement           Need to define if only proper DOM elements or strings to insert as HTML.
 +
 
 
@@ -34,7 +34,7 @@
     s-      #section
 
     --      part of smth                            card--cutoff or card--iframe
-    -       list, enumeration, variation            btn-1
+    -       list, variation, like BEM Modifiers     btn-1, box-items-tight
 
     box-    container                               box-instances
 +

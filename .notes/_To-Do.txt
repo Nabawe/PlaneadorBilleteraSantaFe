@@ -63,7 +63,13 @@
 ! [feauture] Fecha Estimada del Reintegro, posiblemente inputtext serca de la legend para ingresar la fecha de la instancia y luego solapa en los subResultados con la fecha estimada.
 
 
-! [fix inconsistencies] Implement GPS CSS Sections or something similar
+! [critical fix inconsistencies] Implement GPS CSS Sections or something similar
+    - Las clases addItem delItem addInstance delInstance tendrian q renombrarse a algo como Item--del o Item--delBtn o Item--btn-del
+
+
+! [critical] Q todo lo grafico se refleje en un objeto, en realidad al revez (objeto -> grafico)
+    Lo q se busca es protejer la funcionalidad de la app, si alguien hace inspect o algo por el estilo.
+        Ver realmente hasta q punto es necesario o posible proteger. (Acceso Local, Acceso Total)
 
 
 ! Revisar Rubicas
@@ -72,7 +78,8 @@
 ! Crear classes para los distintos tipos de botones con las caracteristicas visuales comunes.
 
 
-! Si se hace Zoom se puede ver q esta lleno de errores, nextLine no coincide el tamaño bien con el de item, los estilos en teoria los toma directamente de .item
+! Si se hace Zoom se puede ver q esta lleno de errores, nextLine no coincide el tamaño bien con el de item, los estilos en teoria los toma directamente de .item, este problema existia desde antes de agregar box-items
+    Sospecho pork el boton de slide es medio raro y tendria q lograr correctamente configurar la box de cada boton.
 
 
 ! Use SRI (Sub Resourse Integrity) for jQuery

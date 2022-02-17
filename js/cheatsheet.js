@@ -1,4 +1,5 @@
 let htmlObj, btn, value, attr, tElement, tmp;
+    // element, event are reserved words
 const htmlValidators = {
     description: (element) => !!(element.value)
 };
@@ -12,6 +13,7 @@ value = htmlObj.value
 attr = htmlObj.setAttribute("disabled", false)
     // Sets the value of an attribute on the specified element. If the attribute already exists, the value is updated; otherwise a new attribute is added with the specified name and value.
     // To get the current value of an attribute, use getAttribute(); to remove an attribute, call removeAttribute().
+    // Using setAttribute() to modify certain attributes, most notably value in XUL, works inconsistently, as the attribute specifies the default value. To access or modify the current values, you should use the properties. For example, use Element.value instead of Element.setAttribute().
 attr = htmlObj.getAttribute("disabled")
     /* Non-existing attributes
         Essentially all web browsers (Firefox, Internet Explorer, recent versions of Opera, Safari, Konqueror, and iCab, as a non-exhaustive list) return null when the specified attribute does not exist on the specified element; this is what the current DOM specification draft specifies. The old DOM 3 Core specification, on the other hand, says that the correct return value in this case is actually the empty string, and some DOM implementations implement this behavior. The implementation of getAttribute() in XUL (Gecko) actually follows the DOM 3 Core specification and returns an empty string. Consequently, you should use element.hasAttribute() to check for an attribute's existence prior to calling getAttribute() if it is possible that the requested attribute does not exist on the specified element.
@@ -60,6 +62,27 @@ element.parentNode.removeChild(element);
 
 
 parent.appendChild(element) // or prependChild
+
+Element.insertAdjacentHTML()
+    /*
+        position
+            A string representing the position relative to the element. Must be one of the following strings:
+
+            "beforebegin"
+                Before the element. Only valid if the element is in the DOM tree and has a parent element.
+
+            "afterbegin"
+                Just inside the element, before its first child.
+
+            "beforeend":
+                Just inside the element, after its last child.
+
+            "afterend"
+                After the element. Only valid if the element is in the DOM tree and has a parent element.
+
+        text
+            The string to be parsed as HTML or XML and inserted into the tree.
+     */
 
 
 // estas 3 f como mucho de esta cheatsheet estan hechas asinomas para conceptualizar
@@ -179,11 +202,85 @@ let selectedOptionTitle = selectElement[selectElement.selectedIndex].title
     // <form onsubmit="return false;"> // It didn't seam reliable, or it might not work on all browsers
 
 
+// AJAX
+$( document ).ready( function() {
+    $.get('/data/defaults/categories.json', (response, status) => {
+
+        if (status === "success") {
+
+        }
+
+    });
+} );
+/*
+    t []
+    for let cat of categories
+        t[cat] = true
+
+    for let cat of t
+        addToDom(cat)  <--ver si es necesario probar existencia, creo q el for of ya se encarga
+
+ */
+
+
+
+
+
+        const o_Validators = {
+            description     : (me) => !!( me.value.lenght )
+        };
+
+        class c_Item__part {
+            constructor( type ) {
+                this.type           = type;
+                this.m_validator    = o_Validators[type];
+            };
+        };
+
+        class c_Item {
+            constructor() {
+                // this.HTML           = "";
+                // this.parts          = [yDrag, order, category, description, rawPrice, discount, finalPrice, delItem];
+                this.yDrag          = true;
+                this.order          = "00";
+                this.category       = "Default"; // set default
+                this.description    = "";
+                this.rawPrice       = "";
+                this.discount       = "Default"; // set default
+                this.finalPrice     = "";
+                this.delItem        = true;
+            };
+
+            m_validate() {
+                let fault = [];
+                if ( !(this.description) )
+                    fault.push( "description" );
+                if ( !(this.rawPrice) )
+                    fault.push( "rawPrice" );
+
+                // console.log( fault );
+
+                return false
+            }
+        }
+
+
+
+        o_Planner.m_validate()
+
+        let asd = new c_Item();
+        // asd.rawPrice = 1000;
+        // console.log( asd.m_validate() );
+
+
+        // let e_planner = _Q.qID( "v-planner--form" );
+
+
 
 
 // Grabal al localStorage onchange luego de la validacion y el boton reiniciar no solo limpia el form sino q borraria el localStorage
 
-// Una animacion podria ser q titile el outline al haber error, otra algun tipo de festejo al apretar Calc, al estilo maquinas tragamonedas
+// Una animacion podria ser q titile el outline al haber error, otra algun tipo de festejo al apretar Calc al estilo maquinas tragamonedas, al agregar un item, deplegar las categorias
 
 // [Tutor]Carlos Jesús : cuando haces el console.log(id) te muestra todo los eventos
 

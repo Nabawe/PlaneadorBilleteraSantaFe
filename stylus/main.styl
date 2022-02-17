@@ -172,6 +172,12 @@
     min-height: fit-content
     $m-colAlign(nowrap)
     justify-content: center
+
+  $e-box-colAligned-tight
+    width: fit-content
+    height: fit-content
+    $m-colAlign(nowrap)
+    justify-content: center
 /* +Extends */
 
 
@@ -256,6 +262,8 @@
         .box-instances
           @extends $e-box-colAligned
           padding: 0px $ref.v-planner.btn.w
+        .box-items
+          @extends $e-box-colAligned-tight
 
       .footer
         @extends $e-box
@@ -321,12 +329,13 @@
           background-color: $theme.v-planner.totals.totalSpent.bg-c
 
       .instance
+        margin-bottom: $ref.v-planner.legend.h
         @extends $e-box-colAligned
         fieldset
           width: 80%
           height: fit-content
           min-width: fit-content
-          padding: ($ref.v-planner.legend.h / 2) 2px 0px
+          padding: ($ref.v-planner.legend.h / 2) 2px 1px
           border: $theme.v-planner.form.fieldset--border
           border-radius: 5px
           $m-colAlign()
@@ -341,7 +350,7 @@
           position: absolute
           top: $ref.v-planner.legend.yOffset
           right: $ref.v-planner.legend.xOffset
-          z-index: 1
+          z-index: 0
           $m-colAlign(nowrap)
           legend
             // width: $ref.v-planner.legend.w
@@ -414,6 +423,8 @@
             color: $theme.v-planner.form.item--fg-c
             font-size: 0.875rem // WIP parece muy forzado
             padding: 0.4rem 0px // WIP no encontre mejor forma de alinear, no logre hacer andar a vertical-align
+            // position: relative // sometimes z-index needs a position prop defined to other value than static but it seams it was not the case
+            z-index: 2 // WIP Needed so that .legend--align does not adsorb clicks
           &.delItem
             width: $ref.v-planner.btn.w
             height: $ref.v-planner.btn.h
@@ -426,6 +437,8 @@
             background-position: center
             border-radius: 10%
             border: $theme.v-planner.form.item--delItem--border
+            // position: relative // sometimes z-index needs a position prop defined to other value than static but it seams it was not the case
+            z-index: 2 // WIP Needed so that .legend--align does not adsorb clicks
           &.addItem
             width: $ref.v-planner.btn.w
             height: $ref.v-planner.btn.h
