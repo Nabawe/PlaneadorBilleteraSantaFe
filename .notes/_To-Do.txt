@@ -43,6 +43,10 @@
 + Download Fonts to repo and map them
 
 
++ Use Maps https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
+    Inside the article search for "Serialization and parsing"
+
+
 + Float elements taking up space, since they are using position: relative isntead of an absolute.
     Check legend, delInstance
 
@@ -83,3 +87,24 @@
 
 
 ! Use SRI (Sub Resourse Integrity) for jQuery
+
+
+
+
+
+// Grabal al localStorage onchange luego de la validacion y el boton reiniciar no solo limpia el form sino q borraria el localStorage
+
+// Una animacion podria ser q titile el outline al haber error, otra algun tipo de festejo al apretar Calc al estilo maquinas tragamonedas, al agregar un item, deplegar las categorias
+
+// [Tutor]Carlos Jesús : cuando haces el console.log(id) te muestra todo los eventos
+
+// ! Tab Index and change focus on enter or tab, keyup 13 send tab?
+
+// ! Cuando no sea una info puesta por el usuario es mejor q el html a agregar se saque de una variable asi no es modificable por el usuario si usa inspect
+
+// ! Fix Buttons animations, they broke once I customized them
+
+// ! Test parent.removeChild(child)
+// ! Test doing a for of localStorage, AfterClass de Javier creo q es el 10 lidia con cosas de Storage
+// ! Test JSON to save a function
+    // Probar desde VSC y en el validador https://jsonformatter.curiousconcept.com/

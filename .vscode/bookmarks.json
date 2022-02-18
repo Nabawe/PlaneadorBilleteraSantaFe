@@ -59,6 +59,21 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "js/classes/v-planner.js",
+			"bookmarks": [
+				{
+					"line": 106,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 208,
+					"column": 26,
+					"label": ""
+				}
+			]
 		}
 	]
 }

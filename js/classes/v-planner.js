@@ -2,6 +2,7 @@
 /* +Classes and Objects */
 /* +Functions */
 /* +Header */
+/* +SOURCES */
 
 
 /* +Variables */
@@ -12,7 +13,9 @@
 /* +Classes and Objects */
     const o_Planner = {
         "DOM": _Q.qID( "v-planner--form" ),
-        "categories": {},
+        // Va a ser sobre-escrito en f_loadData pero me parece buena costrumbre initializarlo en caso de usarlo de otra forma
+        // El uso de Map me garantiza q se mantenga el orden de como fueron
+        "categories": new Map(),
         "discounts": []
     };
 
@@ -82,33 +85,50 @@
         $.getJSON( '/data/defaults/categories.json',
             ( data, status ) => {
                 if ( status === "success" ) {
-                    o_Planner.categories = data;
+                    o_Planner.categories = new Map(data);
                     // Mecanismo para filtrar descuentos repetidos
                     let t = [];
-                    // ! WIP No me dejaba usar for of decia q no era iterable, creo q no es un problema de o_Planner o data en si sino de el operador of
-                    for ( const key in data ) {
-                        t[ data[key] ] = true;
+                    // ! WIP use single line "for" form, used this in case it could break jQuery
+                    for ( const v of o_Planner.categories.values() ) {
+                        t[v] = true;
                     };
-                    for ( const val in t ) {
-                        o_Planner.discounts.push(val);
+                    for ( const v in t ) {
+                        o_Planner.discounts.push(v);
                     };
+                    // Para q los porcentajes más altos esten más comodos
+                    // No aplicado a t ya q t es un array especial con agujeros
+                    o_Planner.discounts.reverse();
                 };
             }
         );
     };
 
     function f_updateDiscount() {
-
+        // el nombre no es el correcto hay una forma mejor de pensar esto en 2 funciones
     }
 
+    // Recive un elem q contiene <select>s de .category o .discount y los popula
     function f_populateSelects(elem) {
-        for ( const cat in o_Planner.categories ) {
-            elem.querySelector( ".item--part:enabled.category" ).innerHTML += `<option value="${cat}">${cat}</option>`;
+        // ! WIP Deberia empesar limpiando lo q haya adentro?
+        for ( const k of o_Planner.categories.keys() )
+            elem.querySelector( ".item--part:enabled.category" ).innerHTML += `<option value="${k}">${k}</option>`;
+
+        // elem.querySelector( ".item--part:enabled.category" ).children[0].selected = true;
+            // Erroneo ya q parese q para cambiarlo se usa .value en el <select>
+            // Tambien muy posiblemente inecesaria si es el primer elemento
+        let sel = elem.querySelector( ".item--part:enabled.discount" );
+        for ( const v of o_Planner.discounts )
+            sel.innerHTML += `<option value="${v}">${v}%</option>`;
+        // Seleccionar el Descuento correspondiente a la primera linea en o_Planner.categories
+        let [fVal] = o_Planner.categories.values();
+        fVal += ""; // ? Se pierde peformance al convertir y los valores a comparar son pocos pero usar == puede implicar más de una conversion y tengo entendido q es peor pasar de string a int q de int a string
+        for ( const opt of sel.children ) {
+            if ( fVal === opt.value ) {
+                sel.value = opt.value;
+                break;
+            };
         };
-        for ( const val of o_Planner.discounts ) {
-            elem.querySelector( ".item--part:enabled.discount" ).innerHTML += `<option value="${val}">${val}%</option>`;
-        };
-    }
+    };
 
     function f_delItem(evt) {
         // btn q dispara ^ .item ^ .box-items
@@ -133,12 +153,13 @@
     function f_updateInstances() {
         // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
         // const count =  _Q.qS( "#v-planner .box-instances" ).childElementCount;
-        let y = 0;
+        let y = 1;
         for ( const instance of _Q.qSA( "#v-planner .instance" ) ) {
-            instance.id = `p-instance-${++y}`;
+            instance.id = `p-instance-${y}`;
             instance.querySelector( "fieldset" ).name = `p-instance-${y}`;
             // Si el valor del contador y es menor q 10 agregar un 0 al string
             instance.querySelector( ".instance--num" ).textContent = ( y < 10 ) ? `0${y}` : y;
+            y++;
         };
     };
 
@@ -162,6 +183,7 @@
         box.insertAdjacentHTML( "beforeend", e_Instance_new );
         // A los botones de la ultima .instance le agrega sus eventos
         const instance = box.children[ ( box.childElementCount - 1 ) ];
+        // ! WIP escribir las lineas usando querySelectorAll así si cambia la cantidad de botones que hacen lo mismo no importa
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
         instance.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
@@ -185,15 +207,15 @@
             btn.addEventListener( "click", f_addInstance );
 
         // Popular Selects
-        for ( const select of _Q.qSA( "#v-planner .item--part:enabled.category" ) ) {
+        for ( const sel of _Q.qSA( "#v-planner .item--part:enabled.category" ) ) {
             for ( const cat in o_Planner.categories ) {
-                select.innerHTML += `<option value="${cat}">${cat}</option>`;
+                sel.innerHTML += `<option value="${cat}">${cat}</option>`;
             };
         };
 
-        for ( const select of _Q.qSA( "#v-planner .item--part:enabled.discount" ) ) {
+        for ( const sel of _Q.qSA( "#v-planner .item--part:enabled.discount" ) ) {
             for ( const val of o_Planner.discounts ) {
-                select.innerHTML += `<option value="${val}">${val}%</option>`;
+                sel.innerHTML += `<option value="${val}">${val}%</option>`;
             };
         };
     };
@@ -214,3 +236,17 @@
 
 // La carga de categories.json y otros archivos definibles por el usuario q tengan una definicion como categories = f_validate(user_provided.json) || default_categories.json
 // !!!!!!! Al agregar items y tags crear con JS CSS q use addContent a una clase, entonces el addItem, addIntance, del btns, y la creacion de categorias solo tienen q agregar lo minimo y luego CSS se encarga del resto.
+
+
+/* +SOURCES */
+/*
+    Map
+        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
+            "Iterating Map with for..of"
+            "Relation with Array objects"
+            "Iterating Map with forEach()"
+                Parece q tiene mucho para mejorar aun este metodo, ademas parese ser bastante más lento. Puede generar codigo más claro y espero q a futuro lo mejoren pero no conosco demaciado de la trajectoria de JavaScript como para saber q esperar.
+                        https://blog.devgenius.io/3-bad-use-cases-of-javascripts-foreach-loop-add3600a8895
+                            "In the forEach loop, we are invoking the callback function on every iteration. This additional scope leads to slower speeds compared to the for loop. The for loop uses an initializing statement and a conditional that is evaluated at every iteration. That means lowered cost compared to the forEach."
+*/
+/* +SOURCES */

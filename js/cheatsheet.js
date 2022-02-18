@@ -276,21 +276,23 @@ $( document ).ready( function() {
         // let e_planner = _Q.qID( "v-planner--form" );
 
 
+// Forma Original de f_loadData
+    function f_loadData() {
+        $.getJSON( '/data/defaults/categories.json',
+            ( data, status ) => {
+                if ( status === "success" ) {
+                    o_Planner.categories = data;
+                    // Mecanismo para filtrar descuentos repetidos
+                    let t = [];
+                    // ! WIP No me dejaba usar for of decia q no era iterable, creo q no es un problema de o_Planner o data en si sino de el operador of
+                    for ( const key in data ) {
+                        t[ data[key] ] = true;
+                    };
+                    for ( const val in t ) {
+                        o_Planner.discounts.push(val);
+                    };
+                };
+            }
+        );
+    };
 
-
-// Grabal al localStorage onchange luego de la validacion y el boton reiniciar no solo limpia el form sino q borraria el localStorage
-
-// Una animacion podria ser q titile el outline al haber error, otra algun tipo de festejo al apretar Calc al estilo maquinas tragamonedas, al agregar un item, deplegar las categorias
-
-// [Tutor]Carlos Jesús : cuando haces el console.log(id) te muestra todo los eventos
-
-// ! Tab Index and change focus on enter or tab, keyup 13 send tab?
-
-// ! Cuando no sea una info puesta por el usuario es mejor q el html a agregar se saque de una variable asi no es modificable por el usuario si usa inspect
-
-// ! Fix Buttons animations, they broke once I customized them
-
-// ! Test parent.removeChild(child)
-// ! Test doing a for of localStorage, AfterClass de Javier creo q es el 10 lidia con cosas de Storage
-// ! Test JSON to save a function
-    // Probar desde VSC y en el validador https://jsonformatter.curiousconcept.com/

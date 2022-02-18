@@ -3,6 +3,7 @@
 + Una f no tiene q funcionar si le falta algo fundamental ( ? Critico )
 + GPS CSS
 + User Defined Files Load
++ When writing Sources
 
 
 + CODEX
@@ -54,4 +55,9 @@
     categories = f_validate( user_provided.json ) || f_validate( default_categories.json )
 
     The default files need to be validated too, and this does not avoid the need to make checks to the asigned var afterwards.
++
+
+
++ When writing Sources
+    Acostumbrar agregar algun pensamiento o reseña al agregar una source.
 +
