@@ -25,7 +25,7 @@
       <!-- onsubmit="return false;" failsafe en caso de q algo causara un submit -->
       <form id="v-planner--form" onsubmit="return false;">
         <div class="header">
-          <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly>
+          <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="5000" readonly>
           <input type="number" class="funds" name="funds" min="00" title="Fondos Iniciales" placeholder="Fondos Iniciales">
         </div>
         <div class="main">
@@ -42,23 +42,25 @@
                   <div class="item live">
                     <!-- ? required Attribute -->
                     <!-- Si falla usar slider y JS -->
-                    <button class="item--part btn yDrag" type="button"></button>
-                    <input type="number" class="item--part order" name="order" min="00" max="99" maxlength="2" value="00">
-                    <select class="item--part category" name="category" maxlength="20">
+                    <button class="item--part live btn yDrag" type="button"></button>
+                    <!-- <img class="item--part live btn yDrag"> -->
+                    <input type="number" class="item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
+                    <select class="item--part live category" name="category" maxlength="20">
                       <!-- <option value="normal">12345678901234567890</option> -->
                     </select>
                     <!-- set maxlength spellcheck autofocus Attributes -->
                     <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
-                    <input type="text" class="item--part description" name="description" maxlength="30">
+                    <input type="text" class="item--part live description" name="description" maxlength="30">
                     <!-- set max min inputmode attributes -->
-                    <input type="number" class="item--part rawPrice" name="rawPrice" maxlength="10">
-                    <select class="item--part discount" name="discount" maxlength="4"></select>
+                    <input type="number" class="item--part live rawPrice" name="rawPrice" maxlength="10">
+                    <select class="item--part live discount" name="discount" maxlength="4"></select>
                     <!-- Set Attributes readonly="readonly" -->
-                    <output class="item--part finalPrice" name="finalPrice"></output>
-                    <button class="item--part btn delItem" type="button"></button>
+                    <output class="item--part live finalPrice" name="finalPrice"></output>
+                    <button class="item--part live btn delItem" type="button"></button>
                   </div>
                 </div>
                 <div class="item nextLine">
+                  <!-- ! WIP ? Tendria q agregarle live a addItem -->
                   <button class="item--part btn addItem" type="button"></button>
                   <input type="number" class="item--part order" value="00" disabled>
                   <select class="item--part category" disabled>
@@ -75,9 +77,10 @@
               </fieldset>
               <div class="subResults">
                 <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
-                <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="00000000" readonly>
-                <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="00000000" readonly>
-                <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="00000000" readonly>
+                <!-- maxlength="10" -->
+                <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
+                <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="" readonly>
+                <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
               </div>
             </div>
           </div>
@@ -89,9 +92,10 @@
             <button class="reset" type="reset">Reiniciar</button>
           </div>
           <div class="totals">
-            <input type="text"  class="totalSaldoPlusPagos" name="totalSaldoPlusPagos" title="Saldo Plus Pagos" value="00000000" readonly>
-            <input type="text"  class="totalRefund" name="totalRefund" title="Total Reintegrado" value="00000000" readonly>
-            <input type="text"  class="totalSpent" name="totalSpent" title="Total Gastos" value="00000000" readonly>
+            <!-- maxlength="10" -->
+            <input type="text"  class="totalSaldoPlusPagos" name="totalSaldoPlusPagos" title="Saldo Plus Pagos" value="" readonly>
+            <input type="text"  class="totalRefund" name="totalRefund" title="Total Reintegrado" value="" readonly>
+            <input type="text"  class="totalSpent" name="totalSpent" title="Total Gastos" value="" readonly>
           </div>
         </div>
       </form>

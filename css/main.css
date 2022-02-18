@@ -164,11 +164,11 @@ main {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  gap: 4.75ch;
+  gap: 5.25ch;
 }
 #v-planner form .actions > * {
   height: 2.5rem;
-  width: calc( 50% - ( 2.375ch + 17.75ch + 3.5ch ) );
+  width: calc( 50% - ( 2.625ch + 19.25ch + 3.5ch ) );
   border-radius: 5px;
   font-size: 1rem;
   text-align: center;
@@ -370,7 +370,7 @@ main {
 }
 #v-planner form .instance .subResults > * {
   height: 1.8rem;
-  width: 13ch;
+  width: 14ch;
   border-radius: 5px;
   padding: 0rem 0rem 0.1rem 0rem;
   font-size: 1rem;

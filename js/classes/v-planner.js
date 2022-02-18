@@ -21,16 +21,14 @@
 
     const e_Item_new = `
         <div class="item live">
-            <button class="item--part btn yDrag" type="button"></button>
-            <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
-            <select class="item--part category" name="category">
-            </select>
-            <input type="text" class="item--part description" name="description">
-            <input type="number" class="item--part rawPrice" name="rawPrice">
-            <select class="item--part discount" name="discount">
-            </select>
-            <output class="item--part finalPrice" name="finalPrice"></output>
-            <button class="item--part btn delItem" type="button"></button>
+            <button class="item--part live btn yDrag" type="button"></button>
+            <input type="number" class="item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
+            <select class="item--part live category" name="category" maxlength="20"></select>
+            <input type="text" class="item--part live description" name="description" maxlength="30">
+            <input type="number" class="item--part live rawPrice" name="rawPrice" maxlength="10">
+            <select class="item--part live discount" name="discount" maxlength="4"></select>
+            <output class="item--part live finalPrice" name="finalPrice"></output>
+            <button class="item--part live btn delItem" type="button"></button>
         </div>
     `;
 
@@ -42,16 +40,7 @@
                     <button class="delInstance" type="button"></button>
                 </div>
             <div class="box-items">
-                <div class="item">
-                    <button class="item--part btn yDrag" type="button"></button>
-                    <input type="number" class="item--part order" name="order" min="00" max="99" maxlength="2" value="00">
-                    <select class="item--part category" name="category" maxlength="20"></select>
-                    <input type="text" class="item--part description" name="description" maxlength="30">
-                    <input type="number" class="item--part rawPrice" name="rawPrice" maxlength="10">
-                    <select class="item--part discount" name="discount" maxlength="4"></select>
-                    <output class="item--part finalPrice" name="finalPrice"></output>
-                    <button class="item--part btn delItem" type="button"></button>
-                </div>
+                ${e_Item_new}
             </div>
             <div class="item nextLine">
                 <button class="item--part btn addItem" type="button"></button>
@@ -67,9 +56,9 @@
             </div>
             </fieldset>
             <div class="subResults">
-            <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="00000000" readonly>
-            <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="00000000" readonly>
-            <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="00000000" readonly>
+            <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
+            <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="" readonly>
+            <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
             </div>
         </div>
     `;
@@ -110,7 +99,7 @@
 
             cat.addEventListener( "change", ( evt ) => {
                     cat.parentNode.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( cat.value );
-                    f_calcItemFinalPrice( evt );
+                    f_calcInstance( evt );
                 }
             );
         };
@@ -156,8 +145,8 @@
         // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
         let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
         lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
-        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcItemFinalPrice );
-        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcItemFinalPrice );
+        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstance );
+        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstance );
 
         f_initSelects( lastItem );
     };
@@ -198,11 +187,11 @@
         const instance = box.children[ ( box.childElementCount - 1 ) ];
         // ! WIP escribir las lineas usando querySelectorAll así si cambia la cantidad de botones que hacen lo mismo no importa
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
-        instance.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
+        instance.querySelector( ".item--part.live.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
 
-        instance.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcItemFinalPrice );
-        instance.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcItemFinalPrice );
+        instance.querySelector( ".item--part.live.rawPrice" ).addEventListener( "change", f_calcInstance );
+        instance.querySelector( ".item--part.live.discount" ).addEventListener( "change", f_calcInstance );
 
         f_initSelects( instance );
         f_updateNewInstance( instance );
@@ -226,10 +215,10 @@
                 // for ( const part of item.querySelectorAll( ".item--part" ) ) {
                 // };
                 const rawPrice = item.querySelector( ".rawPrice" );
-                rawPrice.addEventListener( "change", f_calcItemFinalPrice );
+                rawPrice.addEventListener( "change", f_calcInstance );
 
                 const discount = item.querySelector( ".discount" );
-                discount.addEventListener( "change", f_calcItemFinalPrice );
+                discount.addEventListener( "change", f_calcInstance );
 
                 const delItem  = item.querySelector( ".delItem" );
                 delItem.addEventListener( "click", f_delItem );
@@ -250,16 +239,69 @@
 
         for ( const btn of _Q.qSA( "#v-planner .addInstance" ) )
             btn.addEventListener( "click", f_addInstance );
+
+        _Q.qS( "#v-planner .actions .calc").addEventListener( "click", f_calc );
+        _Q.qS( "#v-planner .actions .reset").addEventListener( "click", f_reset );
     };
 
     // onchange
-    function f_calcItemFinalPrice( evt ) {
-        const item = evt.target.parentNode;
-        item.querySelector( ".finalPrice" ).value = ( item.querySelector( ".rawPrice" ).value * ( ( 100 - item.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
+    function f_calcInstance( evt ) {
+        const trgItem = evt.target.parentNode;
+        trgItem.querySelector( ".finalPrice" ).value = ( trgItem.querySelector( ".rawPrice" ).value * ( ( 100 - trgItem.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
+
+        // item ^ box-items ^ fieldset ^ instance
+        const instance = trgItem.parentNode.parentNode.parentNode;
+        let t = 0;
+        for ( const item of instance.querySelectorAll( ".live.finalPrice" ) ) {
+            t += +item.value;
+        };
+        instance.querySelector( ".subSpent" ).value = t.toFixed( 2 );
+
+        t = 0;
+        for ( const item of instance.querySelectorAll( ".live.rawPrice" ) ) {
+            t += +item.value;
+        };
+        instance.querySelector( ".subRefund" ).value = ( t - instance.querySelector( ".subSpent" ).value ).toFixed( 2 );
+
+        // instance.querySelector( ".subSaldoPlusPagos" ).value = _Q.qS( "#v-planner .monthlyRefund" ).value - instance.querySelector( ".subRefund" ).value;
+    };
+
+    function f_reset() {
+        const box = _Q.qS( "#v-planner .box-instances" );
+        console.log( box.children );
+        // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
+        for ( const kid of box.querySelectorAll( ".instance" ) )
+            box.removeChild( kid );
+        f_addInstance();
     };
 
     function f_calc() {
+        let t = 0;
+        for ( const sub of _Q.qSA( "#v-planner .subSpent" ) )
+            t += +sub.value;
+        // _Q.qS( "#v-planner .totals .totalSpent").value = t;
+        $( "#v-planner .totals .totalSpent" ).val( t );
 
+        t = 0;
+        for ( const sub of _Q.qSA( "#v-planner .subRefund" ) )
+            t += +sub.value;
+        // _Q.qS( "#v-planner .totals .totalRefund").value = t;
+        $( "#v-planner .totals .totalRefund" ).val( t );
+
+        $( "#v-planner #p-instance-1 .subSaldoPlusPagos" ).val(
+            ( $( "#v-planner .monthlyRefund" ).val() - $( "#v-planner #p-instance-1 .subRefund" ).val() ).toFixed( 2 )
+        );
+
+        // tmp = _Q.qSA( "#v-planner .box-instances .instance" );
+        // Operar en todos menos el primer subSaldoPlusPagos
+        const box = _Q.qS( "#v-planner .box-instances" );
+        for ( let i = 1 ; i < box.childElementCount ; i++ ) {
+            console.log( "alert ", i );
+            const instancia = box.children[i];
+            instancia.querySelector( ".subSaldoPlusPagos" ).value = ( box.children[ ( i - 1 ) ].querySelector( ".subSaldoPlusPagos" ).value - instancia.querySelector( ".subRefund" ).value ).toFixed( 2 );
+        };
+
+        _Q.qS( "#v-planner .totals .totalSaldoPlusPagos").value = box.children[ ( box.childElementCount - 1 ) ].querySelector( ".subSaldoPlusPagos" ).value;
     };
 
     // LLamarla onchange
