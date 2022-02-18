@@ -6,13 +6,13 @@
 
 
 /* +Variables */
-    // const e_planner = _Q.qID( "v-planner--form" );
+    // const e_planner = _Q.qId( "v-planner--form" );
 /* +Variables */
 
 
 /* +Classes and Objects */
     const o_Planner = {
-        "DOM": _Q.qID( "v-planner--form" ),
+        "DOMNode": _Q.qId( "v-planner--form" ),
         // Va a ser sobre-escrito en f_loadData pero me parece buena costrumbre initializarlo en caso de usarlo de otra forma
         // El uso de Map me garantiza q se mantenga el orden de como fueron
         "categories": new Map(),
@@ -20,7 +20,7 @@
     };
 
     const e_Item_new = `
-        <div class="item">
+        <div class="item live">
             <button class="item--part btn yDrag" type="button"></button>
             <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
             <select class="item--part category" name="category">
@@ -43,29 +43,25 @@
                 </div>
             <div class="box-items">
                 <div class="item">
-                <button class="item--part btn yDrag" type="button"></button>
-                <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
-                <select class="item--part category" name="category">
-                </select>
-                <input type="text" class="item--part description" name="description">
-                <input type="number" class="item--part rawPrice" name="rawPrice">
-                <select class="item--part discount" name="discount">
-                </select>
-                <output class="item--part finalPrice" name="finalPrice"></output>
-                <button class="item--part btn delItem" type="button"></button>
+                    <button class="item--part btn yDrag" type="button"></button>
+                    <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
+                    <select class="item--part category" name="category"></select>
+                    <input type="text" class="item--part description" name="description">
+                    <input type="number" class="item--part rawPrice" name="rawPrice">
+                    <select class="item--part discount" name="discount"></select>
+                    <output class="item--part finalPrice" name="finalPrice"></output>
+                    <button class="item--part btn delItem" type="button"></button>
                 </div>
             </div>
             <div class="item nextLine">
                 <button class="item--part btn addItem" type="button"></button>
                 <input type="number" class="item--part order" value="00" disabled>
                 <select class="item--part category" disabled>
-                <option value="Categoria" selected>Categoría</option>
-                </select>
+                <option value="Categoria" selected>Categoría</option></select>
                 <input type="text" class="item--part description"value="Descripción" disabled>
                 <input type="text" class="item--part rawPrice" value="$" disabled>
                 <select class="item--part discount" disabled>
-                <option value="30" selected>30%</option>
-                </select>
+                <option value="30" selected>30%</option></select>
                 <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
                 <button class="item--part delItem" disabled></button>
             </div>
@@ -85,7 +81,7 @@
         $.getJSON( '/data/defaults/categories.json',
             ( data, status ) => {
                 if ( status === "success" ) {
-                    o_Planner.categories = new Map(data);
+                    o_Planner.categories = new Map( data );
                     // Mecanismo para filtrar descuentos repetidos
                     let t = [];
                     // ! WIP use single line "for" form, used this in case it could break jQuery
@@ -103,39 +99,52 @@
         );
     };
 
-    function f_updateDiscount() {
-        // el nombre no es el correcto hay una forma mejor de pensar esto en 2 funciones
-    }
-
-    // Recive un elem q contiene <select>s de .category o .discount y los popula
-    function f_populateSelects(elem) {
+    // Recive un elem q contiene <select>s de .category o .discount y los popula y bindea eventos
+    // Si bien lo admite evitar pasar elementos q esten fuera de #v-planner
+        // WIP think about this
+    function f_initSelects( elem ) {
         // ! WIP Deberia empesar limpiando lo q haya adentro?
-        for ( const k of o_Planner.categories.keys() )
-            elem.querySelector( ".item--part:enabled.category" ).innerHTML += `<option value="${k}">${k}</option>`;
+        for ( const cat of elem.querySelectorAll( ".item--part:enabled.category" ) ) {
+            for ( const k of o_Planner.categories.keys() )
+                cat.innerHTML += `<option value="${k}">${k}</option>`;
+
+            cat.addEventListener( "change", () => {
+                cat.parentNode.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( cat.value );
+                }
+            );
+        };
 
         // elem.querySelector( ".item--part:enabled.category" ).children[0].selected = true;
             // Erroneo ya q parese q para cambiarlo se usa .value en el <select>
             // Tambien muy posiblemente inecesaria si es el primer elemento
-        let sel = elem.querySelector( ".item--part:enabled.discount" );
-        for ( const v of o_Planner.discounts )
-            sel.innerHTML += `<option value="${v}">${v}%</option>`;
-        // Seleccionar el Descuento correspondiente a la primera linea en o_Planner.categories
+
         let [fVal] = o_Planner.categories.values();
-        fVal += ""; // ? Se pierde peformance al convertir y los valores a comparar son pocos pero usar == puede implicar más de una conversion y tengo entendido q es peor pasar de string a int q de int a string
-        for ( const opt of sel.children ) {
-            if ( fVal === opt.value ) {
-                sel.value = opt.value;
-                break;
+        fVal += "";
+        /* ? Se pierde peformance al convertir y los valores a comparar son pocos pero usar == puede implicar más de una conversion y tengo entendido q es peor pasar de string a int q de int a string */
+        for ( const sel of elem.querySelectorAll( ".item--part:enabled.discount" ) ) {
+            for ( const v of o_Planner.discounts )
+                sel.innerHTML += `<option value="${v}">${v}%</option>`;
+            // Seleccionar el Descuento correspondiente a la primera linea en o_Planner.categories
+            for ( const opt of sel.children ) {
+                if ( fVal === opt.value ) {
+                    sel.value = opt.value;
+                    break;
+                };
             };
         };
     };
 
-    function f_delItem(evt) {
+    // Para un determinado .item seleccionar el descuento asociado a la categoria
+    function f_updateDiscount( item ) {
+        item.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( item.querySelector( ".item--part:enabled.category" ).value );
+    };
+
+    function f_delItem( evt ) {
         // btn q dispara ^ .item ^ .box-items
         evt.target.parentNode.parentNode.removeChild(evt.target.parentNode);
     };
 
-    function f_addItem(evt) {
+    function f_addItem( evt ) {
         // btn q dispara ^ .nextLine ^ fieldset v .box-items
         const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
         parnt.insertAdjacentHTML( "beforeend", e_Item_new );
@@ -146,7 +155,7 @@
         // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
         let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
         lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
-        f_populateSelects(lastItem);
+        f_initSelects( lastItem );
     };
 
     // ! WIP I belive this f is a bit dangerous since it makes all instances ids "dynamical"
@@ -163,7 +172,7 @@
         };
     };
 
-    function f_updateNewInstance(instance) {
+    function f_updateNewInstance( instance ) {
         // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
         const count =  _Q.qS( "#v-planner .box-instances" ).childElementCount;
         instance.id = `p-instance-${count}`;
@@ -172,7 +181,7 @@
         instance.querySelector( ".instance--num" ).textContent = ( count < 10 ) ? `0${count}` : count;
     };
 
-    function f_delInstance(evt) {
+    function f_delInstance( evt ) {
         // btn q dispara ^ .legend--align ^ fieldset ^ .instance
         _Q.qS( "#v-planner .box-instances" ).removeChild(evt.target.parentNode.parentNode.parentNode);
         f_updateInstances();
@@ -187,49 +196,54 @@
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
         instance.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
-        f_populateSelects(instance);
-        f_updateNewInstance(instance);
+        f_initSelects( instance );
+        f_updateNewInstance( instance );
     };
 
     function f_initialSetup() {
         // A los botones iniciales les agrega la funcion correspondiente para agregar o borrar
         // El uso de #v-planner es por GPS CSS
-        for ( const btn of _Q.qSA( "#v-planner .item--part.btn.delItem" ) )
-            btn.addEventListener( "click", f_delItem );
+        /* ! WIP Hay varios errores aqui se tendiran q agregar las sub secciones .box-instances o div.box-instances, .action y .box-instances para q los selectores no afecten otras partes q puedan tener clases similares pero me tira error o ignora. */
+                // for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
+                //     btn.addEventListener( "click", f_addItem );
+                    // Es un ejemplo del metodo q usaba antes q por alguna razon fallaba, revisar bien la especificacion de los querySelector.
+        for ( const instance of _Q.qSA( "#v-planner .instance") ) {
+            const addItem  = instance.querySelector( ".addItem" );
+            addItem.addEventListener( "click", f_addItem );
 
-        for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
-            btn.addEventListener( "click", f_addItem );
+            const delInstance  = instance.querySelector( ".delInstance" );
+            delInstance.addEventListener( "click", f_delInstance );
 
-        for ( const btn of _Q.qSA( "#v-planner .delInstance" ) )
-            btn.addEventListener( "click", f_delInstance );
+            for ( const item of instance.querySelectorAll( ".item.live" ) ) {
+                // for ( const part of item.querySelectorAll( ".item--part" ) ) {
+                // };
+                const delItem  = item.querySelector( ".delItem" );
+                delItem.addEventListener( "click", f_delItem );
+
+                f_initSelects( item );
+                // Es coguigo q fue reemplazado pero me habia quedado muy lindo
+                    // const cat = item.querySelector( ".category" );
+                    // cat.addEventListener( "change", () => {
+                    //         item.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( item.querySelector( ".item--part:enabled.category" ).value );
+                    //     }
+                    // );
+            };
+        };
 
         for ( const btn of _Q.qSA( "#v-planner .addInstance" ) )
             btn.addEventListener( "click", f_addInstance );
-
-        // Popular Selects
-        for ( const sel of _Q.qSA( "#v-planner .item--part:enabled.category" ) ) {
-            for ( const cat in o_Planner.categories ) {
-                sel.innerHTML += `<option value="${cat}">${cat}</option>`;
-            };
-        };
-
-        for ( const sel of _Q.qSA( "#v-planner .item--part:enabled.discount" ) ) {
-            for ( const val of o_Planner.discounts ) {
-                sel.innerHTML += `<option value="${val}">${val}%</option>`;
-            };
-        };
     };
 /* +Functions */
 
 
 /* +Header */
-    f_loadData();
+    f_loadData(); // ! WIP Mejor disparar esta funcion con un evento para garantizar q este todo list
+    // ! WIP something more reliable or set the jQuery script tag better
+        // load?
     // f_initialSetup();
-    $( document ).ready( f_initialSetup );
-    // $( document ).ready( function() {
-    //     f_loadData(); // no deberia necesitar doc ready
-    //     f_initialSetup();
-    // });
+    $( document ).ready( function() {
+        f_initialSetup();
+    });
 /* +Header */
 
 

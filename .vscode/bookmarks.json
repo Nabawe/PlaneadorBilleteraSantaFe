@@ -64,13 +64,18 @@
 			"path": "js/classes/v-planner.js",
 			"bookmarks": [
 				{
-					"line": 106,
-					"column": 0,
+					"line": 238,
+					"column": 13,
 					"label": ""
-				},
+				}
+			]
+		},
+		{
+			"path": "index.html",
+			"bookmarks": [
 				{
-					"line": 208,
-					"column": 26,
+					"line": 109,
+					"column": 31,
 					"label": ""
 				}
 			]

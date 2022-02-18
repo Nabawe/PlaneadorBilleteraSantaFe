@@ -39,7 +39,7 @@
                 </div>
                 <div class="box-items">
                   <!-- Facilita el agregar nuevos items y puede q sea necesaria para programar el Drag & Drop -->
-                  <div class="item">
+                  <div class="item live">
                     <!-- ? required Attribute -->
                     <!-- Si falla usar slider y JS -->
                     <button class="item--part btn yDrag" type="button"></button>
@@ -52,10 +52,7 @@
                     <input type="text" class="item--part description" name="description">
                     <!-- set max min inputmode attributes -->
                     <input type="number" class="item--part rawPrice" name="rawPrice">
-                    <select class="item--part discount" name="discount">
-                      <!-- <option value="30" selected>30%</option> -->
-                      <!-- <option value="30">Populate by Code</option> -->
-                    </select>
+                    <select class="item--part discount" name="discount"></select>
                     <!-- Set Attributes readonly="readonly" -->
                     <output class="item--part finalPrice" name="finalPrice"></output>
                     <button class="item--part btn delItem" type="button"></button>
@@ -110,7 +107,7 @@
     <script type="text/javascript" src="js/aliaces.js"></script>
     <script type="text/javascript" src="data/messages.js"></script>
     <!-- <script type="text/javascript" src="data/categories.js"></script> -->
-    <script type="text/javascript" src="js/classes/v-planner.js"></script>
+    <script defer type="text/javascript" src="js/classes/v-planner.js"></script>
     <script type="text/javascript" src="js/model.js"></script>
     <script type="text/javascript" src="js/view.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
