@@ -19,10 +19,6 @@
 <body id="p-index">
   <main>
     <div id="v-planner">
-      <!-- ! WIP la separacion entre v-planner y form era por si habia algo más q no fuera el form pero no lo veo sucediendo, deberia conciderar borrar la div, darle el id a form de v-planner y cambiar el .styl y cuando coloque el catEditor ponerlo afuera -->
-      <!-- WIP set action? -->
-      <!-- class="" action="" -->
-      <!-- onsubmit="return false;" failsafe en caso de q algo causara un submit -->
       <form id="v-planner--form" onsubmit="return false;">
         <div class="header">
           <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="5000" readonly>
@@ -32,35 +28,24 @@
           <div class="box-instances">
             <div id="p-instance-1" class="instance">
               <fieldset name="p-instance-1">
-                <!-- Otras posibles palabras serian Instancia, Movimiento, Plazo, Desenbolzo, Previcion, Cuota -->
                 <div class="legend--align">
                   <legend>Movimiento - <span class="instance--num">01</span></legend>
                   <button class="delInstance" type="button"></button>
                 </div>
                 <div class="box-items">
-                  <!-- Facilita el agregar nuevos items y puede q sea necesaria para programar el Drag & Drop -->
                   <div class="item live">
-                    <!-- ? required Attribute -->
-                    <!-- Si falla usar slider y JS -->
                     <button class="item--part live btn yDrag" type="button"></button>
-                    <!-- <img class="item--part live btn yDrag"> -->
                     <input type="number" class="item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
                     <select class="item--part live category" name="category" maxlength="20">
-                      <!-- <option value="normal">12345678901234567890</option> -->
                     </select>
-                    <!-- set maxlength spellcheck autofocus Attributes -->
-                    <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
                     <input type="text" class="item--part live description" name="description" maxlength="30">
-                    <!-- set max min inputmode attributes -->
                     <input type="number" class="item--part live rawPrice" name="rawPrice" maxlength="10">
                     <select class="item--part live discount" name="discount" maxlength="4"></select>
-                    <!-- Set Attributes readonly="readonly" -->
                     <output class="item--part live finalPrice" name="finalPrice"></output>
                     <button class="item--part live btn delItem" type="button"></button>
                   </div>
                 </div>
                 <div class="item nextLine">
-                  <!-- ! WIP ? Tendria q agregarle live a addItem -->
                   <button class="item--part btn addItem" type="button"></button>
                   <input type="number" class="item--part order" value="00" disabled>
                   <select class="item--part category" disabled>
@@ -76,8 +61,6 @@
                 </div>
               </fieldset>
               <div class="subResults">
-                <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
-                <!-- maxlength="10" -->
                 <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
                 <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="" readonly>
                 <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
@@ -106,16 +89,9 @@
 
   <!-- +Scripts -->
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
-    <!-- ? Funcionara el checkeo de integridad en archivos locales?. -->
     <script type="text/javascript" src="libs/jQuery/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="js/aliaces.js"></script>
-    <script type="text/javascript" src="data/messages.js"></script>
-    <!-- <script type="text/javascript" src="data/categories.js"></script> -->
     <script defer type="text/javascript" src="js/classes/v-planner.js"></script>
-    <script type="text/javascript" src="js/model.js"></script>
-    <script type="text/javascript" src="js/view.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <!-- <script type="text/javascript" src="js/cheatsheet.js"></script> -->
   <!-- +Scripts -->
 </body>
 </html>
