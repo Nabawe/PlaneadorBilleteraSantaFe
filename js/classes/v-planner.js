@@ -44,11 +44,11 @@
             <div class="box-items">
                 <div class="item">
                     <button class="item--part btn yDrag" type="button"></button>
-                    <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
-                    <select class="item--part category" name="category"></select>
-                    <input type="text" class="item--part description" name="description">
-                    <input type="number" class="item--part rawPrice" name="rawPrice">
-                    <select class="item--part discount" name="discount"></select>
+                    <input type="number" class="item--part order" name="order" min="00" max="99" maxlength="2" value="00">
+                    <select class="item--part category" name="category" maxlength="20"></select>
+                    <input type="text" class="item--part description" name="description" maxlength="30">
+                    <input type="number" class="item--part rawPrice" name="rawPrice" maxlength="10">
+                    <select class="item--part discount" name="discount" maxlength="4"></select>
                     <output class="item--part finalPrice" name="finalPrice"></output>
                     <button class="item--part btn delItem" type="button"></button>
                 </div>
@@ -108,8 +108,9 @@
             for ( const k of o_Planner.categories.keys() )
                 cat.innerHTML += `<option value="${k}">${k}</option>`;
 
-            cat.addEventListener( "change", () => {
-                cat.parentNode.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( cat.value );
+            cat.addEventListener( "change", ( evt ) => {
+                    cat.parentNode.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( cat.value );
+                    f_calcItemFinalPrice( evt );
                 }
             );
         };
@@ -155,6 +156,9 @@
         // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
         let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
         lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
+        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcItemFinalPrice );
+        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcItemFinalPrice );
+
         f_initSelects( lastItem );
     };
 
@@ -196,6 +200,10 @@
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
         instance.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
+
+        instance.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcItemFinalPrice );
+        instance.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcItemFinalPrice );
+
         f_initSelects( instance );
         f_updateNewInstance( instance );
     };
@@ -217,11 +225,21 @@
             for ( const item of instance.querySelectorAll( ".item.live" ) ) {
                 // for ( const part of item.querySelectorAll( ".item--part" ) ) {
                 // };
+                const rawPrice = item.querySelector( ".rawPrice" );
+                rawPrice.addEventListener( "change", f_calcItemFinalPrice );
+
+                const discount = item.querySelector( ".discount" );
+                discount.addEventListener( "change", f_calcItemFinalPrice );
+
                 const delItem  = item.querySelector( ".delItem" );
                 delItem.addEventListener( "click", f_delItem );
 
                 f_initSelects( item );
-                // Es coguigo q fue reemplazado pero me habia quedado muy lindo
+
+                // $(rawPrice).trigger( "change" );
+                    // Requeriria un rawPrice inicial
+
+                // Lo siguiente es codigo q fue reemplazado pero me habia quedado muy lindo
                     // const cat = item.querySelector( ".category" );
                     // cat.addEventListener( "change", () => {
                     //         item.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( item.querySelector( ".item--part:enabled.category" ).value );
@@ -233,6 +251,36 @@
         for ( const btn of _Q.qSA( "#v-planner .addInstance" ) )
             btn.addEventListener( "click", f_addInstance );
     };
+
+    // onchange
+    function f_calcItemFinalPrice( evt ) {
+        const item = evt.target.parentNode;
+        item.querySelector( ".finalPrice" ).value = ( item.querySelector( ".rawPrice" ).value * ( ( 100 - item.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
+    };
+
+    function f_calc() {
+
+    };
+
+    // LLamarla onchange
+    // function f_validate( evt ) {
+    //     for ( const instance of _Q.qSA( "#v-planner .instance") ) {
+    //         const addItem  = instance.querySelector( ".addItem" );
+    //         addItem.addEventListener( "click", f_addItem );
+
+    //         const delInstance  = instance.querySelector( ".delInstance" );
+    //         delInstance.addEventListener( "click", f_delInstance );
+
+    //         for ( const item of instance.querySelectorAll( ".item.live" ) ) {
+    //             // for ( const part of item.querySelectorAll( ".item--part" ) ) {
+    //             // };
+    //             const delItem  = item.querySelector( ".delItem" );
+    //             delItem.addEventListener( "click", f_delItem );
+
+    //             f_initSelects( item );
+    //         };
+    //     };
+    // };
 /* +Functions */
 
 
@@ -250,6 +298,8 @@
 
 // La carga de categories.json y otros archivos definibles por el usuario q tengan una definicion como categories = f_validate(user_provided.json) || default_categories.json
 // !!!!!!! Al agregar items y tags crear con JS CSS q use addContent a una clase, entonces el addItem, addIntance, del btns, y la creacion de categorias solo tienen q agregar lo minimo y luego CSS se encarga del resto.
+// Hay 3 niles, inicio de la app, nivel instancia, nivel item
+// Mas q usar un boton calcular seria más interesante q se dispare un evento "nums changed" y calcula
 
 
 /* +SOURCES */

@@ -1,8 +1,9 @@
-{
-    "Comida":               "30",
-    "Educación":            "30",
-    "Electrodomésticos":    "15",
-    "Entretenimiento":      "25",
-    "Restoranes y Bares":   "30",
-    "Tecnología":           "20"
-}
+[
+    ["Generica",             30],
+    ["Comida",               30],
+    ["Educación",            30],
+    ["Electrodomésticos",    15],
+    ["Entretenimiento",      25],
+    ["Restoranes y Bares",   25],
+    ["Tecnología",           20]
+]

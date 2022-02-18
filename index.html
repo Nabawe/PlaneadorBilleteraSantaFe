@@ -43,16 +43,16 @@
                     <!-- ? required Attribute -->
                     <!-- Si falla usar slider y JS -->
                     <button class="item--part btn yDrag" type="button"></button>
-                    <input type="number" class="item--part order" name="order" min="00" max="99" value="00">
-                    <select class="item--part category" name="category">
+                    <input type="number" class="item--part order" name="order" min="00" max="99" maxlength="2" value="00">
+                    <select class="item--part category" name="category" maxlength="20">
                       <!-- <option value="normal">12345678901234567890</option> -->
                     </select>
                     <!-- set maxlength spellcheck autofocus Attributes -->
                     <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
-                    <input type="text" class="item--part description" name="description">
+                    <input type="text" class="item--part description" name="description" maxlength="30">
                     <!-- set max min inputmode attributes -->
-                    <input type="number" class="item--part rawPrice" name="rawPrice">
-                    <select class="item--part discount" name="discount"></select>
+                    <input type="number" class="item--part rawPrice" name="rawPrice" maxlength="10">
+                    <select class="item--part discount" name="discount" maxlength="4"></select>
                     <!-- Set Attributes readonly="readonly" -->
                     <output class="item--part finalPrice" name="finalPrice"></output>
                     <button class="item--part btn delItem" type="button"></button>
