@@ -130,8 +130,18 @@
     };
 
     function f_delItem( evt ) {
+        const item = evt.target.parentNode;
+        // ! WIP cambiar por animaciones de CSS
+        $( item ).animate({
+            opacity: '0.5'
+        }, 500).slideUp(500,
+            (( item ) => { item.parentNode.removeChild( item ) })(item)
+            // ( evt ) => { evt.target.parentNode.parentNode.removeChild( evt.target.parentNode ) }
+            // ( evt ) => evt.target.parentNode.parentNode.removeChild( evt.target.parentNode )
+        );
         // btn q dispara ^ .item ^ .box-items
-        evt.target.parentNode.parentNode.removeChild(evt.target.parentNode);
+        // evt.target.parentNode.parentNode.removeChild( evt.target.parentNode );
+        f_calcInstance( evt, item );
     };
 
     function f_addItem( evt ) {
@@ -149,6 +159,9 @@
         lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstance );
 
         f_initSelects( lastItem );
+
+        // ! WIP cambiar por animaciones de CSS
+        $( lastItem ).hide().fadeIn(500);
     };
 
     // ! WIP I belive this f is a bit dangerous since it makes all instances ids "dynamical"
@@ -176,8 +189,9 @@
 
     function f_delInstance( evt ) {
         // btn q dispara ^ .legend--align ^ fieldset ^ .instance
-        _Q.qS( "#v-planner .box-instances" ).removeChild(evt.target.parentNode.parentNode.parentNode);
+        _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.parentNode.parentNode.parentNode );
         f_updateInstances();
+        f_calcInstance( evt );
     };
 
     function f_addInstance() {
@@ -244,9 +258,11 @@
         _Q.qS( "#v-planner .actions .reset").addEventListener( "click", f_reset );
     };
 
-    // onchange
-    function f_calcInstance( evt ) {
-        const trgItem = evt.target.parentNode;
+    // On .rawPrice OR .discount change
+    // On .instance OR .item delete
+    // Or manually specifing aux as an .item
+    function f_calcInstance( evt, aux ) {
+        const trgItem = aux || evt.target.parentNode;
         trgItem.querySelector( ".finalPrice" ).value = ( trgItem.querySelector( ".rawPrice" ).value * ( ( 100 - trgItem.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
 
         // item ^ box-items ^ fieldset ^ instance
