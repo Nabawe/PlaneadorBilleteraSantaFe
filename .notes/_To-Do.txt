@@ -69,7 +69,7 @@
 
 ! [critical fix inconsistencies] Implement GPS CSS Sections or something similar
     - Las clases addItem delItem addInstance delInstance tendrian q renombrarse a algo como Item--del o Item--delBtn o Item--btn-del
-    - v-planner.js hay demaciado uso de parentNode q haria dificil de adaptar si cambia la estructura
+    - v-planner.js hay demaciado uso de parentNode q haria dificil de adaptar si cambia la estructura --> usar .closest( "Query" )
 
 
 ! [critical] Q todo lo grafico se refleje en un objeto, en realidad al revez (objeto -> grafico)

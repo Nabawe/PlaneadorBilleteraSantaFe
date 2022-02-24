@@ -154,6 +154,18 @@
     display: flex
     flex-flow: row $wrap
     align-items: center
+
+  // WIP La animacion no deberia ser una escala sino cambiar el sentido de las sombras internas y o externas para q parezca precionado
+  // &:focus:active // WIP focus does not seam to trigger on keydown, neither hover
+    // Se podria arreglar agregando los eventos keydown y keyup, q apliquen una CSS class con la animacion https://codepen.io/jenovs/pen/VJmyNq
+  // To style links appropriately, put the :active rule after all other link-related rules, as defined by the LVHA-order: :link — :visited — :hover — :active. - https://developer.mozilla.org/en-US/docs/Web/CSS/:active
+  $m-btn-animations( $bg-c = $colors.highlight, $lightenV = 30% )
+    &:hover
+      background-color: lighten( $bg-c, $lightenV )
+    &:hover:active
+      transform: scale(0.9)
+      background-color: lighten( $bg-c, $lightenV )
+
 /* +Mixins */
 
 
@@ -213,6 +225,9 @@
     width: 90%
     min-width: fit-content
     $m-colAlign()
+
+    .btn
+      transition: 150ms
 
     form
       width: 90%
@@ -300,6 +315,7 @@
           background-position: center
           border-radius: 10%
           border: $theme.v-planner.actions.addInstance.border
+          $m-btn-animations( $theme.v-planner.actions.addInstance.bg-c )
         .reset
           background-color $theme.v-planner.actions.reset.bg-c
 
@@ -375,6 +391,7 @@
             // float: right
             // position: relative
             z-index: 2
+            $m-btn-animations( $theme.v-planner.form.item--delItem--bg-c )
 
         // ! WIP filosofar sobre q tendria q ser el item en si, su container y si .item--part no tendria q existir y tendria q ser usado como .item .part
           // las propiedades del Contenedor y Alineacion tienen q estar separadas del concepto q representa .item asi estas no son aplicadas a sus partes
@@ -439,6 +456,7 @@
             border: $theme.v-planner.form.item--delItem--border
             // position: relative // sometimes z-index needs a position prop defined to other value than static but it seams it was not the case
             z-index: 2 // WIP Needed so that .legend--align does not adsorb clicks
+            $m-btn-animations( $theme.v-planner.form.item--delItem--bg-c )
           &.addItem
             width: $ref.v-planner.btn.w
             height: $ref.v-planner.btn.h
@@ -451,6 +469,7 @@
             background-position: center
             border-radius: 10%
             border: $theme.v-planner.form.item--addItem--border
+            $m-btn-animations( $theme.v-planner.form.item--addItem--bg-c )
           &:focus
             outline: $theme.v-planner.form.item--outline
           &:disabled

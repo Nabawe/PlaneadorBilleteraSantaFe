@@ -91,6 +91,9 @@ main {
   flex-flow: column nowrap;
   align-items: center;
 }
+#v-planner .btn {
+  transition: 150ms;
+}
 #v-planner form {
   width: 90%;
   min-width: -webkit-fit-content;
@@ -189,6 +192,13 @@ main {
   border-radius: 10%;
   border: 1px solid #f6ecdc;
 }
+#v-planner form .actions .addInstance:hover {
+  background-color: #4d90d4;
+}
+#v-planner form .actions .addInstance:hover:active {
+  transform: scale(0.9);
+  background-color: #4d90d4;
+}
 #v-planner form .actions .reset {
   background-color: #e8784d;
 }
@@ -271,6 +281,13 @@ main {
   align-self: flex-end;
   z-index: 2;
 }
+#v-planner form .instance .legend--align .delInstance:hover {
+  background-color: #f26974;
+}
+#v-planner form .instance .legend--align .delInstance:hover:active {
+  transform: scale(0.9);
+  background-color: #f26974;
+}
 #v-planner form .instance .item {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -340,6 +357,13 @@ main {
   border: 1px solid #231f20;
   z-index: 2;
 }
+#v-planner form .instance .item--part.delItem:hover {
+  background-color: #f26974;
+}
+#v-planner form .instance .item--part.delItem:hover:active {
+  transform: scale(0.9);
+  background-color: #f26974;
+}
 #v-planner form .instance .item--part.addItem {
   width: 3.5ch;
   height: 4.2ch;
@@ -351,6 +375,13 @@ main {
   background-position: center;
   border-radius: 10%;
   border: 1px solid #231f20;
+}
+#v-planner form .instance .item--part.addItem:hover {
+  background-color: #ffe37c;
+}
+#v-planner form .instance .item--part.addItem:hover:active {
+  transform: scale(0.9);
+  background-color: #ffe37c;
 }
 #v-planner form .instance .item--part:focus {
   outline: 2px solid #f6ecdc;

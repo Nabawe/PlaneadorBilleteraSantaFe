@@ -68,8 +68,8 @@
 /* +Functions */
     function f_loadData() {
         $.getJSON( '/data/defaults/categories.json',
-            ( data, status ) => {
-                if ( status === "success" ) {
+            ( data, stat ) => {
+                if ( stat === "success" ) {
                     o_Planner.categories = new Map( data );
                     // Mecanismo para filtrar descuentos repetidos
                     let t = [];
@@ -130,23 +130,38 @@
     };
 
     function f_delItem( evt ) {
-        const item = evt.target.parentNode;
+        const item = evt.target.closest( ".item" );
         // ! WIP cambiar por animaciones de CSS
         $( item ).animate({
             opacity: '0.5'
-        }, 500).slideUp(500,
-            (( item ) => { item.parentNode.removeChild( item ) })(item)
-            // ( evt ) => { evt.target.parentNode.parentNode.removeChild( evt.target.parentNode ) }
-            // ( evt ) => evt.target.parentNode.parentNode.removeChild( evt.target.parentNode )
+        }, 500)
+            .slideUp(500, (
+                // The callback is not sent any arguments, but this is set to the DOM element being animated. If multiple elements are animated, it is important to note that the callback is executed once per matched element, not once for the animation as a whole.
+                    // lo manda como un jQuery element
+                    // La Doc dice q no se le manda arg alguno pero estoy pudiendo usar evt bien
+                function ( jQItem ) {
+                    // $( jQItem ).remove();
+                    const trgItem = evt.target.closest( ".item" );
+                    // btn q dispara ^ .item ^ .box-items
+                    // trgItem.parentNode.removeChild( trgItem );
+                    /* Es importante recordar q el item es instantaneamente sacado del DOM pero no es borrado hasta q, se lo deje de referenciar, el garbage colerctor lo colecte. */
+                    for ( kid of trgItem.children )
+                        kid.value = 0
+
+                    f_calcInstance( evt );
+                    // Como el item queda flotando en la memoria de una manera insierta primero lo "cero", luego recalculo y finalmente ejecuto el borrar.
+                    trgItem.remove();
+                }
+            ) ( evt )
         );
         // btn q dispara ^ .item ^ .box-items
         // evt.target.parentNode.parentNode.removeChild( evt.target.parentNode );
-        f_calcInstance( evt, item );
     };
 
     function f_addItem( evt ) {
         // btn q dispara ^ .nextLine ^ fieldset v .box-items
-        const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
+        // const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
+        const parnt = evt.target.closest( "fieldset" ).querySelector( ".box-items" );
         parnt.insertAdjacentHTML( "beforeend", e_Item_new );
         // ? Habra forma de selecionar los items nuevos? hay algun evento o pseudo? ya q insertAdjacentHTML no tiene retorno
             // for ( const btn of parnt.querySelectorAll( "#v-planner .item--part.btn.delItem" ) )
@@ -189,7 +204,8 @@
 
     function f_delInstance( evt ) {
         // btn q dispara ^ .legend--align ^ fieldset ^ .instance
-        _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.parentNode.parentNode.parentNode );
+        // _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.parentNode.parentNode.parentNode );
+        _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.closest( ".instance" ) );
         f_updateInstances();
         f_calcInstance( evt );
     };
@@ -258,40 +274,7 @@
         _Q.qS( "#v-planner .actions .reset").addEventListener( "click", f_reset );
     };
 
-    // On .rawPrice OR .discount change
-    // On .instance OR .item delete
-    // Or manually specifing aux as an .item
-    function f_calcInstance( evt, aux ) {
-        const trgItem = aux || evt.target.parentNode;
-        trgItem.querySelector( ".finalPrice" ).value = ( trgItem.querySelector( ".rawPrice" ).value * ( ( 100 - trgItem.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
-
-        // item ^ box-items ^ fieldset ^ instance
-        const instance = trgItem.parentNode.parentNode.parentNode;
-        let t = 0;
-        for ( const item of instance.querySelectorAll( ".live.finalPrice" ) ) {
-            t += +item.value;
-        };
-        instance.querySelector( ".subSpent" ).value = t.toFixed( 2 );
-
-        t = 0;
-        for ( const item of instance.querySelectorAll( ".live.rawPrice" ) ) {
-            t += +item.value;
-        };
-        instance.querySelector( ".subRefund" ).value = ( t - instance.querySelector( ".subSpent" ).value ).toFixed( 2 );
-
-        // instance.querySelector( ".subSaldoPlusPagos" ).value = _Q.qS( "#v-planner .monthlyRefund" ).value - instance.querySelector( ".subRefund" ).value;
-    };
-
-    function f_reset() {
-        const box = _Q.qS( "#v-planner .box-instances" );
-        console.log( box.children );
-        // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
-        for ( const kid of box.querySelectorAll( ".instance" ) )
-            box.removeChild( kid );
-        f_addInstance();
-    };
-
-    function f_calc() {
+    function f_calcTotals() {
         let t = 0;
         for ( const sub of _Q.qSA( "#v-planner .subSpent" ) )
             t += +sub.value;
@@ -304,6 +287,7 @@
         // _Q.qS( "#v-planner .totals .totalRefund").value = t;
         $( "#v-planner .totals .totalRefund" ).val( t );
 
+        // Separar el primer subSaldoPlusPagos q opera usando monthlyRefund
         $( "#v-planner #p-instance-1 .subSaldoPlusPagos" ).val(
             ( $( "#v-planner .monthlyRefund" ).val() - $( "#v-planner #p-instance-1 .subRefund" ).val() ).toFixed( 2 )
         );
@@ -318,6 +302,47 @@
         };
 
         _Q.qS( "#v-planner .totals .totalSaldoPlusPagos").value = box.children[ ( box.childElementCount - 1 ) ].querySelector( ".subSaldoPlusPagos" ).value;
+    };
+
+    // On .rawPrice OR .discount change
+    // On .instance OR .item delete
+    // Or manually specifing aux as an .item
+    function f_calcInstance( evt, aux ) {
+        const trgItem = aux || evt.target.closest( ".item" );
+        trgItem.querySelector( ".finalPrice" ).value = ( trgItem.querySelector( ".rawPrice" ).value * ( ( 100 - trgItem.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
+
+        // item ^ box-items ^ fieldset ^ instance
+        // const instance = trgItem.parentNode.parentNode.parentNode;
+        const instance = trgItem.closest( ".instance" );
+        let t = 0;
+        for ( const item of instance.querySelectorAll( ".live .rawPrice" ) ) {
+            t += +item.value;
+        };
+        instance.querySelector( ".subSpent" ).value = t.toFixed( 2 );
+
+        t = 0;
+        for ( const item of instance.querySelectorAll( ".live .finalPrice" ) ) {
+            t += +item.value;
+        };
+        instance.querySelector( ".subRefund" ).value = ( instance.querySelector( ".subSpent" ).value - t ).toFixed( 2 );
+
+        // instance.querySelector( ".subSaldoPlusPagos" ).value = _Q.qS( "#v-planner .monthlyRefund" ).value - instance.querySelector( ".subRefund" ).value;
+
+        f_calcTotals();
+    };
+
+    function f_reset() {
+        // const box = _Q.qS( "#v-planner .box-instances" );
+        // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
+        // for ( const kid of box.querySelectorAll( ".instance" ) )
+        //     box.removeChild( kid );
+        for ( const kid of _Q.qS( "#v-planner .box-instances" ).querySelectorAll( ".instance" ) )
+            kid.remove();
+        f_addInstance();
+    };
+
+    function f_calc() {
+
     };
 
     // LLamarla onchange
