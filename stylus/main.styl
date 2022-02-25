@@ -10,7 +10,7 @@
 /* +Vars */
   // Colors, Sizes, Skins (degrades), Fonts
   $colors = {
-    primary:        #FFF,       // White
+    primary:        #FFF,       // White              WIP Mejorar el uso de primary o cambiar
     accent:         #277ABC,    // Star Command Blue
     secondary:      #111C4E,    // Space Cadet
     tertiary:       #26619C     // Lapiz Lazuli
@@ -83,7 +83,10 @@
     v-planner: {
       header: {
         monthlyRefund: {
-          bg-c: $colors.success
+          bg-c: $colors.tertiary
+        },
+        funds: {
+          bg-c: $colors.primary
         }
       }
       // ! WIP es incorrecto usar form aqui, tendria q ser main sino abria q meter header footer dentro
@@ -97,9 +100,9 @@
         fieldset--border: $ref.v-planner.border-w.def double $colors.border-light,
         legend--bg-c: $colors.tertiary,
         legend--border: $ref.v-planner.border-w.def solid $colors.border-dark,
-        subSaldoPlusPagos--bg-c: $colors.success,
+        subSaldoPlusPagos--bg-c: $colors.tertiary,
         subSaldoPlusPagos--border: none,
-        subRefund--bg-c: $colors.tertiary,
+        subRefund--bg-c: $colors.success,
         subRefund--border: none,
         subSpent--bg-c: $colors.quaternary,
         subSpent--border: none,
@@ -126,11 +129,11 @@
         }
       },
       totals: {
-        totalSaldoPlusPagos: {
-          bg-c: $colors.success
-        },
-        totalRefund: {
+        PuntosPlusPagosLeft: {
           bg-c: $colors.tertiary
+        },
+        purchasePower: {
+          bg-c: $colors.success
         },
         totalSpent: {
           bg-c: $colors.quaternary
@@ -269,6 +272,8 @@
           font-size: 1rem
           text-align: center
           padding: 0rem 0rem 0.1rem 0rem // ? WIP Search for a better solution for vertical alignment (vertical-align didn' work)
+          background-color: $theme.v-planner.header.funds.bg-c
+          // color: $theme.v-planner.form.fg-c // WIP definir con una variable
           border: none
           outline: none
 
@@ -337,10 +342,10 @@
           color: $theme.v-planner.form.fg-c
           border: none
           outline: none
-        .totalSaldoPlusPagos
-          background-color: $theme.v-planner.totals.totalSaldoPlusPagos.bg-c
-        .totalRefund
-          background-color: $theme.v-planner.totals.totalRefund.bg-c
+        .PuntosPlusPagosLeft
+          background-color: $theme.v-planner.totals.PuntosPlusPagosLeft.bg-c
+        .purchasePower
+          background-color: $theme.v-planner.totals.purchasePower.bg-c
         .totalSpent
           background-color: $theme.v-planner.totals.totalSpent.bg-c
 

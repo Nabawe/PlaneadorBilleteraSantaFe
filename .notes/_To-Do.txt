@@ -26,6 +26,9 @@
 + [feature] Agregar link a pagina de Guia de Uso, Tips, FAQs
 
 
++ [feature] Add ? Button that shows Tutorial Overlay
+
+
 + HTML title, tabindex
 
 
@@ -90,6 +93,10 @@
 ! Use SRI (Sub Resourse Integrity) for jQuery
 
 
++ [modules reuse HTML] ver las tecnicas de Single Page AJAX para cargar pequeñas porciones de HTML q sean partes reusadas de paginas o como si fueran "objetos". Esto tiene muchisimos usos pero en especial permitiria trabajar en archivos .html comodamente.
+    Ya de por si estan instance e item para hacer esto.
+
+
 
 
 
@@ -107,5 +114,6 @@
 
 // ! Test parent.removeChild(child)
 // ! Test doing a for of localStorage, AfterClass de Javier creo q es el 10 lidia con cosas de Storage
+
 // ! Test JSON to save a function
     // Probar desde VSC y en el validador https://jsonformatter.curiousconcept.com/

@@ -137,7 +137,7 @@ main {
   font-size: 1rem;
   text-align: center;
   padding: 0rem 0rem 0.1rem 0rem;
-  background-color: #009240;
+  background-color: #26619c;
   color: #fff;
   border: none;
   outline: none;
@@ -146,6 +146,7 @@ main {
   font-size: 1rem;
   text-align: center;
   padding: 0rem 0rem 0.1rem 0rem;
+  background-color: #fff;
   border: none;
   outline: none;
 }
@@ -223,11 +224,11 @@ main {
   border: none;
   outline: none;
 }
-#v-planner form .totals .totalSaldoPlusPagos {
-  background-color: #009240;
-}
-#v-planner form .totals .totalRefund {
+#v-planner form .totals .PuntosPlusPagosLeft {
   background-color: #26619c;
+}
+#v-planner form .totals .purchasePower {
+  background-color: #009240;
 }
 #v-planner form .totals .totalSpent {
   background-color: #ed2939;
@@ -413,11 +414,11 @@ main {
 }
 #v-planner form .instance .subResults .subSaldoPlusPagos {
   align-self: flex-start;
-  background-color: #009240;
+  background-color: #26619c;
   border: none;
 }
 #v-planner form .instance .subResults .subRefund {
-  background-color: #26619c;
+  background-color: #009240;
   border: none;
 }
 #v-planner form .instance .subResults .subSpent {
