@@ -13,6 +13,10 @@
   <title>Calculadora para Billetera Santa Fe</title>
 
   <link href="css/main.css" type="text/css" rel="stylesheet">
+
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+  <!-- ? Funcionara el checkeo de integridad en archivos locales?. -->
+  <script type="text/javascript" src="libs/jQuery/jquery-3.6.0.min.js"></script>
 </head>
 
 
@@ -79,9 +83,9 @@
               <div class="subResults">
                 <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
                 <!-- maxlength="10" -->
-                <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
-                <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="" readonly>
-                <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
+                <input type="text"  class="subRefund" name="subRefund" title="Reintegro del Movimiento" value="" readonly>
+                <input type="text"  class="saldoPlusPagos" name="saldoPlusPagos" title="Variación del Saldo PlusPagos" value="" readonly>
+                <input type="text"  class="subSpent" name="subSpent" title="Variación de los Fondos Iniciales" value="" readonly>
               </div>
             </div>
           </div>
@@ -96,7 +100,7 @@
             <!-- maxlength="10" -->
             <input type="text"  class="PuntosPlusPagosLeft" name="PuntosPlusPagosLeft" title="Puntos Plus Pagos Restantes" value="" readonly>
             <input type="text"  class="purchasePower" name="purchasePower" title="Capacidad de Compra: ( Fondos + Puntos ) - Gastos" value="" readonly>
-            <input type="text"  class="totalSpent" name="totalSpent" title="Total Gastos" value="" readonly>
+            <input type="text"  class="fundsLeft" name="fundsLeft" title="Total Gastado" value="" readonly>
           </div>
         </div>
       </form>
@@ -106,9 +110,6 @@
   </main>
 
   <!-- +Scripts -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
-    <!-- ? Funcionara el checkeo de integridad en archivos locales?. -->
-    <script type="text/javascript" src="libs/jQuery/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="js/aliaces.js"></script>
     <script type="text/javascript" src="data/messages.js"></script>
     <!-- <script type="text/javascript" src="data/categories.js"></script> -->

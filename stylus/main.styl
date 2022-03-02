@@ -100,10 +100,10 @@
         fieldset--border: $ref.v-planner.border-w.def double $colors.border-light,
         legend--bg-c: $colors.tertiary,
         legend--border: $ref.v-planner.border-w.def solid $colors.border-dark,
-        subSaldoPlusPagos--bg-c: $colors.tertiary,
-        subSaldoPlusPagos--border: none,
-        subRefund--bg-c: $colors.success,
+        subRefund--bg-c: $colors.tertiary,
         subRefund--border: none,
+        saldoPlusPagos--bg-c: $colors.success,
+        saldoPlusPagos--border: none,
         subSpent--bg-c: $colors.quaternary,
         subSpent--border: none,
         item--border: $ref.v-planner.border-w.def solid $colors.topic-flag,
@@ -135,7 +135,7 @@
         purchasePower: {
           bg-c: $colors.success
         },
-        totalSpent: {
+        fundsLeft: {
           bg-c: $colors.quaternary
         }
       }
@@ -346,8 +346,8 @@
           background-color: $theme.v-planner.totals.PuntosPlusPagosLeft.bg-c
         .purchasePower
           background-color: $theme.v-planner.totals.purchasePower.bg-c
-        .totalSpent
-          background-color: $theme.v-planner.totals.totalSpent.bg-c
+        .fundsLeft
+          background-color: $theme.v-planner.totals.fundsLeft.bg-c
 
       .instance
         margin-bottom: $ref.v-planner.legend.h
@@ -497,13 +497,13 @@
             border-radius: 0px 0px 20px 20px
             border: none
             outline: none
-          .subSaldoPlusPagos
-            align-self: flex-start
-            background-color: $theme.v-planner.form.subSaldoPlusPagos--bg-c
-            border: $theme.v-planner.form.subSaldoPlusPagos--border
           .subRefund
+            align-self: flex-start
             background-color: $theme.v-planner.form.subRefund--bg-c
             border: $theme.v-planner.form.subRefund--border
+          .saldoPlusPagos
+            background-color: $theme.v-planner.form.saldoPlusPagos--bg-c
+            border: $theme.v-planner.form.saldoPlusPagos--border
           .subSpent
             align-self: flex-end
             background-color: $theme.v-planner.form.subSpent--bg-c

@@ -230,7 +230,7 @@ main {
 #v-planner form .totals .purchasePower {
   background-color: #009240;
 }
-#v-planner form .totals .totalSpent {
+#v-planner form .totals .fundsLeft {
   background-color: #ed2939;
 }
 #v-planner form .instance {
@@ -412,12 +412,12 @@ main {
   border: none;
   outline: none;
 }
-#v-planner form .instance .subResults .subSaldoPlusPagos {
+#v-planner form .instance .subResults .subRefund {
   align-self: flex-start;
   background-color: #26619c;
   border: none;
 }
-#v-planner form .instance .subResults .subRefund {
+#v-planner form .instance .subResults .saldoPlusPagos {
   background-color: #009240;
   border: none;
 }
