@@ -57,6 +57,9 @@
 + [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
 
 
++ Hacer aliaces para o_Planner.DOMNode.querySelector y o_Planner.DOMNode.querySelectorAll y conciderar borrar los de _Q.qS .qSA .qID
+
+
 ! set <script> s to the header, use defer or others
 
 

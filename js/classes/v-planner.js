@@ -145,6 +145,10 @@
                     // btn q dispara ^ .item ^ .box-items
                     // trgItem.parentNode.removeChild( trgItem );
                     /* Es importante recordar q el item es instantaneamente sacado del DOM pero no es borrado hasta q, se lo deje de referenciar, el garbage colerctor lo colecte. */
+                    if ( trgItem.closest( ".box-items" ).childElementCount === 1 ) {
+                        f_delInstance( evt );
+                        return
+                    };
                     for ( kid of trgItem.children )
                         kid.value = 0
 
@@ -184,7 +188,7 @@
         // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
         // const count =  _Q.qS( "#v-planner .box-instances" ).childElementCount;
         let y = 1;
-        for ( const instance of o_Planner.querySelectorAll( ".instance" ) ) {
+        for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             instance.id = `p-instance-${y}`;
             instance.querySelector( "fieldset" ).name = `p-instance-${y}`;
             // Si el valor del contador y es menor q 10 agregar un 0 al string
@@ -195,7 +199,7 @@
 
     function f_updateNewInstance( instance ) {
         // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
-        const count =  o_Planner.querySelector( ".box-instances" ).childElementCount;
+        const count =  o_Planner.DOMNode.querySelector( ".box-instances" ).childElementCount;
         instance.id = `p-instance-${count}`;
         instance.querySelector( "fieldset" ).name = `p-instance-${count}`;
         // Si el valor de count es menor q 10 agregar un 0 al string
@@ -205,13 +209,25 @@
     function f_delInstance( evt ) {
         // btn q dispara ^ .legend--align ^ fieldset ^ .instance
         // _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.parentNode.parentNode.parentNode );
-        o_Planner.querySelector( ".box-instances" ).removeChild( evt.target.closest( ".instance" ) );
+        const instance = evt.target.closest( ".instance" );
+        const instanceNum = +instance.querySelector( ".instance--num" ).textContent;
+        const box = instance.closest( ".box-instances" );
+        box.removeChild( instance );
+        if ( box.childElementCount === 0 ) {
+            f_addInstance();
+            return
+        };
         f_updateInstances();
-        f_calcInstances( evt ); // ! WIP ESTO ESTA MUY MAL YA Q EL CLOSEST de calInstance se puede ir para cualuiqer lado, y requiere q se le pase un item y no una instancia o el boton delInstance q esta afuera, no se si lo puse como debug
+        const newTarget = box.children[instanceNum] ?
+            box.children[instanceNum].querySelector( ".item.live" )
+        :
+            box.children[0].querySelector( ".item.live" )
+        ;
+        f_calcInstances( false, newTarget );
     };
 
     function f_addInstance() {
-        const box = o_Planner.querySelector( ".box-instances" );
+        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
         box.insertAdjacentHTML( "beforeend", e_Instance_new );
         // A los botones de la ultima .instance le agrega sus eventos
         const instance = box.children[ ( box.childElementCount - 1 ) ];
@@ -234,7 +250,7 @@
                 // for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
                 //     btn.addEventListener( "click", f_addItem );
                     // Es un ejemplo del metodo q usaba antes q por alguna razon fallaba, revisar bien la especificacion de los querySelector.
-        for ( const instance of o_Planner.querySelectorAll( ".instance" ) ) {
+        for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             const addItem  = instance.querySelector( ".addItem" );
             addItem.addEventListener( "click", f_addItem );
 
@@ -267,55 +283,28 @@
             };
         };
 
-        for ( const btn of o_Planner.querySelectorAll( ".addInstance" ) )
+        for ( const btn of o_Planner.DOMNode.querySelectorAll( ".addInstance" ) )
             btn.addEventListener( "click", f_addInstance );
 
-        o_Planner.querySelector( ".actions .calc").addEventListener( "click", f_calc );
-        o_Planner.querySelector( ".actions .reset").addEventListener( "click", f_reset );
-    };
+        o_Planner.DOMNode.querySelector( ".actions .calc" ).addEventListener( "click", f_calc );
+        o_Planner.DOMNode.querySelector( ".actions .reset" ).addEventListener( "click", f_reset );
 
-    function f_calcTotals() {
-        let t = 0;
-        for ( const sub of o_Planner.querySelectorAll( ".subSpent" ) )
-            t += +sub.value;
-        // _Q.qS( "#v-planner .totals .fundsLeft").value = t;
-        // $( "#v-planner .totals .fundsLeft" ).val( t );
-        o_Planner.querySelector( ".totals .fundsLeft" ).value = t;
-
-        t = 0;
-        for ( const sub of o_Planner.querySelectorAll( ".saldoPlusPagos" ) )
-            t += +sub.value;
-        // _Q.qS( "#v-planner .totals .purchasePower").value = t;
-        // $( "#v-planner .totals .purchasePower" ).val( t );
-        // $( o_Planner.querySelector ).$( ".totals .purchasePower" ).val( t );
-        // $( o_Planner.querySelector ".totals .purchasePower" ).val( t ); Casi seguro q esto es invalido
-        o_Planner.querySelector( ".totals .purchasePower" ).value = t;
-
-        // Separar el primer subRefund q opera usando monthlyRefund
-        // $( "#v-planner #p-instance-1 .subRefund" ).val(
-        //     ( $( "#v-planner .monthlyRefund" ).val() - $( "#v-planner #p-instance-1 .saldoPlusPagos" ).val() ).toFixed( 2 )
-        // );
-
-        // tmp = _Q.qSA( "#v-planner .box-instances .instance" );
-
-        // Operar en todos menos el primer subRefund
-        // const box = _Q.qS( "#v-planner .box-instances" );
-        // for ( let i = 1 ; i < box.childElementCount ; i++ ) {
-        //     console.log( "alert ", i );
-        //     const instancia = box.children[i];
-        //     instancia.querySelector( ".subRefund" ).value = ( box.children[ ( i - 1 ) ].querySelector( ".subRefund" ).value - instancia.querySelector( ".saldoPlusPagos" ).value ).toFixed( 2 );
-        // };
-
-        // _Q.qS( "#v-planner .totals .PuntosPlusPagosLeft").value = box.children[ ( box.childElementCount - 1 ) ].querySelector( ".subRefund" ).value;
+        // onchange buscan el primer item del planner y disparan calc
+        o_Planner.DOMNode.querySelector( ".monthlyRefund" ).addEventListener( "change", function(){
+            f_calcInstances( false, o_Planner.DOMNode.querySelector( ".item.live" ) );
+        } );
+        o_Planner.DOMNode.querySelector( ".funds" ).addEventListener( "change", function(){
+            f_calcInstances( false, o_Planner.DOMNode.querySelector( ".item.live" ) );
+        } );
     };
 
     // On .rawPrice OR .discount change
     // On .instance OR .item delete
     // Or manually specifing aux as an .item
     // Reads prev instance then mods current and post
-    // ! DEFINIR ARGUMENTOS ver si se puede armar para q tome un item en vez d evento
+    // ! WIP DEFINIR ARGUMENTOS ver si se puede armar para q tome un item en vez d evento
     function f_calcInstances( evt, aux ) {
-        const trgItem = aux || evt.target.closest( ".item" );
+        const trgItem = aux ? aux : evt.target.closest( ".item" );
         const trgInstance = trgItem.closest( ".instance" );
         const trgInstanceNum = +trgInstance.querySelector( ".instance--num" ).textContent;
 
@@ -330,7 +319,7 @@
 
         // Ciclo para la data necesaria de las Instancias anteriores
         // Por ahora solo usado para calcular sumRefund y PPPLeft
-        for ( let i = 0 ; i < trgInstanceNum ; i++ ) {
+        for ( let i = 1 ; i < trgInstanceNum ; i++ ) {
             const inst = box.children[i];
             sumRefund += +( inst.querySelector( ".subRefund" ).value );
         };
@@ -339,10 +328,10 @@
         let PPPLeft = o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value - sumRefund;
         PPPLeft = ( PPPLeft > 0 ) ? PPPLeft : 0;
 
-        for ( let i = trgInstanceNum ; i < box.childElementCount ; i++ ) {
+        for ( let i = ( trgInstanceNum - 1 ) ; i < box.childElementCount ; i++ ) {
             // const inst = planner.querySelector( `p-instance-${i}` );
             const inst = box.children[i];
-            const prevInst = box.children[ trgInstanceNum - 1 ];
+            const prevInst = box.children[ i - 1 ];
             let sumRawPrice = 0, sumFinalPrice = 0, d = 0, saldoPP = 0;
 
             for ( const field of inst.querySelectorAll( ".live .rawPrice" ) )
@@ -358,8 +347,11 @@
 
             // prevRefund & prevSaldoPP
             /* WIP posiblemente se podria codificar haciendo q este for inicie en la instancia anterio, pero muy posiblemente agregaria varios checkeos de si existe lo anterior o no, el objetivo seria intentar reducir la cantidad de querySelector necesarios */
-            if ( prevInst )
-                d = ( +( prevInst.querySelector( ".subRefund" ).value ) + +( prevInst.querySelector( ".saldoPlusPagos" ).value ) ) - sumRawPrice;
+            d = prevInst ?
+                ( +( prevInst.querySelector( ".subRefund" ).value ) + +( prevInst.querySelector( ".saldoPlusPagos" ).value ) ) - sumRawPrice
+            :
+                - sumRawPrice
+            ;
 
             // saldoPP = ( prevRefund + prevSaldoPP ) - sumRawPrice
             // saldoPP no puede ser menor a 0
@@ -376,78 +368,18 @@
         // .totals
         planner.querySelector( ".PuntosPlusPagosLeft" ).value = PPPLeft.toFixed( 2 );
 
+        let funds = +planner.querySelector( ".funds" ).value || 0;
         // fundsLeft = funds - sumSubSpent
         tmp = 0;
         for ( const field of planner.querySelectorAll( ".subSpent" ) )
             tmp += +field.value;
-        planner.querySelector( ".fundsLeft" ).value = ( planner.querySelector( ".funds" ) - tmp ).toFixed( 2 );
+        planner.querySelector( ".fundsLeft" ).value = ( funds - tmp ).toFixed( 2 );
 
         // purchasePower = funds - sumFinalPrice
         tmp = 0;
         for ( const field of planner.querySelectorAll( ".live .finalPrice" ) )
             tmp += +field.value;
-        planner.querySelector( ".purchasePower" ).value = ( planner.querySelector( ".funds" ) - tmp ).toFixed( 2 );
-
-
-
-
-
-
-
-
-
-        trgInstance.querySelector( ".subSpent" ).value = sumRawPrice.toFixed( 2 );
-        trgInstance.querySelector( ".subRefund" ).value = ( sumRawPrice - sumFinalPrice ).toFixed( 2 );
-        // trgInstance.querySelector( ".saldoPlusPagos" ).value = ( ( sumRawPrice - sumFinalPrice ) - PREVSUMRAWPRICE ).toFixed( 2 );
-
-
-
-
-
-
-
-
-
-        for ( const item of trgInstance.querySelectorAll( ".live .rawPrice" ) )
-            sumRawPrice += +item.value;
-        for ( const item of trgInstance.querySelectorAll( ".live .finalPrice" ) )
-            sumFinalPrice += +item.value;
-
-        trgInstance.querySelector( ".saldoPlusPagos" ).value = sumFinalPrice.toFixed( 2 );
-        trgInstance.querySelector( ".subRefund" ).value = ( sumRawPrice - sumFinalPrice ).toFixed( 2 );
-
-        // Calculos de la Primer Instancia
-        // ! Habria q cambiar todas las referencias a #v-planner por o_Planner.querySelector o All
-        if ( trgItem.matches( "#v-planner #p-instance-1 .item" ) ) {
-            trgItem.querySelector( ".subSpent" ).value = sumRawPrice.toFixed( 2 );
-        } else {
-            // Calculos para las otras instancias
-
-            // previously unutilized Puntos Plus Pagos
-            // Empieza usando los valores de la primera instancia
-            const puPPP = +( _Q.qS( "#v-planner #p-instance-1 .subRefund").value );
-            const box = _Q.qS( "#v-planner .box-instances" );
-            for ( let i = 1 ; i < box.childElementCount ; i++ ) {
-                const instancia = box.children[i];
-                puPPP += 0;
-                instancia.querySelector( ".subRefund" ).value = ( box.children[ ( i - 1 ) ].querySelector( ".subRefund" ).value - instancia.querySelector( ".saldoPlusPagos" ).value ).toFixed( 2 );
-            };
-
-            let t = 0;
-            for ( const item of trgInstance.querySelectorAll( ".live .rawPrice" ) )
-                t += +item.value;
-            trgInstance.querySelector( ".subSpent" ).value = t.toFixed( 2 );
-
-            // Re definir
-            // t = 0;
-            // for ( const item of trgInstance.querySelectorAll( ".live .finalPrice" ) )
-            //     t += +item.value;
-            // trgInstance.querySelector( ".saldoPlusPagos" ).value = ( trgInstance.querySelector( ".subSpent" ).value - t ).toFixed( 2 );
-        };
-
-
-
-        f_calcTotals();
+        planner.querySelector( ".purchasePower" ).value = ( funds - tmp ).toFixed( 2 );
     };
 
     function f_reset() {
@@ -455,7 +387,7 @@
         // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
         // for ( const kid of box.querySelectorAll( ".instance" ) )
         //     box.removeChild( kid );
-        for ( const kid of o_Planner.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
+        for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
             kid.remove();
         f_addInstance();
         /* !!! WIP Se necesita algo para determinar q realmente se halla borrado todo ya q sino no seria un comienzo de 0 verdadero, sino hacer el proceso de colocar todo en 0 antes. O verificar correctamente si los proximos calculos podrian levantar los valores fantasmas.
