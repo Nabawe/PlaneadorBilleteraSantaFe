@@ -352,7 +352,7 @@
             d = prevInst ?
                 ( +( prevInst.querySelector( ".subRefund" ).value ) + +( prevInst.querySelector( ".saldoPlusPagos" ).value ) ) - sumRawPrice
             :
-                - sumRawPrice
+                0 - sumRawPrice
             ;
 
             // saldoPP = ( prevRefund + prevSaldoPP ) - sumRawPrice
