@@ -36,29 +36,29 @@
         <div id="p-instance-2" class="instance">
             <fieldset name="p-instance-2">
                 <div class="legend--align">
-                    <legend>Movimiento - <span class="instance--num">01</span></legend>
+                    <legend>Movimiento - <span class="instance--num">02</span></legend>
                     <button class="delInstance" type="button"></button>
                 </div>
-            <div class="box-items">
-                ${e_Item_new}
-            </div>
-            <div class="item nextLine">
-                <button class="item--part btn addItem" type="button"></button>
-                <input type="number" class="item--part order" value="00" disabled>
-                <select class="item--part category" disabled>
-                <option value="Categoria" selected>Categoría</option></select>
-                <input type="text" class="item--part description"value="Descripción" disabled>
-                <input type="text" class="item--part rawPrice" value="$" disabled>
-                <select class="item--part discount" disabled>
-                <option value="30" selected>30%</option></select>
-                <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
-                <button class="item--part delItem" disabled></button>
-            </div>
+                <div class="box-items">
+                    ${e_Item_new}
+                </div>
+                <div class="item nextLine">
+                    <button class="item--part btn addItem" type="button"></button>
+                    <input type="number" class="item--part order" value="00" disabled>
+                    <select class="item--part category" disabled>
+                    <option value="Categoria" selected>Categoría</option></select>
+                    <input type="text" class="item--part description"value="Descripción" disabled>
+                    <input type="text" class="item--part rawPrice" value="$" disabled>
+                    <select class="item--part discount" disabled>
+                    <option value="30" selected>30%</option></select>
+                    <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
+                    <button class="item--part delItem" disabled></button>
+                </div>
             </fieldset>
             <div class="subResults">
-            <input type="text"  class="subRefund" name="subRefund" title="Saldo PlusPagos" value="" readonly>
-            <input type="text"  class="saldoPlusPagos" name="saldoPlusPagos" title="Reintegro Instancia" value="" readonly>
-            <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
+                <input type="text"  class="subRefund" name="subRefund" title="Reintegro del Movimiento" value="" readonly>
+                <input type="text"  class="saldoPlusPagos" name="saldoPlusPagos" title="Variación del Saldo PlusPagos" value="" readonly>
+                <input type="text"  class="subSpent" name="subSpent" title="Variación de los Fondos Iniciales" value="" readonly>
             </div>
         </div>
     `;
@@ -215,6 +215,7 @@
         box.removeChild( instance );
         if ( box.childElementCount === 0 ) {
             f_addInstance();
+            $( o_Planner.DOMNode ).trigger("reset");
             return
         };
         f_updateInstances();
@@ -223,6 +224,7 @@
         :
             box.children[0].querySelector( ".item.live" )
         ;
+        // ? WIP deberia poner toda la instancia en blanco antes? creo q no es neceasario ya q se llama a f_updateInstances
         f_calcInstances( false, newTarget );
     };
 
