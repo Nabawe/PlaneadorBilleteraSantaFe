@@ -26,6 +26,9 @@
 + [feature] Agregar link a pagina de Guia de Uso, Tips, FAQs
 
 
++ [feature] Add ? Button that shows Tutorial Overlay
+
+
 + HTML title, tabindex
 
 
@@ -54,6 +57,9 @@
 + [optimizations] the use of Stylus f, mixins and specially extends https://stylus-lang.com/docs/extend.html
 
 
++ Hacer aliaces para o_Planner.DOMNode.querySelector y o_Planner.DOMNode.querySelectorAll y conciderar borrar los de _Q.qS .qSA .qID
+
+
 ! set <script> s to the header, use defer or others
 
 
@@ -69,7 +75,7 @@
 
 ! [critical fix inconsistencies] Implement GPS CSS Sections or something similar
     - Las clases addItem delItem addInstance delInstance tendrian q renombrarse a algo como Item--del o Item--delBtn o Item--btn-del
-    - v-planner.js hay demaciado uso de parentNode q haria dificil de adaptar si cambia la estructura
+    - v-planner.js hay demaciado uso de parentNode q haria dificil de adaptar si cambia la estructura --> usar .closest( "Query" )
 
 
 ! [critical] Q todo lo grafico se refleje en un objeto, en realidad al revez (objeto -> grafico)
@@ -90,6 +96,10 @@
 ! Use SRI (Sub Resourse Integrity) for jQuery
 
 
++ [modules reuse HTML] ver las tecnicas de Single Page AJAX para cargar pequeñas porciones de HTML q sean partes reusadas de paginas o como si fueran "objetos". Esto tiene muchisimos usos pero en especial permitiria trabajar en archivos .html comodamente.
+    Ya de por si estan instance e item para hacer esto.
+
+
 
 
 
@@ -107,5 +117,6 @@
 
 // ! Test parent.removeChild(child)
 // ! Test doing a for of localStorage, AfterClass de Javier creo q es el 10 lidia con cosas de Storage
+
 // ! Test JSON to save a function
     // Probar desde VSC y en el validador https://jsonformatter.curiousconcept.com/

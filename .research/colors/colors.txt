@@ -1,10 +1,10 @@
-https://coolors.co/e8784d-ffd744-009240-26619c-96beff-c4c0bd-ffffff-ed2939-277abc-111c4e
+https://coolors.co/e8784d-ffd744-009240-26619c-96beff-c4c0bd-0091ea-ed2939-277abc-111c4e
 
 
 White
     Antique White       #F6ECDC
     Isabelline          #F5F2EF
-    White               #FFFFFF
+    White               #FFFFFF             Billetera
 
 
 Black
@@ -28,7 +28,7 @@ Brown
 
 
 Red
-    Imperial Red        #ED2939
+    Imperial Red        #ED2939             Billetera
     Red                 #FF0000
     Sweet Brown         #B43232
 
@@ -54,7 +54,8 @@ Blue
     French Sky Blue     #94B6F4
     Lapiz Lazuli        #26619C
     Little Boy Blue     #80A4E6
-    Space Cadet         #111C4E
-    Star Command Blue   #277ABC
+    Space Cadet         #111C4E             Billetera
+    Star Command Blue   #277ABC             Billetera
     True Blue           #0066CC
+    Tufts Blue          #0091EA             Billetera
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="keywords" content="billetera, Santa, Fe, Argentina, provincia, calculadora, calculador, presupuesto, organizador, organizar, rendir, rendidor, planificador, gastos, planificar, cuentas, descuentos, bonos, porcentaje, 5000, cinco, mil, pesos, mensual, mensualidad, reintegro, retorno, bonificar, subsidio, consumos">
+  <meta name="keywords" content="billetera, Santa, Fe, Argentina, provincia, calculadora, calculador, presupuesto, organizador, organizar, asistente, rendir, rendidor, planificador, gastos, planificar, cuentas, descuentos, bonos, porcentaje, 5000, cinco, mil, pesos, mensual, mensualidad, reintegro, retorno, bonificar, subsidio, consumos">
   <meta name="description" content='App para ayudar a planificar consumos del programa "Billetera Santa Fe" en Argentina.'>
   <meta name="robots" content="index, follow">
   <meta name="language" content="Spanish">
@@ -13,6 +13,10 @@
   <title>Calculadora para Billetera Santa Fe</title>
 
   <link href="css/main.css" type="text/css" rel="stylesheet">
+
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+  <!-- ? Funcionara el checkeo de integridad en archivos locales?. -->
+  <script type="text/javascript" src="libs/jQuery/jquery-3.6.0.min.js"></script>
 </head>
 
 
@@ -20,12 +24,13 @@
   <main>
     <div id="v-planner">
       <!-- ! WIP la separacion entre v-planner y form era por si habia algo más q no fuera el form pero no lo veo sucediendo, deberia conciderar borrar la div, darle el id a form de v-planner y cambiar el .styl y cuando coloque el catEditor ponerlo afuera -->
+        <!-- No siempre mejor crear una div q "dimensiona el projecto" y luego empesar a agregar cosas, armar principio -->
       <!-- WIP set action? -->
       <!-- class="" action="" -->
       <!-- onsubmit="return false;" failsafe en caso de q algo causara un submit -->
-      <form id="v-planner--form" onsubmit="return false;">
+      <form id="v-planner--form" onsubmit="return false;" action="/php/v-planner.php" method="post">
         <div class="header">
-          <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="5000" readonly>
+          <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="5000">
           <input type="number" class="funds" name="funds" min="00" title="Fondos Iniciales" placeholder="Fondos Iniciales">
         </div>
         <div class="main">
@@ -78,9 +83,9 @@
               <div class="subResults">
                 <!-- <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="$5000" readonly> -->
                 <!-- maxlength="10" -->
-                <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
-                <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="" readonly>
-                <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
+                <input type="text"  class="subRefund" name="subRefund" title="Reintegro del Movimiento" value="" readonly>
+                <input type="text"  class="saldoPlusPagos" name="saldoPlusPagos" title="Variación del Saldo PlusPagos" value="" readonly>
+                <input type="text"  class="subSpent" name="subSpent" title="Variación de los Fondos Iniciales" value="" readonly>
               </div>
             </div>
           </div>
@@ -98,9 +103,9 @@
           </div>
           <div class="totals">
             <!-- maxlength="10" -->
-            <input type="text"  class="totalSaldoPlusPagos" name="totalSaldoPlusPagos" title="Saldo Plus Pagos" value="" readonly>
-            <input type="text"  class="totalRefund" name="totalRefund" title="Total Reintegrado" value="" readonly>
-            <input type="text"  class="totalSpent" name="totalSpent" title="Total Gastos" value="" readonly>
+            <input type="text"  class="PuntosPlusPagosLeft" name="PuntosPlusPagosLeft" title="Puntos Plus Pagos Restantes" value="" readonly>
+            <input type="text"  class="purchasePower" name="purchasePower" title="Capacidad de Compra: ( Fondos + Puntos ) - Gastos" value="" readonly>
+            <input type="text"  class="fundsLeft" name="fundsLeft" title="Total Gastado" value="" readonly>
           </div>
         </div>
       </form>
@@ -110,9 +115,6 @@
   </main>
 
   <!-- +Scripts -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
-    <!-- ? Funcionara el checkeo de integridad en archivos locales?. -->
-    <script type="text/javascript" src="libs/jQuery/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="js/aliaces.js"></script>
     <script type="text/javascript" src="data/messages.js"></script>
     <!-- <script type="text/javascript" src="data/categories.js"></script> -->

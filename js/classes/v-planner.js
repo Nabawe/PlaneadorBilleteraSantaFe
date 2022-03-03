@@ -12,7 +12,7 @@
 
 /* +Classes and Objects */
     const o_Planner = {
-        "DOMNode": _Q.qId( "v-planner--form" ),
+        "DOMNode": _Q.qId( "v-planner--form" ), // !!!!!!!! WIP aqui se le tiene q pasar el ID al constructor
         // Va a ser sobre-escrito en f_loadData pero me parece buena costrumbre initializarlo en caso de usarlo de otra forma
         // El uso de Map me garantiza q se mantenga el orden de como fueron
         "categories": new Map(),
@@ -33,29 +33,12 @@
     `;
 
     const e_Instance_new = `
-        <div id="p-instance-1" class="instance">
-            <fieldset name="p-instance-1">
+        <div id="p-instance-2" class="instance">
+            <fieldset name="p-instance-2">
                 <div class="legend--align">
-                    <legend>Movimiento - <span class="instance--num">01</span></legend>
+                    <legend>Movimiento - <span class="instance--num">02</span></legend>
                     <button class="delInstance" type="button"></button>
                 </div>
-<<<<<<< HEAD
-            <div class="box-items">
-                ${e_Item_new}
-            </div>
-            <div class="item nextLine">
-                <button class="item--part btn addItem" type="button"></button>
-                <input type="number" class="item--part order" value="00" disabled>
-                <select class="item--part category" disabled>
-                <option value="Categoria" selected>Categoría</option></select>
-                <input type="text" class="item--part description"value="Descripción" disabled>
-                <input type="text" class="item--part rawPrice" value="$" disabled>
-                <select class="item--part discount" disabled>
-                <option value="30" selected>30%</option></select>
-                <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
-                <button class="item--part delItem" disabled></button>
-            </div>
-=======
                 <div class="box-items">
                     ${e_Item_new}
                 </div>
@@ -71,12 +54,11 @@
                     <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
                     <button class="item--part delItem" disabled></button>
                 </div>
->>>>>>> CoderHouse-JS-Final
             </fieldset>
             <div class="subResults">
-            <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
-            <input type="text"  class="subRefund" name="subRefund" title="Reintegro Instancia" value="" readonly>
-            <input type="text"  class="subSpent" name="subSpent" title="Subtotal Gastos" value="" readonly>
+                <input type="text"  class="subRefund" name="subRefund" title="Reintegro del Movimiento" value="" readonly>
+                <input type="text"  class="saldoPlusPagos" name="saldoPlusPagos" title="Variación del Saldo PlusPagos" value="" readonly>
+                <input type="text"  class="subSpent" name="subSpent" title="Variación de los Fondos Iniciales" value="" readonly>
             </div>
         </div>
     `;
@@ -86,8 +68,8 @@
 /* +Functions */
     function f_loadData() {
         $.getJSON( '/data/defaults/categories.json',
-            ( data, status ) => {
-                if ( status === "success" ) {
+            ( data, stat ) => {
+                if ( stat === "success" ) {
                     o_Planner.categories = new Map( data );
                     // Mecanismo para filtrar descuentos repetidos
                     let t = [];
@@ -117,7 +99,7 @@
 
             cat.addEventListener( "change", ( evt ) => {
                     cat.parentNode.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( cat.value );
-                    f_calcInstance( evt );
+                    f_calcInstances( evt );
                 }
             );
         };
@@ -148,13 +130,42 @@
     };
 
     function f_delItem( evt ) {
+        const item = evt.target.closest( ".item" );
+        // ! WIP cambiar por animaciones de CSS
+        $( item ).animate({
+            opacity: '0.5'
+        }, 500)
+            .slideUp(500, (
+                // The callback is not sent any arguments, but this is set to the DOM element being animated. If multiple elements are animated, it is important to note that the callback is executed once per matched element, not once for the animation as a whole.
+                    // lo manda como un jQuery element
+                    // La Doc dice q no se le manda arg alguno pero estoy pudiendo usar evt bien
+                function ( jQItem ) {
+                    // $( jQItem ).remove();
+                    const trgItem = evt.target.closest( ".item" );
+                    // btn q dispara ^ .item ^ .box-items
+                    // trgItem.parentNode.removeChild( trgItem );
+                    /* Es importante recordar q el item es instantaneamente sacado del DOM pero no es borrado hasta q, se lo deje de referenciar, el garbage colerctor lo colecte. */
+                    if ( trgItem.closest( ".box-items" ).childElementCount === 1 ) {
+                        f_delInstance( evt );
+                        return
+                    };
+                    for ( kid of trgItem.children )
+                        kid.value = 0
+
+                    f_calcInstances( evt );
+                    // Como el item queda flotando en la memoria de una manera insierta primero lo "cero", luego recalculo y finalmente ejecuto el borrar.
+                    trgItem.remove();
+                }
+            ) ( evt )
+        );
         // btn q dispara ^ .item ^ .box-items
-        evt.target.parentNode.parentNode.removeChild(evt.target.parentNode);
+        // evt.target.parentNode.parentNode.removeChild( evt.target.parentNode );
     };
 
     function f_addItem( evt ) {
         // btn q dispara ^ .nextLine ^ fieldset v .box-items
-        const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
+        // const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
+        const parnt = evt.target.closest( "fieldset" ).querySelector( ".box-items" );
         parnt.insertAdjacentHTML( "beforeend", e_Item_new );
         // ? Habra forma de selecionar los items nuevos? hay algun evento o pseudo? ya q insertAdjacentHTML no tiene retorno
             // for ( const btn of parnt.querySelectorAll( "#v-planner .item--part.btn.delItem" ) )
@@ -163,10 +174,13 @@
         // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
         let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
         lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
-        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstance );
-        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstance );
+        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstances );
+        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstances );
 
         f_initSelects( lastItem );
+
+        // ! WIP cambiar por animaciones de CSS
+        $( lastItem ).hide().fadeIn(500);
     };
 
     // ! WIP I belive this f is a bit dangerous since it makes all instances ids "dynamical"
@@ -174,7 +188,7 @@
         // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
         // const count =  _Q.qS( "#v-planner .box-instances" ).childElementCount;
         let y = 1;
-        for ( const instance of _Q.qSA( "#v-planner .instance" ) ) {
+        for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             instance.id = `p-instance-${y}`;
             instance.querySelector( "fieldset" ).name = `p-instance-${y}`;
             // Si el valor del contador y es menor q 10 agregar un 0 al string
@@ -185,7 +199,7 @@
 
     function f_updateNewInstance( instance ) {
         // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
-        const count =  _Q.qS( "#v-planner .box-instances" ).childElementCount;
+        const count =  o_Planner.DOMNode.querySelector( ".box-instances" ).childElementCount;
         instance.id = `p-instance-${count}`;
         instance.querySelector( "fieldset" ).name = `p-instance-${count}`;
         // Si el valor de count es menor q 10 agregar un 0 al string
@@ -205,10 +219,17 @@
             return
         };
         f_updateInstances();
+        const newTarget = box.children[instanceNum] ?
+            box.children[instanceNum].querySelector( ".item.live" )
+        :
+            box.children[0].querySelector( ".item.live" )
+        ;
+        // ? WIP deberia poner toda la instancia en blanco antes? creo q no es neceasario ya q se llama a f_updateInstances
+        f_calcInstances( false, newTarget );
     };
 
     function f_addInstance() {
-        const box = _Q.qS( "#v-planner .box-instances" );
+        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
         box.insertAdjacentHTML( "beforeend", e_Instance_new );
         // A los botones de la ultima .instance le agrega sus eventos
         const instance = box.children[ ( box.childElementCount - 1 ) ];
@@ -217,8 +238,8 @@
         instance.querySelector( ".item--part.live.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
 
-        instance.querySelector( ".item--part.live.rawPrice" ).addEventListener( "change", f_calcInstance );
-        instance.querySelector( ".item--part.live.discount" ).addEventListener( "change", f_calcInstance );
+        instance.querySelector( ".item--part.live.rawPrice" ).addEventListener( "change", f_calcInstances );
+        instance.querySelector( ".item--part.live.discount" ).addEventListener( "change", f_calcInstances );
 
         f_initSelects( instance );
         f_updateNewInstance( instance );
@@ -231,7 +252,7 @@
                 // for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
                 //     btn.addEventListener( "click", f_addItem );
                     // Es un ejemplo del metodo q usaba antes q por alguna razon fallaba, revisar bien la especificacion de los querySelector.
-        for ( const instance of _Q.qSA( "#v-planner .instance") ) {
+        for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             const addItem  = instance.querySelector( ".addItem" );
             addItem.addEventListener( "click", f_addItem );
 
@@ -242,10 +263,10 @@
                 // for ( const part of item.querySelectorAll( ".item--part" ) ) {
                 // };
                 const rawPrice = item.querySelector( ".rawPrice" );
-                rawPrice.addEventListener( "change", f_calcInstance );
+                rawPrice.addEventListener( "change", f_calcInstances );
 
                 const discount = item.querySelector( ".discount" );
-                discount.addEventListener( "change", f_calcInstance );
+                discount.addEventListener( "change", f_calcInstances );
 
                 const delItem  = item.querySelector( ".delItem" );
                 delItem.addEventListener( "click", f_delItem );
@@ -264,7 +285,7 @@
             };
         };
 
-        for ( const btn of _Q.qSA( "#v-planner .addInstance" ) )
+        for ( const btn of o_Planner.DOMNode.querySelectorAll( ".addInstance" ) )
             btn.addEventListener( "click", f_addInstance );
 
         o_Planner.DOMNode.querySelector( ".actions .calc" ).addEventListener( "click", f_calc );
@@ -283,18 +304,31 @@
         } );
     };
 
-    // onchange
-    function f_calcInstance( evt ) {
-        const trgItem = evt.target.parentNode;
+    // On .rawPrice OR .discount change
+    // On .instance OR .item delete
+    // Or manually specifing aux as an .item
+    // Reads prev instance then mods current and post
+    // ! WIP DEFINIR ARGUMENTOS ver si se puede armar para q tome un item en vez d evento
+    function f_calcInstances( evt, aux ) {
+        const trgItem = aux ? aux : evt.target.closest( ".item" );
+        const trgInstance = trgItem.closest( ".instance" );
+        const trgInstanceNum = +trgInstance.querySelector( ".instance--num" ).textContent;
+
+        const planner = o_Planner.DOMNode; // ? Combendria usar trgItem closest planner?
+        const box = planner.querySelector( ".box-instances" );
+        // const instancesCount = box.childElementCount;
+        let tmp = 0, sumRefund = 0;
+
+        // Calcs Item's finalPrice
+        // ! Esta linea es la q hace necesario q se pase el .item a la función
         trgItem.querySelector( ".finalPrice" ).value = ( trgItem.querySelector( ".rawPrice" ).value * ( ( 100 - trgItem.querySelector( ".discount" ).value ) / 100 ) ).toFixed( 2 );
 
-        // item ^ box-items ^ fieldset ^ instance
-        const instance = trgItem.parentNode.parentNode.parentNode;
-        let t = 0;
-        for ( const item of instance.querySelectorAll( ".live.finalPrice" ) ) {
-            t += +item.value;
+        // Ciclo para la data necesaria de las Instancias anteriores
+        // Por ahora solo usado para calcular sumRefund y PPPLeft
+        for ( let i = 1 ; i < trgInstanceNum ; i++ ) {
+            const inst = box.children[i];
+            sumRefund += +( inst.querySelector( ".subRefund" ).value );
         };
-        instance.querySelector( ".subSpent" ).value = t.toFixed( 2 );
 
         // PPPLeft = PuntosPlusPagosLeft no puede ser negativo
         let PPPLeft = o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value - sumRefund;
@@ -337,9 +371,22 @@
             PPPLeft -= refund;
             PPPLeft = ( PPPLeft > 0 ) ? PPPLeft : 0;
         };
-        instance.querySelector( ".subRefund" ).value = ( t - instance.querySelector( ".subSpent" ).value ).toFixed( 2 );
 
-        // instance.querySelector( ".subSaldoPlusPagos" ).value = _Q.qS( "#v-planner .monthlyRefund" ).value - instance.querySelector( ".subRefund" ).value;
+        // .totals
+        planner.querySelector( ".PuntosPlusPagosLeft" ).value = PPPLeft.toFixed( 2 );
+
+        let funds = +planner.querySelector( ".funds" ).value || 0;
+        // fundsLeft = funds - sumSubSpent
+        tmp = 0;
+        for ( const field of planner.querySelectorAll( ".subSpent" ) )
+            tmp += +field.value;
+        planner.querySelector( ".fundsLeft" ).value = ( funds - tmp ).toFixed( 2 );
+
+        // purchasePower = funds - sumFinalPrice
+        tmp = 0;
+        for ( const field of planner.querySelectorAll( ".live .finalPrice" ) )
+            tmp += +field.value;
+        planner.querySelector( ".purchasePower" ).value = ( funds - tmp ).toFixed( 2 );
     };
 
     function f_reset( evt, tabulaRasa ) {
@@ -358,32 +405,7 @@
     };
 
     function f_calc() {
-        let t = 0;
-        for ( const sub of _Q.qSA( "#v-planner .subSpent" ) )
-            t += +sub.value;
-        // _Q.qS( "#v-planner .totals .totalSpent").value = t;
-        $( "#v-planner .totals .totalSpent" ).val( t );
 
-        t = 0;
-        for ( const sub of _Q.qSA( "#v-planner .subRefund" ) )
-            t += +sub.value;
-        // _Q.qS( "#v-planner .totals .totalRefund").value = t;
-        $( "#v-planner .totals .totalRefund" ).val( t );
-
-        $( "#v-planner #p-instance-1 .subSaldoPlusPagos" ).val(
-            ( $( "#v-planner .monthlyRefund" ).val() - $( "#v-planner #p-instance-1 .subRefund" ).val() ).toFixed( 2 )
-        );
-
-        // tmp = _Q.qSA( "#v-planner .box-instances .instance" );
-        // Operar en todos menos el primer subSaldoPlusPagos
-        const box = _Q.qS( "#v-planner .box-instances" );
-        for ( let i = 1 ; i < box.childElementCount ; i++ ) {
-            console.log( "alert ", i );
-            const instancia = box.children[i];
-            instancia.querySelector( ".subSaldoPlusPagos" ).value = ( box.children[ ( i - 1 ) ].querySelector( ".subSaldoPlusPagos" ).value - instancia.querySelector( ".subRefund" ).value ).toFixed( 2 );
-        };
-
-        _Q.qS( "#v-planner .totals .totalSaldoPlusPagos").value = box.children[ ( box.childElementCount - 1 ) ].querySelector( ".subSaldoPlusPagos" ).value;
     };
 
     // LLamarla onchange, antes de guardar y en varios otros casos
@@ -494,6 +516,7 @@
     // ! WIP something more reliable or set the jQuery script tag better
         // load?
     // f_initialSetup();
+    // $( window ).on( "load", function() {
     $( document ).ready( function() {
         f_initialSetup();
     });
