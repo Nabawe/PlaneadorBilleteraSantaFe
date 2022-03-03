@@ -233,6 +233,34 @@ main {
 #v-planner form .totals .fundsLeft {
   background-color: #ed2939;
 }
+#v-planner form .storage {
+  width: 80%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 20px 0px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+#v-planner form .storage > * {
+  height: 1.2rem;
+  width: 12ch;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  text-align: center;
+  color: #fff;
+}
+#v-planner form .storage .save {
+  background-color: #96beff;
+}
+#v-planner form .storage .load {
+  background-color: #009240;
+}
+#v-planner form .storage .clear {
+  background-color: #e8784d;
+}
 #v-planner form .instance {
   margin-bottom: 1.625rem;
 }
@@ -427,3 +455,6 @@ main {
   border: none;
 }
 /* +v-planner */
+.g-WIP {
+  visibility: hidden;
+}

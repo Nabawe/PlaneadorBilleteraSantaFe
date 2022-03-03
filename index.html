@@ -47,9 +47,9 @@
                   <div class="item live">
                     <!-- ? required Attribute -->
                     <!-- Si falla usar slider y JS -->
-                    <button class="item--part live btn yDrag" type="button"></button>
+                    <button class="g-WIP item--part live btn yDrag" type="button"></button>
                     <!-- <img class="item--part live btn yDrag"> -->
-                    <input type="number" class="item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
+                    <input type="number" class="g-WIP item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
                     <select class="item--part live category" name="category" maxlength="20">
                       <!-- <option value="normal">12345678901234567890</option> -->
                     </select>
@@ -67,7 +67,7 @@
                 <div class="item nextLine">
                   <!-- ! WIP ? Tendria q agregarle live a addItem -->
                   <button class="item--part btn addItem" type="button"></button>
-                  <input type="number" class="item--part order" value="00" disabled>
+                  <input type="number" class="g-WIP item--part order" value="00" disabled>
                   <select class="item--part category" disabled>
                     <option value="Categoria" selected>Categoría</option>
                   </select>
@@ -94,7 +94,12 @@
           <div class="actions">
             <button class="calc" type="button">Calcular</button>
             <button class="addInstance" type="button"></button>
-            <button class="reset" type="reset">Reiniciar</button>
+            <button class="reset" type="button">Reiniciar</button>
+          </div>
+          <div class="storage">
+            <button class="save" type="button">Guardar</button>
+            <button class="load" type="button">Cargar</button>
+            <button class="clear" type="button">Borrar Mem</button>
           </div>
           <div class="totals">
             <!-- maxlength="10" -->
