@@ -21,8 +21,8 @@
 
     const e_Item_new = `
         <div class="item live">
-            <button class="item--part live btn yDrag" type="button"></button>
-            <input type="number" class="item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
+            <button class="g-WIP item--part live btn yDrag" type="button"></button>
+            <input type="number" class="g-WIP item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
             <select class="item--part live category" name="category" maxlength="20"></select>
             <input type="text" class="item--part live description" name="description" maxlength="30">
             <input type="number" class="item--part live rawPrice" name="rawPrice" maxlength="10">
@@ -39,6 +39,7 @@
                     <legend>Movimiento - <span class="instance--num">01</span></legend>
                     <button class="delInstance" type="button"></button>
                 </div>
+<<<<<<< HEAD
             <div class="box-items">
                 ${e_Item_new}
             </div>
@@ -54,6 +55,23 @@
                 <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
                 <button class="item--part delItem" disabled></button>
             </div>
+=======
+                <div class="box-items">
+                    ${e_Item_new}
+                </div>
+                <div class="item nextLine">
+                    <button class="item--part btn addItem" type="button"></button>
+                    <input type="number" class="g-WIP item--part order" value="00" disabled>
+                    <select class="item--part category" disabled>
+                    <option value="Categoria" selected>Categoría</option></select>
+                    <input type="text" class="item--part description"value="Descripción" disabled>
+                    <input type="text" class="item--part rawPrice" value="$" disabled>
+                    <select class="item--part discount" disabled>
+                    <option value="30" selected>30%</option></select>
+                    <input type="text" class="item--part finalPrice" value="Precio Final" disabled>
+                    <button class="item--part delItem" disabled></button>
+                </div>
+>>>>>>> CoderHouse-JS-Final
             </fieldset>
             <div class="subResults">
             <input type="text"  class="subSaldoPlusPagos" name="subSaldoPlusPagos" title="Saldo PlusPagos" value="" readonly>
@@ -174,9 +192,18 @@
         instance.querySelector( ".instance--num" ).textContent = ( count < 10 ) ? `0${count}` : count;
     };
 
-    function f_delInstance( evt ) {
+    function f_delInstance( evt, aux ) {
         // btn q dispara ^ .legend--align ^ fieldset ^ .instance
-        _Q.qS( "#v-planner .box-instances" ).removeChild(evt.target.parentNode.parentNode.parentNode);
+        // _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.parentNode.parentNode.parentNode );
+        const instance = aux ? aux : evt.target.closest( ".instance" );
+        const instanceNum = +instance.querySelector( ".instance--num" ).textContent;
+        const box = instance.closest( ".box-instances" );
+        box.removeChild( instance );
+        if ( box.childElementCount === 0 ) {
+            f_addInstance();
+            $( o_Planner.DOMNode ).trigger("reset");
+            return
+        };
         f_updateInstances();
     };
 
@@ -240,8 +267,20 @@
         for ( const btn of _Q.qSA( "#v-planner .addInstance" ) )
             btn.addEventListener( "click", f_addInstance );
 
-        _Q.qS( "#v-planner .actions .calc").addEventListener( "click", f_calc );
-        _Q.qS( "#v-planner .actions .reset").addEventListener( "click", f_reset );
+        o_Planner.DOMNode.querySelector( ".actions .calc" ).addEventListener( "click", f_calc );
+        o_Planner.DOMNode.querySelector( ".actions .reset" ).addEventListener( "click", f_reset );
+
+        o_Planner.DOMNode.querySelector( ".storage .save" ).addEventListener( "click", f_stoPush );
+        o_Planner.DOMNode.querySelector( ".storage .load" ).addEventListener( "click", f_stoPop );
+        o_Planner.DOMNode.querySelector( ".storage .clear" ).addEventListener( "click", f_stoClear );
+
+        // onchange buscan el primer item del planner y disparan calc
+        o_Planner.DOMNode.querySelector( ".monthlyRefund" ).addEventListener( "change", function(){
+            f_calcInstances( false, o_Planner.DOMNode.querySelector( ".item.live" ) );
+        } );
+        o_Planner.DOMNode.querySelector( ".funds" ).addEventListener( "change", function(){
+            f_calcInstances( false, o_Planner.DOMNode.querySelector( ".item.live" ) );
+        } );
     };
 
     // onchange
@@ -257,22 +296,65 @@
         };
         instance.querySelector( ".subSpent" ).value = t.toFixed( 2 );
 
-        t = 0;
-        for ( const item of instance.querySelectorAll( ".live.rawPrice" ) ) {
-            t += +item.value;
+        // PPPLeft = PuntosPlusPagosLeft no puede ser negativo
+        let PPPLeft = o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value - sumRefund;
+        PPPLeft = ( PPPLeft > 0 ) ? PPPLeft : 0;
+
+        for ( let i = ( trgInstanceNum - 1 ) ; i < box.childElementCount ; i++ ) {
+            // const inst = planner.querySelector( `p-instance-${i}` );
+            // ? Otra opcion hubiera sido hacer corto circuito con algun tipo de objeto q le devuelva 0 a las queries en d
+            const inst = box.children[i];
+            const prevInst = box.children[ i - 1 ];
+            let sumRawPrice = 0, sumFinalPrice = 0, d = 0, saldoPP = 0;
+
+            for ( const field of inst.querySelectorAll( ".live .rawPrice" ) )
+                sumRawPrice += +field.value;
+            for ( const field of inst.querySelectorAll( ".live .finalPrice" ) )
+                sumFinalPrice += +field.value;
+
+            // refund esta limitado por el Tope Reintegro Mensual ( PPPLeft ) por eso uso ?:
+            // la resta simplifica el tener q aplicar los descuentos uno por uno y sumarlos
+            let refund = sumRawPrice - sumFinalPrice;
+            refund = ( refund > PPPLeft ) ? PPPLeft : refund;
+            inst.querySelector( ".subRefund" ).value = refund.toFixed( 2 );
+
+            // prevRefund & prevSaldoPP
+            /* WIP posiblemente se podria codificar haciendo q este for inicie en la instancia anterio, pero muy posiblemente agregaria varios checkeos de si existe lo anterior o no, el objetivo seria intentar reducir la cantidad de querySelector necesarios */
+            d = prevInst ?
+                ( +( prevInst.querySelector( ".subRefund" ).value ) + +( prevInst.querySelector( ".saldoPlusPagos" ).value ) ) - sumRawPrice
+            :
+                0 - sumRawPrice
+            ;
+
+            // saldoPP = ( prevRefund + prevSaldoPP ) - sumRawPrice
+            // saldoPP no puede ser menor a 0
+            saldoPP = d > 0 ? d : 0;
+            inst.querySelector( ".saldoPlusPagos" ).value = saldoPP.toFixed( 2 );
+
+            // subSpent = sumRawPrice - ( prevRefund + prevSaldoPP )
+            inst.querySelector( ".subSpent" ).value = ( -d > 0 ? -d : 0 ).toFixed( 2 );
+
+            PPPLeft -= refund;
+            PPPLeft = ( PPPLeft > 0 ) ? PPPLeft : 0;
         };
         instance.querySelector( ".subRefund" ).value = ( t - instance.querySelector( ".subSpent" ).value ).toFixed( 2 );
 
         // instance.querySelector( ".subSaldoPlusPagos" ).value = _Q.qS( "#v-planner .monthlyRefund" ).value - instance.querySelector( ".subRefund" ).value;
     };
 
-    function f_reset() {
-        const box = _Q.qS( "#v-planner .box-instances" );
-        console.log( box.children );
+    function f_reset( evt, tabulaRasa ) {
+        // const box = _Q.qS( "#v-planner .box-instances" );
         // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
-        for ( const kid of box.querySelectorAll( ".instance" ) )
-            box.removeChild( kid );
-        f_addInstance();
+        // for ( const kid of box.querySelectorAll( ".instance" ) )
+        //     box.removeChild( kid );
+        for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
+            kid.remove();
+        // o_Planner.DOMNode.querySelector( "form" ).reset();
+        $( o_Planner.DOMNode ).trigger("reset");
+        if ( !tabulaRasa )
+            f_addInstance();
+        /* !!! WIP Se necesita algo para determinar q realmente se halla borrado todo ya q sino no seria un comienzo de 0 verdadero, sino hacer el proceso de colocar todo en 0 antes. O verificar correctamente si los proximos calculos podrian levantar los valores fantasmas.
+        */
     };
 
     function f_calc() {
@@ -304,7 +386,7 @@
         _Q.qS( "#v-planner .totals .totalSaldoPlusPagos").value = box.children[ ( box.childElementCount - 1 ) ].querySelector( ".subSaldoPlusPagos" ).value;
     };
 
-    // LLamarla onchange
+    // LLamarla onchange, antes de guardar y en varios otros casos
     // function f_validate( evt ) {
     //     for ( const instance of _Q.qSA( "#v-planner .instance") ) {
     //         const addItem  = instance.querySelector( ".addItem" );
@@ -323,6 +405,87 @@
     //         };
     //     };
     // };
+
+    function f_stoPush () {
+        /*
+            data = [ instance, instance, ... ]
+                instance = [ item, item, ... ]
+                    item = { field.name: field.value }
+
+            data = [
+                [
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
+                ],
+                [
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
+                ]
+            ]
+        */
+        const data = [];
+        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
+
+        // Uso for i para mantener el orden
+        for ( let i = 0 ; i < box.childElementCount ; i++ ) {
+            const inst = box.children[i];
+            data[i] = [];
+            // ! ERROR falta selecionar la box-items para agarrar los items en orden
+            for ( let t = 0 ; t < inst.childElementCount ; t++ ) { // for ( const item of inst ) {
+                const item = box.children[t];
+                data[i][t] = {};
+                for ( const field of item ) {
+                    if ( field.name ) {
+                        data[i][t][field.name] = field.value;
+                    };
+                };
+            };
+        };
+
+        localStorage.setItem( "monthlyRefund", o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value );
+        localStorage.setItem( "funds", o_Planner.DOMNode.querySelector( ".funds" ).value );
+
+
+        // localStorage.setItem( "box-instances", JSON.stringify( box ) );
+        // almacenar selects
+        // almasenar totales y subs
+
+        // for ( let element of elements ) {
+        //     localStorage.setItem( key, JSON.stringify( object ) )
+        // }
+
+        // Flash Button
+    };
+
+    function f_stoPop () {
+        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
+        let data = JSON.parse( localStorage.getItem( "box-instances" ) );
+        f_reset( false, true );
+
+        o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value = localStorage.getItem( "monthlyRefund" );
+        o_Planner.DOMNode.querySelector( ".funds" ).value = localStorage.getItem( "funds" );
+
+        console.log( data );
+        for ( const kid of data.querySelectorAll( ".instance" ) )
+            box.insertAdjacentHTML( "beforeend", kid );
+
+        // popular selects desde el storage
+        // seleccionar selects correctos
+        // call calc or update or load results from storage
+
+        // const data = JSON.parse( localStorage.getItem( key ) )
+        // for ( let element of elements ) {
+        //     element.vale = data[element].value
+        // }
+    };
+
+    function f_stoClear () {
+        localStorage.clear();
+        $( o_Planner.DOMNode ).trigger("reset");
+            // revisar docs de clear no sea cosa q borre de otras paginas, pero no deberia
+        //localStorage.removeItem( key )
+        // decidir si limpia el form tambien, creo q seria mejor q no y modificar de reset a limpiar?
+    };
 /* +Functions */
 
 
