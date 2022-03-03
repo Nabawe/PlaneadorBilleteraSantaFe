@@ -9,32 +9,32 @@
 					"label": ""
 				},
 				{
-					"line": 241,
+					"line": 223,
 					"column": 38,
 					"label": ""
 				},
 				{
-					"line": 283,
+					"line": 263,
 					"column": 18,
 					"label": ""
 				},
 				{
-					"line": 354,
+					"line": 333,
 					"column": 16,
 					"label": ""
 				},
 				{
-					"line": 358,
+					"line": 337,
 					"column": 55,
 					"label": ""
 				},
 				{
-					"line": 373,
+					"line": 352,
 					"column": 20,
 					"label": ""
 				},
 				{
-					"line": 406,
+					"line": 384,
 					"column": 25,
 					"label": ""
 				}
@@ -64,33 +64,18 @@
 			"path": "js/classes/v-planner.js",
 			"bookmarks": [
 				{
-					"line": 94,
-					"column": 61,
+					"line": 328,
+					"column": 13,
 					"label": ""
-				},
+				}
+			]
+		},
+		{
+			"path": "index.html",
+			"bookmarks": [
 				{
-					"line": 226,
-					"column": 123,
-					"label": ""
-				},
-				{
-					"line": 307,
-					"column": 27,
-					"label": ""
-				},
-				{
-					"line": 320,
-					"column": 8,
-					"label": ""
-				},
-				{
-					"line": 333,
-					"column": 74,
-					"label": ""
-				},
-				{
-					"line": 380,
-					"column": 48,
+					"line": 113,
+					"column": 31,
 					"label": ""
 				}
 			]
