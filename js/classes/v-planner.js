@@ -4,17 +4,9 @@
 /* +Header */
 /* +SOURCES */
 
-
-/* +Variables */
-    // const e_planner = _Q.qId( "v-planner--form" );
-/* +Variables */
-
-
 /* +Classes and Objects */
     const o_Planner = {
-        "DOMNode": _Q.qId( "v-planner--form" ), // !!!!!!!! WIP aqui se le tiene q pasar el ID al constructor
-        // Va a ser sobre-escrito en f_loadData pero me parece buena costrumbre initializarlo en caso de usarlo de otra forma
-        // El uso de Map me garantiza q se mantenga el orden de como fueron
+        "DOMNode": _Q.qId( "v-planner--form" ),
         "categories": new Map(),
         "discounts": []
     };
@@ -73,7 +65,6 @@
                     o_Planner.categories = new Map( data );
                     // Mecanismo para filtrar descuentos repetidos
                     let t = [];
-                    // ! WIP use single line "for" form, used this in case it could break jQuery
                     for ( const v of o_Planner.categories.values() ) {
                         t[v] = true;
                     };
@@ -90,9 +81,7 @@
 
     // Recive un elem q contiene <select>s de .category o .discount y los popula y bindea eventos
     // Si bien lo admite evitar pasar elementos q esten fuera de #v-planner
-        // WIP think about this
     function f_initSelects( elem ) {
-        // ! WIP Deberia empesar limpiando lo q haya adentro?
         for ( const cat of elem.querySelectorAll( ".item--part:enabled.category" ) ) {
             for ( const k of o_Planner.categories.keys() )
                 cat.innerHTML += `<option value="${k}">${k}</option>`;
@@ -104,13 +93,8 @@
             );
         };
 
-        // elem.querySelector( ".item--part:enabled.category" ).children[0].selected = true;
-            // Erroneo ya q parese q para cambiarlo se usa .value en el <select>
-            // Tambien muy posiblemente inecesaria si es el primer elemento
-
         let [fVal] = o_Planner.categories.values();
         fVal += "";
-        /* ? Se pierde peformance al convertir y los valores a comparar son pocos pero usar == puede implicar más de una conversion y tengo entendido q es peor pasar de string a int q de int a string */
         for ( const sel of elem.querySelectorAll( ".item--part:enabled.discount" ) ) {
             for ( const v of o_Planner.discounts )
                 sel.innerHTML += `<option value="${v}">${v}%</option>`;
@@ -131,7 +115,6 @@
 
     function f_delItem( evt ) {
         const item = evt.target.closest( ".item" );
-        // ! WIP cambiar por animaciones de CSS
         $( item ).animate({
             opacity: '0.5'
         }, 500)
@@ -140,10 +123,8 @@
                     // lo manda como un jQuery element
                     // La Doc dice q no se le manda arg alguno pero estoy pudiendo usar evt bien
                 function ( jQItem ) {
-                    // $( jQItem ).remove();
                     const trgItem = evt.target.closest( ".item" );
                     // btn q dispara ^ .item ^ .box-items
-                    // trgItem.parentNode.removeChild( trgItem );
                     /* Es importante recordar q el item es instantaneamente sacado del DOM pero no es borrado hasta q, se lo deje de referenciar, el garbage colerctor lo colecte. */
                     if ( trgItem.closest( ".box-items" ).childElementCount === 1 ) {
                         f_delInstance( evt );
@@ -158,18 +139,12 @@
                 }
             ) ( evt )
         );
-        // btn q dispara ^ .item ^ .box-items
-        // evt.target.parentNode.parentNode.removeChild( evt.target.parentNode );
     };
 
     function f_addItem( evt ) {
         // btn q dispara ^ .nextLine ^ fieldset v .box-items
-        // const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
         const parnt = evt.target.closest( "fieldset" ).querySelector( ".box-items" );
         parnt.insertAdjacentHTML( "beforeend", e_Item_new );
-        // ? Habra forma de selecionar los items nuevos? hay algun evento o pseudo? ya q insertAdjacentHTML no tiene retorno
-            // for ( const btn of parnt.querySelectorAll( "#v-planner .item--part.btn.delItem" ) )
-            //  btn.addEventListener( "click", f_delItem );
 
         // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
         let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
@@ -179,14 +154,10 @@
 
         f_initSelects( lastItem );
 
-        // ! WIP cambiar por animaciones de CSS
         $( lastItem ).hide().fadeIn(500);
     };
 
-    // ! WIP I belive this f is a bit dangerous since it makes all instances ids "dynamical"
     function f_updateInstances() {
-        // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
-        // const count =  _Q.qS( "#v-planner .box-instances" ).childElementCount;
         let y = 1;
         for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             instance.id = `p-instance-${y}`;
@@ -198,7 +169,6 @@
     };
 
     function f_updateNewInstance( instance ) {
-        // WIP the instance is initially hidden by CSS class then when all graphical changes are finished it is shown by removing said class
         const count =  o_Planner.DOMNode.querySelector( ".box-instances" ).childElementCount;
         instance.id = `p-instance-${count}`;
         instance.querySelector( "fieldset" ).name = `p-instance-${count}`;
@@ -208,7 +178,6 @@
 
     function f_delInstance( evt, aux ) {
         // btn q dispara ^ .legend--align ^ fieldset ^ .instance
-        // _Q.qS( "#v-planner .box-instances" ).removeChild( evt.target.parentNode.parentNode.parentNode );
         const instance = aux ? aux : evt.target.closest( ".instance" );
         const instanceNum = +instance.querySelector( ".instance--num" ).textContent;
         const box = instance.closest( ".box-instances" );
@@ -224,7 +193,6 @@
         :
             box.children[0].querySelector( ".item.live" )
         ;
-        // ? WIP deberia poner toda la instancia en blanco antes? creo q no es neceasario ya q se llama a f_updateInstances
         f_calcInstances( false, newTarget );
     };
 
@@ -233,7 +201,6 @@
         box.insertAdjacentHTML( "beforeend", e_Instance_new );
         // A los botones de la ultima .instance le agrega sus eventos
         const instance = box.children[ ( box.childElementCount - 1 ) ];
-        // ! WIP escribir las lineas usando querySelectorAll así si cambia la cantidad de botones que hacen lo mismo no importa
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
         instance.querySelector( ".item--part.live.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
@@ -248,10 +215,6 @@
     function f_initialSetup() {
         // A los botones iniciales les agrega la funcion correspondiente para agregar o borrar
         // El uso de #v-planner es por GPS CSS
-        /* ! WIP Hay varios errores aqui se tendiran q agregar las sub secciones .box-instances o div.box-instances, .action y .box-instances para q los selectores no afecten otras partes q puedan tener clases similares pero me tira error o ignora. */
-                // for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
-                //     btn.addEventListener( "click", f_addItem );
-                    // Es un ejemplo del metodo q usaba antes q por alguna razon fallaba, revisar bien la especificacion de los querySelector.
         for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             const addItem  = instance.querySelector( ".addItem" );
             addItem.addEventListener( "click", f_addItem );
@@ -260,8 +223,6 @@
             delInstance.addEventListener( "click", f_delInstance );
 
             for ( const item of instance.querySelectorAll( ".item.live" ) ) {
-                // for ( const part of item.querySelectorAll( ".item--part" ) ) {
-                // };
                 const rawPrice = item.querySelector( ".rawPrice" );
                 rawPrice.addEventListener( "change", f_calcInstances );
 
@@ -272,16 +233,6 @@
                 delItem.addEventListener( "click", f_delItem );
 
                 f_initSelects( item );
-
-                // $(rawPrice).trigger( "change" );
-                    // Requeriria un rawPrice inicial
-
-                // Lo siguiente es codigo q fue reemplazado pero me habia quedado muy lindo
-                    // const cat = item.querySelector( ".category" );
-                    // cat.addEventListener( "change", () => {
-                    //         item.querySelector( ".item--part:enabled.discount" ).value = o_Planner.categories.get( item.querySelector( ".item--part:enabled.category" ).value );
-                    //     }
-                    // );
             };
         };
 
@@ -308,15 +259,13 @@
     // On .instance OR .item delete
     // Or manually specifing aux as an .item
     // Reads prev instance then mods current and post
-    // ! WIP DEFINIR ARGUMENTOS ver si se puede armar para q tome un item en vez d evento
     function f_calcInstances( evt, aux ) {
         const trgItem = aux ? aux : evt.target.closest( ".item" );
         const trgInstance = trgItem.closest( ".instance" );
         const trgInstanceNum = +trgInstance.querySelector( ".instance--num" ).textContent;
 
-        const planner = o_Planner.DOMNode; // ? Combendria usar trgItem closest planner?
+        const planner = o_Planner.DOMNode;
         const box = planner.querySelector( ".box-instances" );
-        // const instancesCount = box.childElementCount;
         let tmp = 0, sumRefund = 0;
 
         // Calcs Item's finalPrice
@@ -335,8 +284,6 @@
         PPPLeft = ( PPPLeft > 0 ) ? PPPLeft : 0;
 
         for ( let i = ( trgInstanceNum - 1 ) ; i < box.childElementCount ; i++ ) {
-            // const inst = planner.querySelector( `p-instance-${i}` );
-            // ? Otra opcion hubiera sido hacer corto circuito con algun tipo de objeto q le devuelva 0 a las queries en d
             const inst = box.children[i];
             const prevInst = box.children[ i - 1 ];
             let sumRawPrice = 0, sumFinalPrice = 0, d = 0, saldoPP = 0;
@@ -353,7 +300,6 @@
             inst.querySelector( ".subRefund" ).value = refund.toFixed( 2 );
 
             // prevRefund & prevSaldoPP
-            /* WIP posiblemente se podria codificar haciendo q este for inicie en la instancia anterio, pero muy posiblemente agregaria varios checkeos de si existe lo anterior o no, el objetivo seria intentar reducir la cantidad de querySelector necesarios */
             d = prevInst ?
                 ( +( prevInst.querySelector( ".subRefund" ).value ) + +( prevInst.querySelector( ".saldoPlusPagos" ).value ) ) - sumRawPrice
             :
@@ -390,155 +336,11 @@
     };
 
     function f_reset( evt, tabulaRasa ) {
-        // const box = _Q.qS( "#v-planner .box-instances" );
-        // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
-        // for ( const kid of box.querySelectorAll( ".instance" ) )
-        //     box.removeChild( kid );
         for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
             kid.remove();
-        // o_Planner.DOMNode.querySelector( "form" ).reset();
         $( o_Planner.DOMNode ).trigger("reset");
         if ( !tabulaRasa )
             f_addInstance();
-        /* !!! WIP Se necesita algo para determinar q realmente se halla borrado todo ya q sino no seria un comienzo de 0 verdadero, sino hacer el proceso de colocar todo en 0 antes. O verificar correctamente si los proximos calculos podrian levantar los valores fantasmas.
-        */
-    };
-
-    function f_calc() {
-
-    };
-
-    // LLamarla onchange, antes de guardar y en varios otros casos
-    // function f_validate( evt ) {
-    //     for ( const instance of _Q.qSA( "#v-planner .instance") ) {
-    //         const addItem  = instance.querySelector( ".addItem" );
-    //         addItem.addEventListener( "click", f_addItem );
-
-    //         const delInstance  = instance.querySelector( ".delInstance" );
-    //         delInstance.addEventListener( "click", f_delInstance );
-
-    //         for ( const item of instance.querySelectorAll( ".item.live" ) ) {
-    //             // for ( const part of item.querySelectorAll( ".item--part" ) ) {
-    //             // };
-    //             const delItem  = item.querySelector( ".delItem" );
-    //             delItem.addEventListener( "click", f_delItem );
-
-    //             f_initSelects( item );
-    //         };
-    //     };
-    // };
-
-    function f_stoPush () {
-        /*
-            data = [ instance, instance, ... ]
-                instance = [ item, item, ... ]
-                    item = { field.name: field.value }
-
-            data = [
-                [
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-                ],
-                [
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-                ]
-            ]
-        */
-        const data = [];
-        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
-
-        // Uso for i para mantener el orden
-        for ( let i = 0 ; i < box.childElementCount ; i++ ) {
-            const inst = box.children[i];
-            data[i] = [];
-            // ! ERROR falta selecionar la box-items para agarrar los items en orden
-            for ( let t = 0 ; t < inst.childElementCount ; t++ ) { // for ( const item of inst ) {
-                const item = box.children[t];
-                data[i][t] = {};
-                for ( const field of item ) {
-                    if ( field.name ) {
-                        data[i][t][field.name] = field.value;
-                    };
-                };
-            };
-        };
-
-        localStorage.setItem( "monthlyRefund", o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value );
-        localStorage.setItem( "funds", o_Planner.DOMNode.querySelector( ".funds" ).value );
-
-
-        // localStorage.setItem( "box-instances", JSON.stringify( box ) );
-        // almacenar selects
-        // almasenar totales y subs
-
-        // for ( let element of elements ) {
-        //     localStorage.setItem( key, JSON.stringify( object ) )
-        // }
-
-        // Flash Button
-    };
-
-    function f_stoPop () {
-        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
-        let data = JSON.parse( localStorage.getItem( "box-instances" ) );
-        f_reset( false, true );
-
-        o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value = localStorage.getItem( "monthlyRefund" );
-        o_Planner.DOMNode.querySelector( ".funds" ).value = localStorage.getItem( "funds" );
-
-        console.log( data );
-        for ( const kid of data.querySelectorAll( ".instance" ) )
-            box.insertAdjacentHTML( "beforeend", kid );
-
-        // popular selects desde el storage
-        // seleccionar selects correctos
-        // call calc or update or load results from storage
-
-        // const data = JSON.parse( localStorage.getItem( key ) )
-        // for ( let element of elements ) {
-        //     element.vale = data[element].value
-        // }
-    };
-
-    function f_stoClear () {
-        localStorage.clear();
-        $( o_Planner.DOMNode ).trigger("reset");
-            // revisar docs de clear no sea cosa q borre de otras paginas, pero no deberia
-        //localStorage.removeItem( key )
-        // decidir si limpia el form tambien, creo q seria mejor q no y modificar de reset a limpiar?
     };
 /* +Functions */
 
-
-/* +Header */
-    f_loadData(); // ! WIP Mejor disparar esta funcion con un evento para garantizar q este todo list
-    // ! WIP something more reliable or set the jQuery script tag better
-        // load?
-    // f_initialSetup();
-    // $( window ).on( "load", function() {
-    $( document ).ready( function() {
-        f_initialSetup();
-    });
-/* +Header */
-
-
-
-// La carga de categories.json y otros archivos definibles por el usuario q tengan una definicion como categories = f_validate(user_provided.json) || default_categories.json
-// !!!!!!! Al agregar items y tags crear con JS CSS q use addContent a una clase, entonces el addItem, addIntance, del btns, y la creacion de categorias solo tienen q agregar lo minimo y luego CSS se encarga del resto.
-// Hay 3 niles, inicio de la app, nivel instancia, nivel item
-// Mas q usar un boton calcular seria más interesante q se dispare un evento "nums changed" y calcula
-
-
-/* +SOURCES */
-/*
-    Map
-        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
-            "Iterating Map with for..of"
-            "Relation with Array objects"
-            "Iterating Map with forEach()"
-                Parece q tiene mucho para mejorar aun este metodo, ademas parese ser bastante más lento. Puede generar codigo más claro y espero q a futuro lo mejoren pero no conosco demaciado de la trajectoria de JavaScript como para saber q esperar.
-                        https://blog.devgenius.io/3-bad-use-cases-of-javascripts-foreach-loop-add3600a8895
-                            "In the forEach loop, we are invoking the callback function on every iteration. This additional scope leads to slower speeds compared to the for loop. The for loop uses an initializing statement and a conditional that is evaluated at every iteration. That means lowered cost compared to the forEach."
-*/
-/* +SOURCES */
