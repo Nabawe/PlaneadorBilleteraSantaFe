@@ -12,7 +12,7 @@
 
 /* +Classes and Objects */
     const o_Planner = {
-        "DOMNode": _Q.qId( "v-planner--form" ), // !!!!!!!! WIP aqui se le tiene q pasar el ID al constructor
+        "DOMNode": _Q.qId( "v-planner" ), // !!!!!!!! WIP aqui se le tiene q pasar el ID al constructor
         // Va a ser sobre-escrito en f_loadData pero me parece buena costrumbre initializarlo en caso de usarlo de otra forma
         // El uso de Map me garantiza q se mantenga el orden de como fueron
         "categories": new Map(),
@@ -245,13 +245,15 @@
         f_updateNewInstance( instance );
     };
 
-    function f_initialSetup() {
+    function f_init() {
         // A los botones iniciales les agrega la funcion correspondiente para agregar o borrar
         // El uso de #v-planner es por GPS CSS
         /* ! WIP Hay varios errores aqui se tendiran q agregar las sub secciones .box-instances o div.box-instances, .action y .box-instances para q los selectores no afecten otras partes q puedan tener clases similares pero me tira error o ignora. */
                 // for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
                 //     btn.addEventListener( "click", f_addItem );
                     // Es un ejemplo del metodo q usaba antes q por alguna razon fallaba, revisar bien la especificacion de los querySelector.
+        $( o_Planner.DOMNode ).trigger("reset");
+
         for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             const addItem  = instance.querySelector( ".addItem" );
             addItem.addEventListener( "click", f_addItem );
@@ -394,10 +396,10 @@
         // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
         // for ( const kid of box.querySelectorAll( ".instance" ) )
         //     box.removeChild( kid );
-        for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
-            kid.remove();
         // o_Planner.DOMNode.querySelector( "form" ).reset();
         $( o_Planner.DOMNode ).trigger("reset");
+        for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
+            kid.remove();
         if ( !tabulaRasa )
             f_addInstance();
         /* !!! WIP Se necesita algo para determinar q realmente se halla borrado todo ya q sino no seria un comienzo de 0 verdadero, sino hacer el proceso de colocar todo en 0 antes. O verificar correctamente si los proximos calculos podrian levantar los valores fantasmas.
@@ -428,53 +430,47 @@
     //     };
     // };
 
-    function f_stoPush () {
-        /*
-            data = [ instance, instance, ... ]
-                instance = [ item, item, ... ]
-                    item = { field.name: field.value }
+    /* Map
+        data = [ instance, instance, ... ]
+            instance = [ item, item, ... ]
+                item = { field.name: field.value, field.name: field.value, ... }
 
-            data = [
-                [
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-                ],
-                [
-                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-                ]
+        data = [
+            [
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
+            ],
+            [
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
             ]
-        */
+        ]
+    */
+    function f_stoPush () {
+        const DOMNode = o_Planner.DOMNode;
         const data = [];
-        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
+        const box = DOMNode.querySelector( ".box-instances" );
 
-        // Uso for i para mantener el orden
+        // Uso fors i para garantizar q se mantenga el orden
         for ( let i = 0 ; i < box.childElementCount ; i++ ) {
             const inst = box.children[i];
             data[i] = [];
-            // ! ERROR falta selecionar la box-items para agarrar los items en orden
-            for ( let t = 0 ; t < inst.childElementCount ; t++ ) { // for ( const item of inst ) {
-                const item = box.children[t];
+            const boxItems = inst.querySelector( ".box-items" );
+            for ( let t = 0 ; t < boxItems.childElementCount ; t++ ) {
+                const item = boxItems.children[t];
                 data[i][t] = {};
-                for ( const field of item ) {
-                    if ( field.name ) {
-                        data[i][t][field.name] = field.value;
-                    };
+                for ( const field of item.children ) {
+                    let nam3 = field.name;
+                    if ( nam3 )
+                        data[i][t][nam3] = field.value;
                 };
             };
         };
 
-        localStorage.setItem( "monthlyRefund", o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value );
-        localStorage.setItem( "funds", o_Planner.DOMNode.querySelector( ".funds" ).value );
-
-
-        // localStorage.setItem( "box-instances", JSON.stringify( box ) );
-        // almacenar selects
-        // almasenar totales y subs
-
-        // for ( let element of elements ) {
-        //     localStorage.setItem( key, JSON.stringify( object ) )
-        // }
+        // Uso el id del Planner como key
+        localStorage.setItem( `${DOMNode.id}-data`, data );
+        localStorage.setItem( `${DOMNode.id}-monthlyRefund`, DOMNode.querySelector( ".monthlyRefund" ).value );
+        localStorage.setItem( `${DOMNode.id}-funds`, DOMNode.querySelector( ".funds" ).value );
 
         // Flash Button
     };
@@ -503,10 +499,12 @@
 
     function f_stoClear () {
         localStorage.clear();
-        $( o_Planner.DOMNode ).trigger("reset");
+        // $( o_Planner.DOMNode ).trigger("reset");
             // revisar docs de clear no sea cosa q borre de otras paginas, pero no deberia
         //localStorage.removeItem( key )
         // decidir si limpia el form tambien, creo q seria mejor q no y modificar de reset a limpiar?
+
+        // Flash Something to let the user know it worked, may be the button itself
     };
 /* +Functions */
 
@@ -515,10 +513,10 @@
     f_loadData(); // ! WIP Mejor disparar esta funcion con un evento para garantizar q este todo list
     // ! WIP something more reliable or set the jQuery script tag better
         // load?
-    // f_initialSetup();
+    // f_init();
     // $( window ).on( "load", function() {
     $( document ).ready( function() {
-        f_initialSetup();
+        f_init();
     });
 /* +Header */
 
