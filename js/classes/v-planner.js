@@ -215,7 +215,7 @@
         box.removeChild( instance );
         if ( box.childElementCount === 0 ) {
             f_addInstance();
-            $( o_Planner.DOMNode ).trigger("reset");
+            o_Planner.DOMNode.querySelector( "form" ).reset();
             return
         };
         f_updateInstances();
@@ -252,7 +252,7 @@
                 // for ( const btn of _Q.qSA( "#v-planner .item--part.btn.addItem" ) )
                 //     btn.addEventListener( "click", f_addItem );
                     // Es un ejemplo del metodo q usaba antes q por alguna razon fallaba, revisar bien la especificacion de los querySelector.
-        $( o_Planner.DOMNode ).trigger("reset");
+        o_Planner.DOMNode.querySelector( "form" ).reset();
 
         for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             const addItem  = instance.querySelector( ".addItem" );
@@ -392,12 +392,8 @@
     };
 
     function f_reset( evt, tabulaRasa ) {
-        // const box = _Q.qS( "#v-planner .box-instances" );
-        // for ( const kid of box.children ) ? Por alguna razon no podia operar en el HTMLCollection
-        // for ( const kid of box.querySelectorAll( ".instance" ) )
-        //     box.removeChild( kid );
-        // o_Planner.DOMNode.querySelector( "form" ).reset();
-        $( o_Planner.DOMNode ).trigger("reset");
+        o_Planner.DOMNode.querySelector( "form" ).reset();
+        // $( o_Planner.DOMNode ).trigger("reset");
         for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
             kid.remove();
         if ( !tabulaRasa )
@@ -468,7 +464,7 @@
         };
 
         // Uso el id del Planner como key
-        localStorage.setItem( `${DOMNode.id}-data`, data );
+        localStorage.setItem( `${DOMNode.id}-data`, JSON.stringify ( data ) );
         localStorage.setItem( `${DOMNode.id}-monthlyRefund`, DOMNode.querySelector( ".monthlyRefund" ).value );
         localStorage.setItem( `${DOMNode.id}-funds`, DOMNode.querySelector( ".funds" ).value );
 
@@ -499,7 +495,7 @@
 
     function f_stoClear () {
         localStorage.clear();
-        // $( o_Planner.DOMNode ).trigger("reset");
+        // o_Planner.DOMNode.querySelector( "form" ).reset();
             // revisar docs de clear no sea cosa q borre de otras paginas, pero no deberia
         //localStorage.removeItem( key )
         // decidir si limpia el form tambien, creo q seria mejor q no y modificar de reset a limpiar?
