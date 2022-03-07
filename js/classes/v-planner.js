@@ -249,7 +249,6 @@ function f_init() {
     for ( const btn of o_Planner.DOMNode.querySelectorAll( ".addInstance" ) )
         btn.addEventListener( "click", f_addInstance );
 
-    o_Planner.DOMNode.querySelector( ".actions .calc" ).addEventListener( "click", f_calc );
     o_Planner.DOMNode.querySelector( ".actions .reset" ).addEventListener( "click", f_reset );
 
     o_Planner.DOMNode.querySelector( ".storage .save" ).addEventListener( "click", f_stoPush );
