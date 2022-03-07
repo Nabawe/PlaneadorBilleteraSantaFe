@@ -12,5 +12,5 @@ f_loadData();
 */
 // $( window ).on( "load", function() {
 $( document ).ready( function() {
-    f_initialSetup();
+    f_init();
 });
