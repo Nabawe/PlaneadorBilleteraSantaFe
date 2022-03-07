@@ -32,6 +32,9 @@
         </div>
     `;
 
+    // <div class="box-items">
+    //     ${e_Item_new}
+    // </div>
     const e_Instance_new = `
         <div id="p-instance-2" class="instance">
             <fieldset name="p-instance-2">
@@ -40,7 +43,6 @@
                     <button class="delInstance" type="button"></button>
                 </div>
                 <div class="box-items">
-                    ${e_Item_new}
                 </div>
                 <div class="item nextLine">
                     <button class="item--part btn addItem" type="button"></button>
@@ -147,7 +149,7 @@
                     /* Es importante recordar q el item es instantaneamente sacado del DOM pero no es borrado hasta q, se lo deje de referenciar, el garbage colerctor lo colecte. */
                     if ( trgItem.closest( ".box-items" ).childElementCount === 1 ) {
                         f_delInstance( evt );
-                        return
+                        return;
                     };
                     for ( kid of trgItem.children )
                         kid.value = 0
@@ -162,25 +164,31 @@
         // evt.target.parentNode.parentNode.removeChild( evt.target.parentNode );
     };
 
-    function f_addItem( evt ) {
+    // parnt = .box-items
+    function f_addItem( evt, aux, q = 1 ) {
         // btn q dispara ^ .nextLine ^ fieldset v .box-items
         // const parnt = evt.target.parentNode.parentNode.querySelector( ".box-items" );
-        const parnt = evt.target.closest( "fieldset" ).querySelector( ".box-items" );
-        parnt.insertAdjacentHTML( "beforeend", e_Item_new );
-        // ? Habra forma de selecionar los items nuevos? hay algun evento o pseudo? ya q insertAdjacentHTML no tiene retorno
-            // for ( const btn of parnt.querySelectorAll( "#v-planner .item--part.btn.delItem" ) )
-            //  btn.addEventListener( "click", f_delItem );
+        const parnt = aux ? aux : evt.target.closest( "fieldset" ).querySelector( ".box-items" );
+        let lastItem;
+        for ( let i = 0 ; i < q ; i++ ) {
+            parnt.insertAdjacentHTML( "beforeend", e_Item_new );
+            // ? Habra forma de selecionar los items nuevos? hay algun evento o pseudo? ya q insertAdjacentHTML no tiene retorno
+                // for ( const btn of parnt.querySelectorAll( "#v-planner .item--part.btn.delItem" ) )
+                //  btn.addEventListener( "click", f_delItem );
 
-        // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
-        let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
-        lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
-        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstances );
-        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstances );
+            // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
+            lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
+            lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
+            lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstances );
+            lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstances );
 
-        f_initSelects( lastItem );
+            f_initSelects( lastItem );
 
-        // ! WIP cambiar por animaciones de CSS
-        $( lastItem ).hide().fadeIn(500);
+            // ! WIP cambiar por animaciones de CSS
+            $( lastItem ).hide().fadeIn(500);
+        };
+
+        return lastItem;
     };
 
     // ! WIP I belive this f is a bit dangerous since it makes all instances ids "dynamical"
@@ -214,9 +222,9 @@
         const box = instance.closest( ".box-instances" );
         box.removeChild( instance );
         if ( box.childElementCount === 0 ) {
-            f_addInstance();
             o_Planner.DOMNode.querySelector( "form" ).reset();
-            return
+            f_addInstance();
+            return;
         };
         f_updateInstances();
         const newTarget = box.children[instanceNum] ?
@@ -228,21 +236,21 @@
         f_calcInstances( false, newTarget );
     };
 
-    function f_addInstance() {
+    function f_addInstance( evt, startingItemsQ = 1 ) {
         const box = o_Planner.DOMNode.querySelector( ".box-instances" );
         box.insertAdjacentHTML( "beforeend", e_Instance_new );
         // A los botones de la ultima .instance le agrega sus eventos
         const instance = box.children[ ( box.childElementCount - 1 ) ];
         // ! WIP escribir las lineas usando querySelectorAll así si cambia la cantidad de botones que hacen lo mismo no importa
+        // onclick
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
-        instance.querySelector( ".item--part.live.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
 
-        instance.querySelector( ".item--part.live.rawPrice" ).addEventListener( "change", f_calcInstances );
-        instance.querySelector( ".item--part.live.discount" ).addEventListener( "change", f_calcInstances );
+        f_addItem( false, instance.querySelector( ".box-items" ), startingItemsQ );
 
-        f_initSelects( instance );
         f_updateNewInstance( instance );
+
+        return instance;
     };
 
     function f_init() {
@@ -443,9 +451,12 @@
         ]
     */
     function f_stoPush () {
-        const DOMNode = o_Planner.DOMNode;
+
+        // ! Correr Validacion antes de grabar
+
+        const rootNode = o_Planner.DOMNode;
         const data = [];
-        const box = DOMNode.querySelector( ".box-instances" );
+        const box = rootNode.querySelector( ".box-instances" );
 
         // Uso fors i para garantizar q se mantenga el orden
         for ( let i = 0 ; i < box.childElementCount ; i++ ) {
@@ -463,34 +474,47 @@
             };
         };
 
+        const payload = {
+            data: data,
+            funds: rootNode.querySelector( ".funds" ).value,
+            monthlyRefund: rootNode.querySelector( ".monthlyRefund" ).value,
+            PuntosPlusPagosLeft: rootNode.querySelector( ".PuntosPlusPagosLeft" ).value,
+            purchasePower: rootNode.querySelector( ".purchasePower" ).value,
+            fundsLeft: rootNode.querySelector( ".fundsLeft" ).value
+        };
+
         // Uso el id del Planner como key
-        localStorage.setItem( `${DOMNode.id}-data`, JSON.stringify ( data ) );
-        localStorage.setItem( `${DOMNode.id}-monthlyRefund`, DOMNode.querySelector( ".monthlyRefund" ).value );
-        localStorage.setItem( `${DOMNode.id}-funds`, DOMNode.querySelector( ".funds" ).value );
+        localStorage.setItem( `${rootNode.id}`, JSON.stringify ( payload ) );
 
         // Flash Button
     };
 
     function f_stoPop () {
-        const box = o_Planner.DOMNode.querySelector( ".box-instances" );
-        let data = JSON.parse( localStorage.getItem( "box-instances" ) );
         f_reset( false, true );
 
-        o_Planner.DOMNode.querySelector( ".monthlyRefund" ).value = localStorage.getItem( "monthlyRefund" );
-        o_Planner.DOMNode.querySelector( ".funds" ).value = localStorage.getItem( "funds" );
+        const rootNode = o_Planner.DOMNode;
+        const payload = JSON.parse( localStorage.getItem( rootNode.id ) );
+        const data = payload.data;
 
-        console.log( data );
-        for ( const kid of data.querySelectorAll( ".instance" ) )
-            box.insertAdjacentHTML( "beforeend", kid );
+        rootNode.querySelector( ".monthlyRefund" ).value = payload.monthlyRefund;
+        rootNode.querySelector( ".funds" ).value = payload.funds;
 
-        // popular selects desde el storage
-        // seleccionar selects correctos
-        // call calc or update or load results from storage
+        // Uso fors i para garantizar q se mantenga el orden
+        for ( let i = 0 ; i < data.length ; i++ ) {
+            const inst = f_addInstance( false, data[i].length );
+            const boxItems = inst.querySelector( ".box-items" );
+            for ( let t = 0 ; t < data[i].length ; t++ ) {
+                const item = boxItems.children[t];
+                for ( const field of item.children )
+                    field.value = data[i][t][field.name];
+            };
+        };
 
-        // const data = JSON.parse( localStorage.getItem( key ) )
-        // for ( let element of elements ) {
-        //     element.vale = data[element].value
-        // }
+        rootNode.querySelector( ".PuntosPlusPagosLeft" ).value = payload.PuntosPlusPagosLeft;
+        rootNode.querySelector( ".purchasePower" ).value = payload.purchasePower;
+        rootNode.querySelector( ".fundsLeft" ).value = payload.fundsLeft;
+
+        // Flash Button
     };
 
     function f_stoClear () {
