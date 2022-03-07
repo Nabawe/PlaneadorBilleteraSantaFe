@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="keywords" content="billetera, Santa, Fe, Argentina, provincia, calculadora, calculador, presupuesto, organizador, organizar, asistente, rendir, rendidor, planificador, gastos, planificar, cuentas, descuentos, bonos, porcentaje, 5000, cinco, mil, pesos, mensual, mensualidad, reintegro, retorno, bonificar, subsidio, consumos">
+  <meta name="keywords" content="billetera, Santa, Fe, Argentina, provincia, calculadora, calculador, presupuesto, organizador, organizar, asistente, rendir, rendidor, planeador, planificador, gastos, planificar, cuentas, descuentos, bonos, porcentaje, 5000, cinco, mil, pesos, mensual, mensualidad, reintegro, retorno, bonificar, subsidio, consumos">
   <meta name="description" content='App para ayudar a planificar consumos del programa "Billetera Santa Fe" en Argentina.'>
   <meta name="robots" content="index, follow">
   <meta name="language" content="Spanish">
@@ -23,7 +23,7 @@
 <body id="p-index">
   <main>
     <div id="v-planner">
-      <form id="v-planner--form" onsubmit="return false;" action="/php/v-planner.php" method="post">
+      <form id="v-planner--form" onsubmit="" action="/php/v-planner.php" method="post">
         <div class="header">
           <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="5000">
           <input type="number" class="funds" name="funds" min="00" title="Fondos Iniciales" placeholder="Fondos Iniciales">
@@ -78,7 +78,6 @@
             <button class="reset" type="button">Reiniciar</button>
           </div>
           <div class="totals">
-            <!-- maxlength="10" -->
             <input type="text"  class="PuntosPlusPagosLeft" name="PuntosPlusPagosLeft" title="Puntos Plus Pagos Restantes" value="" readonly>
             <input type="text"  class="purchasePower" name="purchasePower" title="Capacidad de Compra: ( Fondos + Puntos ) - Gastos" value="" readonly>
             <input type="text"  class="fundsLeft" name="fundsLeft" title="Total Gastado" value="" readonly>

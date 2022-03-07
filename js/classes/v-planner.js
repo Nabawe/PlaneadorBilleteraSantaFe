@@ -6,7 +6,8 @@
 
 /* +Classes and Objects */
     const o_Planner = {
-        "DOMNode": _Q.qId( "v-planner--form" ),
+        "DOMNode": _Q.qId( "v-planner" ),
+        // El uso de Map me garantiza q se mantenga el orden de como fueron
         "categories": new Map(),
         "discounts": []
     };
@@ -32,7 +33,6 @@
                     <button class="delInstance" type="button"></button>
                 </div>
                 <div class="box-items">
-                    ${e_Item_new}
                 </div>
                 <div class="item nextLine">
                     <button class="item--part btn addItem" type="button"></button>
@@ -128,7 +128,7 @@
                     /* Es importante recordar q el item es instantaneamente sacado del DOM pero no es borrado hasta q, se lo deje de referenciar, el garbage colerctor lo colecte. */
                     if ( trgItem.closest( ".box-items" ).childElementCount === 1 ) {
                         f_delInstance( evt );
-                        return
+                        return;
                     };
                     for ( kid of trgItem.children )
                         kid.value = 0
@@ -141,20 +141,26 @@
         );
     };
 
-    function f_addItem( evt ) {
+    // parnt = .box-items
+    function f_addItem( evt, aux, q = 1 ) {
         // btn q dispara ^ .nextLine ^ fieldset v .box-items
-        const parnt = evt.target.closest( "fieldset" ).querySelector( ".box-items" );
-        parnt.insertAdjacentHTML( "beforeend", e_Item_new );
+        const parnt = aux ? aux : evt.target.closest( "fieldset" ).querySelector( ".box-items" );
+        let lastItem;
+        for ( let i = 0 ; i < q ; i++ ) {
+            parnt.insertAdjacentHTML( "beforeend", e_Item_new );
 
-        // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
-        let lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
-        lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
-        lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstances );
-        lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstances );
+            // Al ultimo item del .box-items correspondiente busca su boton delItem y le asigna su evento
+            lastItem = parnt.children[ ( parnt.childElementCount - 1 ) ];
+            lastItem.querySelector( ".item--part.btn.delItem" ).addEventListener( "click", f_delItem );
+            lastItem.querySelector( ".item--part.rawPrice" ).addEventListener( "change", f_calcInstances );
+            lastItem.querySelector( ".item--part.discount" ).addEventListener( "change", f_calcInstances );
 
-        f_initSelects( lastItem );
+            f_initSelects( lastItem );
 
-        $( lastItem ).hide().fadeIn(500);
+            $( lastItem ).hide().fadeIn(500);
+        };
+
+        return lastItem;
     };
 
     function f_updateInstances() {
@@ -183,9 +189,9 @@
         const box = instance.closest( ".box-instances" );
         box.removeChild( instance );
         if ( box.childElementCount === 0 ) {
+            o_Planner.DOMNode.querySelector( "form" ).reset();
             f_addInstance();
-            $( o_Planner.DOMNode ).trigger("reset");
-            return
+            return;
         };
         f_updateInstances();
         const newTarget = box.children[instanceNum] ?
@@ -196,25 +202,27 @@
         f_calcInstances( false, newTarget );
     };
 
-    function f_addInstance() {
+    function f_addInstance( evt, startingItemsQ = 1 ) {
         const box = o_Planner.DOMNode.querySelector( ".box-instances" );
         box.insertAdjacentHTML( "beforeend", e_Instance_new );
         // A los botones de la ultima .instance le agrega sus eventos
         const instance = box.children[ ( box.childElementCount - 1 ) ];
+        // onclick
         instance.querySelector( ".delInstance" ).addEventListener( "click", f_delInstance );
-        instance.querySelector( ".item--part.live.btn.delItem" ).addEventListener( "click", f_delItem );
         instance.querySelector( ".item--part.btn.addItem" ).addEventListener( "click", f_addItem );
 
-        instance.querySelector( ".item--part.live.rawPrice" ).addEventListener( "change", f_calcInstances );
-        instance.querySelector( ".item--part.live.discount" ).addEventListener( "change", f_calcInstances );
+        f_addItem( false, instance.querySelector( ".box-items" ), startingItemsQ );
 
-        f_initSelects( instance );
         f_updateNewInstance( instance );
+
+        return instance;
     };
 
-    function f_initialSetup() {
+    function f_init() {
         // A los botones iniciales les agrega la funcion correspondiente para agregar o borrar
         // El uso de #v-planner es por GPS CSS
+        o_Planner.DOMNode.querySelector( "form" ).reset();
+
         for ( const instance of o_Planner.DOMNode.querySelectorAll( ".instance" ) ) {
             const addItem  = instance.querySelector( ".addItem" );
             addItem.addEventListener( "click", f_addItem );
@@ -331,11 +339,94 @@
     };
 
     function f_reset( evt, tabulaRasa ) {
+        o_Planner.DOMNode.querySelector( "form" ).reset();
         for ( const kid of o_Planner.DOMNode.querySelector( ".box-instances" ).querySelectorAll( ".instance" ) )
             kid.remove();
-        $( o_Planner.DOMNode ).trigger("reset");
         if ( !tabulaRasa )
             f_addInstance();
     };
-/* +Functions */
 
+    function f_calc() {
+
+    };
+
+    /* Map
+        data = [ instance, instance, ... ]
+            instance = [ item, item, ... ]
+                item = { field.name: field.value, field.name: field.value, ... }
+
+        data = [
+            [
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
+            ],
+            [
+                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
+            ]
+        ]
+    */
+    function f_stoPush () {
+        const rootNode = o_Planner.DOMNode;
+        const data = [];
+        const box = rootNode.querySelector( ".box-instances" );
+
+        // Uso fors i para garantizar q se mantenga el orden
+        for ( let i = 0 ; i < box.childElementCount ; i++ ) {
+            const inst = box.children[i];
+            data[i] = [];
+            const boxItems = inst.querySelector( ".box-items" );
+            for ( let t = 0 ; t < boxItems.childElementCount ; t++ ) {
+                const item = boxItems.children[t];
+                data[i][t] = {};
+                for ( const field of item.children ) {
+                    let nam3 = field.name;
+                    if ( nam3 )
+                        data[i][t][nam3] = field.value;
+                };
+            };
+        };
+
+        const payload = {
+            data: data,
+            funds: rootNode.querySelector( ".funds" ).value,
+            monthlyRefund: rootNode.querySelector( ".monthlyRefund" ).value,
+            PuntosPlusPagosLeft: rootNode.querySelector( ".PuntosPlusPagosLeft" ).value,
+            purchasePower: rootNode.querySelector( ".purchasePower" ).value,
+            fundsLeft: rootNode.querySelector( ".fundsLeft" ).value
+        };
+
+        // Uso el id del Planner como key
+        localStorage.setItem( `${rootNode.id}`, JSON.stringify ( payload ) );
+    };
+
+    function f_stoPop () {
+        f_reset( false, true );
+
+        const rootNode = o_Planner.DOMNode;
+        const payload = JSON.parse( localStorage.getItem( rootNode.id ) );
+        const data = payload.data;
+
+        rootNode.querySelector( ".monthlyRefund" ).value = payload.monthlyRefund;
+        rootNode.querySelector( ".funds" ).value = payload.funds;
+
+        // Uso fors i para garantizar q se mantenga el orden
+        for ( let i = 0 ; i < data.length ; i++ ) {
+            const inst = f_addInstance( false, data[i].length );
+            const boxItems = inst.querySelector( ".box-items" );
+            for ( let t = 0 ; t < data[i].length ; t++ ) {
+                const item = boxItems.children[t];
+                for ( const field of item.children )
+                    field.value = data[i][t][field.name];
+            };
+        };
+
+        rootNode.querySelector( ".PuntosPlusPagosLeft" ).value = payload.PuntosPlusPagosLeft;
+        rootNode.querySelector( ".purchasePower" ).value = payload.purchasePower;
+        rootNode.querySelector( ".fundsLeft" ).value = payload.fundsLeft;
+    };
+
+    function f_stoClear () {
+        localStorage.clear();
+    };
+/* +Functions */
