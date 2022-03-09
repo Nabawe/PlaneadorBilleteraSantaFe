@@ -32,7 +32,7 @@
       <form id="v-planner--form" onsubmit="" action="/php/v-planner.php" method="post">
         <div class="header">
           <input type="text" class="monthlyRefund" name="monthlyRefund" title="Tope Reintegro Mensual" value="5000">
-          <input type="number" class="funds" name="funds" min="00" title="Fondos Iniciales" placeholder="Fondos Iniciales">
+          <input type="number" class="funds" name="funds" min="0" max="9999999999" title="Fondos Iniciales" placeholder="Fondos Iniciales">
         </div>
         <div class="main">
           <div class="box-instances">
@@ -58,7 +58,7 @@
                     <!-- pattern Attribute : In a text input element, the pattern attribute uses a regular expression to match against (or validate) the value of the <input>, when the form is submitted. -->
                     <input type="text" class="item--part live description" name="description" maxlength="30">
                     <!-- set max min inputmode attributes -->
-                    <input type="number" class="item--part live rawPrice" name="rawPrice" maxlength="10">
+                    <input type="number" class="item--part live rawPrice" name="rawPrice" min="0" max="9999999999">
                     <select class="item--part live discount" name="discount" maxlength="4"></select>
                     <!-- Set Attributes readonly="readonly" -->
                     <output class="item--part live finalPrice" name="finalPrice"></output>
@@ -101,6 +101,7 @@
             <button class="save" type="button">Guardar</button>
             <button class="load" type="button">Cargar</button>
             <button class="clear" type="button">Borrar Mem</button>
+            <button class="gjghj" type="button" onclick="form.reportValidity()">Test</button>
           </div>
           <div class="totals">
             <!-- maxlength="10" -->

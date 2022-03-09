@@ -454,6 +454,21 @@ main {
   background-color: #ed2939;
   border: none;
 }
+#v-planner form input:valid {
+  background-color: #008000;
+  border-color: #00f;
+  outline-color: #ee82ee;
+}
+#v-planner form input:invalid {
+  background-color: #f00;
+  border-color: #ffa500;
+  outline-color: #ff0;
+}
+#v-planner form input.error {
+  background-color: #f00;
+  border-color: #ffa500;
+  outline-color: #ff0;
+}
 /* +v-planner */
 .g-WIP {
   visibility: hidden;

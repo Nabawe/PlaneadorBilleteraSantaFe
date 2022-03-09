@@ -25,7 +25,7 @@
             <input type="number" class="g-WIP item--part live order" name="order" min="00" max="99" maxlength="2" value="00">
             <select class="item--part live category" name="category" maxlength="20"></select>
             <input type="text" class="item--part live description" name="description" maxlength="30">
-            <input type="number" class="item--part live rawPrice" name="rawPrice" maxlength="10">
+            <input type="number" class="item--part live rawPrice" name="rawPrice" min="0" max="9999999999">
             <select class="item--part live discount" name="discount" maxlength="4"></select>
             <output class="item--part live finalPrice" name="finalPrice"></output>
             <button class="item--part live btn delItem" type="button"></button>
@@ -88,6 +88,29 @@
                 };
             }
         );
+    };
+
+    // LLamarla onchange, antes de guardar y en varios otros casos
+    function f_validate( evt ) {
+        for ( const instance of _Q.qSA( "#v-planner .instance") ) {
+                form.reportValidity()
+                // oninput
+                // invalid
+            const addItem  = instance.querySelector( ".addItem" );
+            addItem.addEventListener( "click", f_addItem );
+
+            const delInstance  = instance.querySelector( ".delInstance" );
+            delInstance.addEventListener( "click", f_delInstance );
+
+            for ( const item of instance.querySelectorAll( ".item.live" ) ) {
+                // for ( const part of item.querySelectorAll( ".item--part" ) ) {
+                // };
+                const delItem  = item.querySelector( ".delItem" );
+                delItem.addEventListener( "click", f_delItem );
+
+                f_initSelects( item );
+            };
+        };
     };
 
     // Recive un elem q contiene <select>s de .category o .discount y los popula y bindea eventos
@@ -414,45 +437,34 @@
 
     };
 
-    // LLamarla onchange, antes de guardar y en varios otros casos
-    // function f_validate( evt ) {
-    //     for ( const instance of _Q.qSA( "#v-planner .instance") ) {
-    //         const addItem  = instance.querySelector( ".addItem" );
-    //         addItem.addEventListener( "click", f_addItem );
-
-    //         const delInstance  = instance.querySelector( ".delInstance" );
-    //         delInstance.addEventListener( "click", f_delInstance );
-
-    //         for ( const item of instance.querySelectorAll( ".item.live" ) ) {
-    //             // for ( const part of item.querySelectorAll( ".item--part" ) ) {
-    //             // };
-    //             const delItem  = item.querySelector( ".delItem" );
-    //             delItem.addEventListener( "click", f_delItem );
-
-    //             f_initSelects( item );
-    //         };
-    //     };
-    // };
-
     /* Map
         data = [ instance, instance, ... ]
-            instance = [ item, item, ... ]
-                item = { field.name: field.value, field.name: field.value, ... }
+            instance = { box-items: items..., subResults: subResults... }
+                box-items = [ item, item, ... ]
+                    item = { field.name: field.value, field.name: field.value, ... }
+                subResults = { field.name: field.value, field.name: field.value, ... }
 
         data = [
-            [
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-            ],
-            [
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-            ]
+            { // p-instance-1
+                [ // box-items
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }, // item
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }, // item
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }  // item
+                ],
+                { field.name: field.value, field.name: field.value, ... } // subResults
+            },
+            { // p-instance-2
+                [ // box-items
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }  // item
+                ],
+                { field.name: field.value, field.name: field.value, ... } // subResults
+            }
         ]
     */
     function f_stoPush () {
 
         // ! Correr Validacion antes de grabar
+        // ! Agregar Confirmacion
 
         const rootNode = o_Planner.DOMNode;
         const data = [];
@@ -461,16 +473,21 @@
         // Uso fors i para garantizar q se mantenga el orden
         for ( let i = 0 ; i < box.childElementCount ; i++ ) {
             const inst = box.children[i];
-            data[i] = [];
+            data[i] = { "box-items": [], subResults: {} };
             const boxItems = inst.querySelector( ".box-items" );
             for ( let t = 0 ; t < boxItems.childElementCount ; t++ ) {
                 const item = boxItems.children[t];
-                data[i][t] = {};
+                data[i]["box-items"][t] = {};
                 for ( const field of item.children ) {
                     let nam3 = field.name;
                     if ( nam3 )
-                        data[i][t][nam3] = field.value;
+                        data[i]["box-items"][t][nam3] = field.value;
                 };
+            };
+            for ( const field of inst.querySelector( ".subResults" ).children ) {
+                let nam3 = field.name;
+                if ( nam3 )
+                    data[i]["subResults"][nam3] = field.value;
             };
         };
 
@@ -490,6 +507,8 @@
     };
 
     function f_stoPop () {
+        // ! Agregar Confirmacion
+
         f_reset( false, true );
 
         const rootNode = o_Planner.DOMNode;
@@ -501,13 +520,16 @@
 
         // Uso fors i para garantizar q se mantenga el orden
         for ( let i = 0 ; i < data.length ; i++ ) {
-            const inst = f_addInstance( false, data[i].length );
+            const dataI = data[i]["box-items"];
+            const inst = f_addInstance( false, dataI.length );
             const boxItems = inst.querySelector( ".box-items" );
-            for ( let t = 0 ; t < data[i].length ; t++ ) {
+            for ( let t = 0 ; t < dataI.length ; t++ ) {
                 const item = boxItems.children[t];
                 for ( const field of item.children )
-                    field.value = data[i][t][field.name];
+                    field.value = dataI[t][field.name];
             };
+            for ( const field of inst.querySelector( ".subResults" ).children )
+                field.value = data[i]["subResults"][field.name];
         };
 
         rootNode.querySelector( ".PuntosPlusPagosLeft" ).value = payload.PuntosPlusPagosLeft;
@@ -518,6 +540,8 @@
     };
 
     function f_stoClear () {
+        // ! Agregar Confirmacion
+
         localStorage.clear();
         // o_Planner.DOMNode.querySelector( "form" ).reset();
             // revisar docs de clear no sea cosa q borre de otras paginas, pero no deberia
