@@ -436,23 +436,32 @@
 
     /* Map
         data = [ instance, instance, ... ]
-            instance = [ item, item, ... ]
-                item = { field.name: field.value, field.name: field.value, ... }
+            instance = { box-items: items..., subResults: subResults... }
+                box-items = [ item, item, ... ]
+                    item = { field.name: field.value, field.name: field.value, ... }
+                subResults = { field.name: field.value, field.name: field.value, ... }
 
         data = [
-            [
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value },
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-            ],
-            [
-                { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }
-            ]
+            { // p-instance-1
+                [ // box-items
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }, // item
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }, // item
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }  // item
+                ],
+                { field.name: field.value, field.name: field.value, ... } // subResults
+            },
+            { // p-instance-2
+                [ // box-items
+                    { order: value, category: value, description: value, rawPrice: value, discount: value, finalPrice: value }  // item
+                ],
+                { field.name: field.value, field.name: field.value, ... } // subResults
+            }
         ]
     */
     function f_stoPush () {
 
         // ! Correr Validacion antes de grabar
+        // ! Agregar Confirmacion
 
         const rootNode = o_Planner.DOMNode;
         const data = [];
@@ -461,16 +470,21 @@
         // Uso fors i para garantizar q se mantenga el orden
         for ( let i = 0 ; i < box.childElementCount ; i++ ) {
             const inst = box.children[i];
-            data[i] = [];
+            data[i] = { "box-items": [], subResults: {} };
             const boxItems = inst.querySelector( ".box-items" );
             for ( let t = 0 ; t < boxItems.childElementCount ; t++ ) {
                 const item = boxItems.children[t];
-                data[i][t] = {};
+                data[i]["box-items"][t] = {};
                 for ( const field of item.children ) {
                     let nam3 = field.name;
                     if ( nam3 )
-                        data[i][t][nam3] = field.value;
+                        data[i]["box-items"][t][nam3] = field.value;
                 };
+            };
+            for ( const field of inst.querySelector( ".subResults" ).children ) {
+                let nam3 = field.name;
+                if ( nam3 )
+                    data[i]["subResults"][nam3] = field.value;
             };
         };
 
@@ -490,6 +504,8 @@
     };
 
     function f_stoPop () {
+        // ! Agregar Confirmacion
+
         f_reset( false, true );
 
         const rootNode = o_Planner.DOMNode;
@@ -501,13 +517,16 @@
 
         // Uso fors i para garantizar q se mantenga el orden
         for ( let i = 0 ; i < data.length ; i++ ) {
-            const inst = f_addInstance( false, data[i].length );
+            const dataI = data[i]["box-items"];
+            const inst = f_addInstance( false, dataI.length );
             const boxItems = inst.querySelector( ".box-items" );
-            for ( let t = 0 ; t < data[i].length ; t++ ) {
+            for ( let t = 0 ; t < dataI.length ; t++ ) {
                 const item = boxItems.children[t];
                 for ( const field of item.children )
-                    field.value = data[i][t][field.name];
+                    field.value = dataI[t][field.name];
             };
+            for ( const field of inst.querySelector( ".subResults" ).children )
+                field.value = data[i]["subResults"][field.name];
         };
 
         rootNode.querySelector( ".PuntosPlusPagosLeft" ).value = payload.PuntosPlusPagosLeft;
