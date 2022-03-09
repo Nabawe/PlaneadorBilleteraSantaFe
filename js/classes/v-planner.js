@@ -268,6 +268,44 @@
     // On .instance OR .item delete
     // Or manually specifing aux as an .item
     // Reads prev instance then mods current and post
+    /* Columnas:
+        refund   = reintegro SOLO de ese movimiento
+        saldoPP  = saldo de Puntos Plus Pagos HASTA el momento
+        subSpent = dinero de los Fondos Iniciales usado en ESE movimiento agotando antes el saldoPP
+    */
+    /* Equaciones
+        Orden de Calculo
+            1° PPPLeft
+            2° refund (de la instancia)
+            3° saldoPP (de la instancia)
+            4° subSpent (de la instancia)
+            5° fundsLeft
+            6° purchasePower
+
+        B = Tope de Reintegro Mensual - sum( prevRefund )
+        PPPLeft = B > 0 ? B : 0
+
+        A = ( sum( instanceRaw$ ) - sum( instanceFinal$ ) )
+        refund = A > PPPLeft ? PPPLeft : A
+
+        C = sum ( instanceRaw$ )
+        D = ( prevRefund + prevSaldoPP ) - C
+        saldoPP = D > 0 ? D > 0
+
+        E = -( D )
+        subSpent = E > 0 ? E : 0
+            Si E es negativa significa q no hay q no hay necesidad de usar dinero de los Fondos Iniciales
+
+        fundsLeft = funds - sum( subSpent )
+
+        1) purchasePower = ( funds + sum ( refund ) ) - sum( raw$ )
+        2) sum ( raw$ ) = sum( final$ ) + sum ( refund )
+
+        ( funds + sum ( refund ) ) - ( sum( final$ ) + sum ( refund ) )
+        funds + sum ( refund ) - sum( final$ ) - sum ( refund )
+
+        purchasePower = funds - sum( final$ )
+    */
     function f_calcInstances( evt, aux ) {
         const trgItem = aux ? aux : evt.target.closest( ".item" );
         const trgInstance = trgItem.closest( ".instance" );
